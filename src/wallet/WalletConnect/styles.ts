@@ -30,7 +30,7 @@ export const Dropdown = styled.ul`
 	padding: 10px 0;
 	position: absolute;
 	top: 46.5px;
-    right: 13.5px;
+	right: 13.5px;
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-radius: ${STYLING.dimensions.borderRadius};

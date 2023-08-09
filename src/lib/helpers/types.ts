@@ -140,7 +140,9 @@ export type ApiClientType = {
 	orderBookContract: string;
 	init: (args: ApiClientInitArgs) => ApiClientType;
 	createAsset: (args: AssetCreateArgsType) => Promise<string>;
-	getAssetsByChannel: (args: AssetArgsType) => Promise<any[]>;
+	getAssetsByChannel: (args: AssetArgsType) => Promise<AssetsResponseType>;
+	getAssetById: (args: {assetId: string}) => Promise<GQLResponseType | null>;
+	getProfile: (args: { walletAddress: string }) => Promise<ProfileType>;
 };
 
 export type WriteContractArgs = {

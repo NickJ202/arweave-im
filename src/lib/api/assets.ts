@@ -1,5 +1,6 @@
 import { getGQLData, getGQLDataByIds } from '../gql';
 import {
+	AGQLResponseType,
 	AssetArgsClientType,
 	AssetCreateArgsClientType,
 	AssetDetailType,
@@ -40,86 +41,44 @@ export async function createAsset(args: AssetCreateArgsClientType): Promise<stri
 	}
 }
 
-export async function getAssetsByChannel(args: AssetArgsClientType): Promise<any> {
+export async function getAssetsByChannel(args: AssetArgsClientType): Promise<AssetsResponseType> {
 	try {
-		const gqlData: any = await getGQLData({
+		const gqlData: AGQLResponseType = await getGQLData({
 			ids: null,
-			tagFilters: [
-				{name: 'Msg-Channel-Id', values: args.ids.map((id: string) => id)}
-			],
+			tagFilters: [{ name: TAGS.keys.messageChannelId, values: args.ids.map((id: string) => id) }],
 			uploader: args.uploader,
 			cursor: null,
 			reduxCursor: null,
 			cursorObject: null,
 			arClient: args.arClient,
-			useArweaveBundlr: true
+			useArweaveBundlr: true,
 		});
 
-		return gqlData;
+		return {
+			assets: gqlData.data,
+			nextCursor: gqlData.nextCursor,
+			previousCursor: null,
+		};
 	} catch (error: any) {
 		throw new Error(error);
 	}
 }
 
-// export async function getAssetsByContract(args: AssetArgsClientType): Promise<AssetType[]> {
-// 	try {
-// 		const assets: OrderBookPairType[] = (await args.arClient.read(ORDERBOOK_CONTRACT)).pairs;
-// 		const ids = assets.map((asset: OrderBookPairType) => {
-// 			return asset.pair[0];
-// 		});
+export async function getAssetById(args: { assetId: string, arClient: any }): Promise<GQLResponseType | null> {
+	const gqlData: AGQLResponseType = await getGQLData({
+		ids: [args.assetId],
+		tagFilters: null,
+		uploader: null,
+		cursor: null,
+		reduxCursor: null,
+		cursorObject: null,
+		arClient: args.arClient,
+		useArweaveBundlr: true,
+	});
 
-// 		const gqlData: AssetsResponseType = await getGQLDataByIds({
-// 			ids: ids,
-// 			owner: args.owner,
-// 			uploader: args.uploader,
-// 			cursor: null,
-// 			reduxCursor: null,
-// 			arClient: args.arClient,
-// 			walletAddress: args.walletAddress,
-// 		});
-
-// 		return getValidatedAssets(gqlData, assets);
-// 	} catch (error: any) {
-// 		throw new Error(error);
-// 	}
-// }
-
-// export async function getAssetIdsByContract(args: { arClient: any }): Promise<string[]> {
-// 	try {
-// 		let r = (await args.arClient.read(ORDERBOOK_CONTRACT)).pairs
-// 			.map((asset: OrderBookPairType) => {
-// 				return asset.pair[0];
-// 			})
-// 			.reverse();
-// 		return r;
-// 	} catch (e: any) {
-// 		return [];
-// 	}
-// }
-
-// export async function getAssetsByUser(args: AssetArgsClientType): Promise<AssetType[]> {
-// 	const result: any = await fetch(getBalancesEndpoint(args.walletAddress));
-// 	if (result.status === 200) {
-// 		const balances = ((await result.json()) as UserBalancesType).balances;
-
-// 		const assetIds = balances.map((balance: BalanceType) => {
-// 			return balance.contract_tx_id;
-// 		});
-
-// 		const gqlData: AssetsResponseType = await getGQLDataByIds({
-// 			ids: assetIds,
-// 			owner: args.owner,
-// 			uploader: args.uploader,
-// 			cursor: args.cursor,
-// 			reduxCursor: args.reduxCursor,
-// 			arClient: args.arClient,
-// 			walletAddress: args.walletAddress,
-// 		});
-
-// 		return getValidatedAssets(gqlData);
-// 	}
-// 	return [];
-// }
+	if (gqlData && gqlData.data.length) return gqlData.data[0];
+	else return null;
+}
 
 // export async function getAssetIdsByUser(args: { walletAddress: string; arClient: any }): Promise<string[]> {
 // 	try {
@@ -154,8 +113,6 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<any
 // 		walletAddress: args.walletAddress,
 // 		useArweaveBundlr: args.useArweaveBundlr ? args.useArweaveBundlr : false,
 // 	});
-
-// 	const pairs: OrderBookPairType[] = (await args.arClient.read(ORDERBOOK_CONTRACT)).pairs;
 
 // 	return getValidatedAssets(gqlData, pairs);
 // }
@@ -196,97 +153,6 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<any
 // 	}
 // }
 
-// export function getValidatedAssets(gqlData: AssetsResponseType, pairs?: OrderBookPairType[]): AssetType[] {
-// 	let validatedAssets: AssetType[] = [];
-// 	for (let i = 0; i < gqlData.assets.length; i++) {
-// 		const title = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.title);
-// 		const description = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.description);
-// 		const topic = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.topic);
-// 		const type = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.type);
-// 		const implementation = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.implements);
-// 		const license = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.ans110.license);
-// 		const renderWith = getTagValue(gqlData.assets[i].node.tags, TAGS.keys.renderWith);
-
-// 		if (title !== STORAGE.none && description !== STORAGE.none && type !== STORAGE.none) {
-// 			let asset: AssetType = {
-// 				data: {
-// 					id: gqlData.assets[i].node.id,
-// 					title: title,
-// 					description: description,
-// 					topic: topic,
-// 					type: type,
-// 					implementation: implementation,
-// 					license: license,
-// 					renderWith: renderWith ? renderWith : null,
-// 					dateCreated: gqlData.assets[i].node.block
-// 						? gqlData.assets[i].node.block.timestamp * 1000
-// 						: gqlData.assets[i].node.timestamp,
-// 					blockHeight: gqlData.assets[i].node.block ? gqlData.assets[i].node.block.height : 0,
-// 					creator: gqlData.assets[i].node.owner ? gqlData.assets[i].node.owner.address : gqlData.assets[i].node.address,
-// 				},
-// 			};
-
-// 			const udl = getUDL(gqlData.assets[i]);
-// 			if (udl) asset.data.udl = udl;
-
-// 			if (pairs) {
-// 				const assetIndex = pairs.findIndex((asset: OrderBookPairType) => asset.pair[0] === gqlData.assets[i].node.id);
-// 				if (assetIndex !== -1) {
-// 					asset.orders = pairs[assetIndex].orders.map((order: OrderBookPairOrderType) => {
-// 						return { ...order, currency: pairs[assetIndex].pair[1] };
-// 					});
-// 				}
-// 			}
-// 			validatedAssets.push(asset);
-// 		}
-// 	}
-// 	return validatedAssets;
-// }
-
-// function getUDL(gqlData: GQLResponseType): UDLType | null {
-// 	const license = getTagValue(gqlData.node.tags, TAGS.keys.udl.license);
-// 	if (!license || license === STORAGE.none || !(license.toLowerCase() === UDL_LICENSE_VALUE.toLowerCase())) return null;
-
-// 	let currencyIcon: string;
-// 	let currencyEndText: string;
-// 	const currencyType = getTagValue(gqlData.node.tags, TAGS.keys.udl.currency);
-// 	if (!currencyType || currencyType === STORAGE.none) currencyIcon = UDL_ICONS.u;
-// 	else currencyEndText = currencyType;
-
-// 	let accessFee = { key: TAGS.keys.udl.accessFee, value: getTagValue(gqlData.node.tags, TAGS.keys.udl.accessFee) };
-// 	let derivationFee = {
-// 		key: TAGS.keys.udl.derivationFee,
-// 		value: getTagValue(gqlData.node.tags, TAGS.keys.udl.derivationFee),
-// 	};
-// 	let commercialFee = {
-// 		key: TAGS.keys.udl.commercialFee,
-// 		value: getTagValue(gqlData.node.tags, TAGS.keys.udl.commercialFee),
-// 	};
-
-// 	if (currencyIcon) {
-// 		accessFee['icon'] = currencyIcon;
-// 		derivationFee['icon'] = currencyIcon;
-// 		commercialFee['icon'] = currencyIcon;
-// 	}
-
-// 	if (currencyEndText) {
-// 		accessFee['endText'] = currencyEndText;
-// 		derivationFee['endText'] = currencyEndText;
-// 		commercialFee['endText'] = currencyEndText;
-// 	}
-
-// 	return {
-// 		license: { key: TAGS.keys.udl.license, value: license },
-// 		access: { key: TAGS.keys.udl.access, value: getTagValue(gqlData.node.tags, TAGS.keys.udl.access) },
-// 		accessFee: accessFee,
-// 		commercial: { key: TAGS.keys.udl.commercial, value: getTagValue(gqlData.node.tags, TAGS.keys.udl.commercial) },
-// 		commercialFee: commercialFee,
-// 		derivation: { key: TAGS.keys.udl.derivation, value: getTagValue(gqlData.node.tags, TAGS.keys.udl.derivation) },
-// 		derivationFee: derivationFee,
-// 		paymentMode: { key: TAGS.keys.udl.paymentMode, value: getTagValue(gqlData.node.tags, TAGS.keys.udl.paymentMode) },
-// 	};
-// }
-
 function createTags(args: AssetCreateArgsClientType): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
@@ -319,9 +185,8 @@ function createTags(args: AssetCreateArgsClientType): TagType[] {
 		{ name: TAGS.keys.ans110.type, value: args.type },
 		{ name: TAGS.keys.ans110.implements, value: TAGS.values.ansVersion },
 		{ name: TAGS.keys.dateCreated, value: dateTime },
-		{ name: 'Msg-Channel-Id', value: args.channelId },
-		{ name: 'Msg-Group-Id', value: args.groupId },
-		// { name: TAGS.keys.indexedBy, value: TAGS.values.indexer },
+		{ name: TAGS.keys.messageChannelId, value: args.channelId },
+		{ name: TAGS.keys.messageGroupId, value: args.groupId },
 	];
 
 	args.topics.forEach((topic: string) => tags.push({ name: TAGS.keys.topic(topic), value: topic }));

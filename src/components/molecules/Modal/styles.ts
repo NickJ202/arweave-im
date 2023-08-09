@@ -23,9 +23,8 @@ export const Container = styled.div<{
 	max-height: calc(100vh - 100px);
 	width: ${(props) => (props.useMax ? STYLING.cutoffs.max : '600px')};
 	max-width: ${(props) => (props.noHeader ? '100%' : '90vw')};
-	background: ${(props) =>
-		props.noHeader ? 'transparent': props.theme.colors.container.primary.background};
-	border: 1px solid ${(props) => (props.noHeader ? 'transparent': props.theme.colors.border.primary)};
+	background: ${(props) => (props.noHeader ? 'transparent' : props.theme.colors.container.primary.background)};
+	border: 1px solid ${(props) => (props.noHeader ? 'transparent' : props.theme.colors.border.primary)};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	margin: 60px auto;
 	overflow-y: auto;

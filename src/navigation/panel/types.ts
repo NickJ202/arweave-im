@@ -1,3 +1,3 @@
 export interface IProps {
-    groupId: string;
+	groupId: string;
 }

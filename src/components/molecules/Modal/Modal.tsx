@@ -43,7 +43,14 @@ export default function Modal(props: IProps) {
 								<S.Title>{props.header}</S.Title>
 							</S.LT>
 							<S.Close>
-								<IconButton type={'primary'} sm warning src={ASSETS.close} handlePress={() => props.handleClose()} active={false} />
+								<IconButton
+									type={'primary'}
+									sm
+									warning
+									src={ASSETS.close}
+									handlePress={() => props.handleClose()}
+									active={false}
+								/>
 							</S.Close>
 						</S.Header>
 					)}

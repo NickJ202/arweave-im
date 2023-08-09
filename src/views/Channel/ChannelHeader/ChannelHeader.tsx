@@ -1,9 +1,10 @@
 import * as S from './styles';
+import { IProps } from './types';
 
-export default function ChannelHeader() {
+export default function ChannelHeader(props: IProps) {
 	return (
 		<S.Wrapper>
-			<span># Channel</span>
+			<span>{props.header}</span>
 		</S.Wrapper>
 	);
 }

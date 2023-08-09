@@ -14,11 +14,14 @@ const DEFAULT = {
 	primary: '#5398A2',
 	primary2: '#457E87',
 	overlay1: '#2D2D2DC4',
+	transparent: 'rgba(255, 255, 255, 0)',
+	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
 };
 
 export const defaultTheme: DefaultTheme = {
 	scheme: 'light',
 	colors: {
+		primary: DEFAULT.primary,
 		border: {
 			primary: DEFAULT.neutral5,
 		},
@@ -39,7 +42,7 @@ export const defaultTheme: DefaultTheme = {
 		container: {
 			primary: {
 				background: DEFAULT.neutral1,
-				hover: DEFAULT.neutral3
+				hover: DEFAULT.neutral3,
 			},
 			alt1: {
 				background: DEFAULT.neutral2,
@@ -50,6 +53,9 @@ export const defaultTheme: DefaultTheme = {
 			alt1: DEFAULT.neutralA2,
 			alt2: DEFAULT.neutralA3,
 			alt3: DEFAULT.neutral1,
+		},
+		loader: {
+			primary: DEFAULT.primary,
 		},
 		overlay: {
 			primary: DEFAULT.overlay1,
@@ -66,6 +72,14 @@ export const defaultTheme: DefaultTheme = {
 			},
 			panel: {
 				background: DEFAULT.neutral3,
+			},
+		},
+		table: {
+			placeholder: {
+				background: DEFAULT.neutral2,
+				backgroundStart: DEFAULT.transparent,
+				backgroundSlide: DEFAULT.semiTransparent1,
+				backgroundEnd: DEFAULT.transparent,
 			},
 		},
 	},

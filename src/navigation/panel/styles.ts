@@ -21,7 +21,7 @@ export const Group = styled.div`
 	padding: 0 15px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 	span {
-		font-size: clamp(20px, 1.35vw, 24px);
+		font-size: clamp(20px, 1.15vw, 22px);
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};

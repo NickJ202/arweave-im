@@ -39,7 +39,7 @@ export const MWrapper = styled.div`
 		padding: 0 15px 0 0;
 
 		&:not(:last-child) {
-			margin: 0 0 25px 0;
+			margin: 0 0 30px 0;
 		}
 
 		&:last-child {

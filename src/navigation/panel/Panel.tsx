@@ -7,7 +7,8 @@ import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 import { ClientType } from 'lib';
 import { Client } from 'lib/clients';
 
-import { API_CONFIG, CURRENCIES } from 'helpers/config';
+import { API_CONFIG, CURRENCIES, DRE_NODE } from 'helpers/config';
+import { formatChannelName } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 
 import * as S from './styles';
@@ -23,7 +24,7 @@ export default function Panel(props: IProps) {
 	const [lib, setLib] = React.useState<ClientType | null>(null);
 	const [group, setGroup] = React.useState<any>(null);
 
-	const[activeChannelId, setActiveChannelId] = React.useState<string | null>(null);
+	const [activeChannelId, setActiveChannelId] = React.useState<string | null>(null);
 
 	React.useEffect(() => {
 		const arweaveGet = Arweave.init({
@@ -54,7 +55,7 @@ export default function Panel(props: IProps) {
 				arweavePost: arweavePost,
 				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
 				warp: warp,
-				warpDreNode: 'https://dre-1.warp.cc/contract',
+				warpDreNode: DRE_NODE,
 			})
 		);
 	}, [arProvider.wallet, arProvider.walletAddress]);
@@ -69,19 +70,12 @@ export default function Panel(props: IProps) {
 
 	React.useEffect(() => {
 		(async function () {
-			if (group) {
-				if (group) setActiveChannelId(group.channels[0].id)
+			if (group && !activeChannelId) {
+				navigate(`${props.groupId}/${group.channels[0].id}`);
+				setActiveChannelId(group.channels[0].id);
 			}
 		})();
-	}, [group]);
-
-	React.useEffect(() => {
-		(async function () {
-			if (group && activeChannelId) {
-				if (group) navigate(`${props.groupId}/${group.channels[0].id}`);
-			}
-		})();
-	}, [group]);
+	}, [group, activeChannelId]);
 
 	function handleChannelChange(channelId: string) {
 		setActiveChannelId(channelId);
@@ -95,7 +89,7 @@ export default function Panel(props: IProps) {
 					return (
 						<S.Channel key={index} active={channel.id === activeChannelId}>
 							<button onClick={() => handleChannelChange(channel.id)}>
-								<span>{`# ${channel.title}`}</span>
+								<span>{formatChannelName(channel.title)}</span>
 							</button>
 						</S.Channel>
 					);

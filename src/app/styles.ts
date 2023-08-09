@@ -102,4 +102,8 @@ export const GlobalStyle = createGlobalStyle`
   b, strong {
     font-weight: ${(props) => props.theme.typography.weight.bold};
   }
+
+  p, span {
+    line-height: 1.25;
+  }
 `;

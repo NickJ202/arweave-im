@@ -1,3 +1,5 @@
+import { GQLResponseType } from 'lib';
+
 export interface IProps {
-	message: any;
+	data: GQLResponseType;
 }

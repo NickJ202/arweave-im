@@ -6,6 +6,7 @@ import italic from 'assets/italic.svg';
 import logo from 'assets/logo.svg';
 import strikethrough from 'assets/strikethrough.svg';
 import underline from 'assets/underline.svg';
+import user from 'assets/user.svg';
 import wallet from 'assets/wallet.svg';
 
 import { WalletEnum } from './types';
@@ -23,6 +24,7 @@ export const ASSETS = {
 	logo: logo,
 	strikethrough: strikethrough,
 	underline: underline,
+	user: user,
 	wallet: wallet,
 	wallets: {
 		arconnect: arconnectWallet,
@@ -40,7 +42,7 @@ export const WALLET_PERMISSIONS = ['ACCESS_ADDRESS', 'ACCESS_PUBLIC_KEY', 'SIGN_
 export const DOM = {
 	loader: 'loader',
 	modal: 'modal',
-	notification: 'notification'
+	notification: 'notification',
 };
 
 export const API_CONFIG = {
@@ -55,3 +57,5 @@ export const API_CONFIG = {
 export const CURRENCIES = {
 	default: 'U' as 'U',
 };
+
+export const DRE_NODE = 'https://dre-1.warp.cc/contract';

@@ -14,3 +14,5 @@ export type ProfileType = {
 };
 
 export type RefType = { current: HTMLElement };
+
+export type DateType = 'iso' | 'epoch';

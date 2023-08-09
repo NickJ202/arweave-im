@@ -39,6 +39,8 @@ export const TAGS = {
 		indexedBy: 'Indexed-By',
 		initialOwner: 'Initial-Owner',
 		initState: 'Init-State',
+		messageChannelId: 'Msg-Channel-Id',
+		messageGroupId: 'Msg-Group-Id',
 		name: 'Name',
 		protocolName: 'Protocol-Name',
 		uploaderTxId: 'Uploader-Tx-Id',

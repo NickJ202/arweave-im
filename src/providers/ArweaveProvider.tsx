@@ -202,7 +202,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 					wallets,
 					walletModalVisible,
 					setWalletModalVisible,
-					arProfile
+					arProfile,
 				}}
 			>
 				{props.children}

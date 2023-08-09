@@ -59,6 +59,11 @@ export const Editor = styled.div`
 		}
 	}
 
+	span,
+	.public-DraftEditorPlaceholder-inner {
+		line-height: 1.5;
+	}
+
 	.public-DraftEditorPlaceholder-inner {
 		color: ${(props) => props.theme.colors.font.alt2};
 	}

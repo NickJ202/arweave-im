@@ -1,6 +1,7 @@
 import {
 	createAsset,
 	getActivity,
+	getAssetById,
 	getAssetsByChannel,
 	getCollection,
 	getCollections,
@@ -16,11 +17,13 @@ import {
 	AssetArgsType,
 	AssetCreateArgsType,
 	AssetDetailType,
+	AssetsResponseType,
 	AssetType,
 	CollectionAssetType,
 	CollectionsResponseType,
 	CommentDetailType,
 	CommentsResponseType,
+	GQLResponseType,
 	ProfileType,
 	SearchArgs,
 	SearchReturnType,
@@ -40,9 +43,23 @@ const apiClient: ApiClientType = {
 		return await createAsset({ ...args, arClient: this.arClient });
 	},
 
-	getAssetsByChannel: async function (args: AssetArgsType): Promise<AssetType[]> {
+	getAssetsByChannel: async function (args: AssetArgsType): Promise<AssetsResponseType> {
 		return await getAssetsByChannel({ ...args, arClient: this.arClient });
-	}
+	},
+
+	getAssetById: async function (args: { assetId: string }): Promise<GQLResponseType | null> {
+		return await getAssetById({
+			assetId: args.assetId,
+			arClient: this.arClient
+		});
+	},
+
+	getProfile: async function (args: { walletAddress: string }): Promise<ProfileType> {
+		return await getProfile({
+			walletAddress: args.walletAddress,
+			arClient: this.arClient,
+		});
+	},
 };
 
 export { apiClient as ApiClient };
