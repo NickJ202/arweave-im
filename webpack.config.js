@@ -29,14 +29,14 @@ module.exports = {
 	optimization:
 		process.env.NODE_ENV === 'production'
 			? {
-				minimize: true,
-				minimizer: [
-					new TerserPlugin({
-						extractComments: false,
-					}),
-				],
-				usedExports: true,
-			}
+					minimize: true,
+					minimizer: [
+						new TerserPlugin({
+							extractComments: false,
+						}),
+					],
+					usedExports: true,
+			  }
 			: {},
 	ignoreWarnings: [
 		{
@@ -44,8 +44,7 @@ module.exports = {
 				/Critical dependency: require function is used in a way in which dependencies cannot be statically extracted/,
 		},
 		{
-			message:
-				/There are multiple modules with names that only differ in casing./,
+			message: /There are multiple modules with names that only differ in casing./,
 		},
 	],
 	module: {
@@ -178,6 +177,7 @@ module.exports = {
 			filters: path.resolve(__dirname, 'src/filters/'),
 			helpers: path.resolve(__dirname, 'src/helpers/'),
 			hooks: path.resolve(__dirname, 'src/hooks/'),
+			lib: path.resolve(__dirname, 'src/lib/'),
 			navigation: path.resolve(__dirname, 'src/navigation/'),
 			providers: path.resolve(__dirname, 'src/providers/'),
 			root: path.resolve(__dirname, 'src/root/'),

@@ -40,11 +40,7 @@ export default function IconButton(props: IProps) {
 
 	function getButton() {
 		if (props.tooltip) {
-			return (
-				<S.Wrapper>
-					{getAction()}
-				</S.Wrapper>
-			);
+			return <S.Wrapper>{getAction()}</S.Wrapper>;
 		} else {
 			return <>{getAction()}</>;
 		}

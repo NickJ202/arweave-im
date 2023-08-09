@@ -11,7 +11,7 @@ export default function _Routes() {
 		<Suspense fallback={null}>
 			<Routes>
 				<Route
-					path={urls.base}
+					path={`${urls.base}:groupId/:channelId`}
 					element={
 						<View>
 							<Channel />

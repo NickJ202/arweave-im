@@ -1,11 +1,16 @@
-import { ChannelDetail } from './ChannelDetail'
-import { ChannelHeader } from './ChannelHeader'
+import { useParams } from 'react-router-dom';
 
+import { ChannelDetail } from './ChannelDetail';
+import { ChannelHeader } from './ChannelHeader';
+
+// TODO: fetch messages by channel id
 export default function Channel() {
-    return (
-        <>
-            <ChannelHeader />
-            <ChannelDetail />
-        </>
-    )
+	const { groupId, channelId } = useParams();
+
+	return (
+		<>
+			<ChannelHeader />
+			<ChannelDetail channelId={channelId} groupId={groupId} />
+		</>
+	);
 }

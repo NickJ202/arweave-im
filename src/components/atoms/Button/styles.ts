@@ -51,12 +51,14 @@ export const Primary = styled.button<{
 	}
 	&:focus {
 		background: ${(props) =>
-			props.active ? props.theme.colors.button.primary.active.background : props.theme.colors.button.primary.background};
+			props.active
+				? props.theme.colors.button.primary.active.background
+				: props.theme.colors.button.primary.background};
 	}
 	&:disabled {
 		background: ${(props) => props.theme.colors.button.primary.disabled.background};
 		span {
-			color: ${(props) => props.theme.colors.button.primary.disabled.label};
+			color: ${(props) => props.theme.colors.button.primary.disabled.color};
 		}
 	}
 
@@ -83,9 +85,9 @@ export const IconPrimary = styled.div<{
 		margin: ${(props) => (props.leftAlign ? '0 12.5px 0 0' : '0 0 0 12.5px')};
 		fill: ${(props) =>
 			props.disabled
-				? props.theme.colors.button.primary.disabled.label
+				? props.theme.colors.button.primary.disabled.color
 				: props.active
-				? props.theme.colors.button.primary.active.label
-				: props.theme.colors.button.primary.label};
+				? props.theme.colors.button.primary.active.color
+				: props.theme.colors.button.primary.color};
 	}
 `;

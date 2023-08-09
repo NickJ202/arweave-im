@@ -20,7 +20,12 @@ export const Primary = styled.div<{
 	justify-content: center;
 	align-items: center;
 	padding: 2.5px 0 0 0;
-	background: ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.background : props.active ? props.theme.colors.button.primary.background : 'transparent'};
+	background: ${(props) =>
+		props.disabled
+			? props.theme.colors.button.primary.disabled.background
+			: props.active
+			? props.theme.colors.button.primary.background
+			: 'transparent'};
 	border: 1.25px solid ${(props) => props.theme.colors.border.primary};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	position: relative;
@@ -29,7 +34,12 @@ export const Primary = styled.div<{
 	svg {
 		height: ${(props) => (props.dimensions ? `${props.dimensions.icon.toString()}px` : `10px`)};
 		width: ${(props) => (props.dimensions ? `${props.dimensions.icon.toString()}px` : `10px`)};
-		fill: ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.color : props.active ? props.theme.colors.button.primary.color : props.theme.colors.font.alt1};
+		fill: ${(props) =>
+			props.disabled
+				? props.theme.colors.button.primary.disabled.color
+				: props.active
+				? props.theme.colors.button.primary.color
+				: props.theme.colors.font.alt1};
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -38,9 +48,13 @@ export const Primary = styled.div<{
 
 	&:hover {
 		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
-		background: ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.background : props.theme.colors.button.primary.active.background};
+		background: ${(props) =>
+			props.disabled
+				? props.theme.colors.button.primary.disabled.background
+				: props.theme.colors.button.primary.active.background};
 		svg {
-			fill: ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.color : props.theme.colors.button.primary.color};
+			fill: ${(props) =>
+				props.disabled ? props.theme.colors.button.primary.disabled.color : props.theme.colors.button.primary.color};
 		}
 	}
 `;

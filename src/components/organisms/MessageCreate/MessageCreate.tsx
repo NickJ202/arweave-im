@@ -1,23 +1,28 @@
 import React from 'react';
-import {
-	convertToRaw,
-	Editor,
-	EditorState,
-	getDefaultKeyBinding,
-	KeyBindingUtil,
-	RichUtils,
-} from 'draft-js';
+import Arweave from 'arweave';
+import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
+import { defaultCacheOptions, LoggerFactory, WarpFactory } from 'warp-contracts';
+import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 const { hasCommandModifier } = KeyBindingUtil;
+import { ClientType, CONTENT_TYPES } from 'lib';
+import { Client } from 'lib/clients';
+
 import { Button } from 'components/atoms/Button';
 import { IconButton } from 'components/atoms/IconButton';
-import { ASSETS } from 'helpers/config';
+import { API_CONFIG, ASSETS, CURRENCIES } from 'helpers/config';
 import { language } from 'helpers/language';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
 import 'draft-js/dist/Draft.css';
 
 import * as S from './styles';
+import { IProps } from './types';
 
-export default function MessageCreate() {
+// tjv31mDtz0TYwPwZpAMmABL6SgKtbV0dB9A3ACssG-E
+
+export default function MessageCreate(props: IProps) {
+	const arProvider = useArweaveProvider();
+
 	const editorRef = React.useRef<Editor | null>(null);
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
@@ -27,6 +32,43 @@ export default function MessageCreate() {
 	const [boldActive, setBoldActive] = React.useState<boolean>(false);
 	const [italicActive, setItalicActive] = React.useState<boolean>(false);
 	const [underlineActive, setUnderlineActive] = React.useState<boolean>(false);
+
+	const [loading, setLoading] = React.useState<boolean>(false);
+	const [lib, setLib] = React.useState<ClientType | null>(null);
+
+	React.useEffect(() => {
+		const arweaveGet = Arweave.init({
+			host: API_CONFIG.arweaveGet,
+			port: API_CONFIG.port,
+			protocol: API_CONFIG.protocol,
+			timeout: API_CONFIG.timeout,
+			logging: API_CONFIG.logging,
+		});
+
+		const arweavePost = Arweave.init({
+			host: API_CONFIG.arweavePost,
+			port: API_CONFIG.port,
+			protocol: API_CONFIG.protocol,
+			timeout: API_CONFIG.timeout,
+			logging: API_CONFIG.logging,
+		});
+
+		const warp = WarpFactory.forMainnet({
+			...defaultCacheOptions,
+			inMemory: true,
+		}).use(new DeployPlugin());
+
+		setLib(
+			Client.init({
+				currency: CURRENCIES.default,
+				arweaveGet: arweaveGet,
+				arweavePost: arweavePost,
+				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
+				warp: warp,
+				warpDreNode: 'https://dre-1.warp.cc/contract',
+			})
+		);
+	}, [arProvider.wallet, arProvider.walletAddress]);
 
 	const mapKeyToEditorCommand = (e: React.KeyboardEvent) => {
 		if (e.keyCode === 83 && hasCommandModifier(e)) {
@@ -85,30 +127,52 @@ export default function MessageCreate() {
 	// 	setEditorState(EditorState.createWithContent(contentState));
 	// };
 
-	const handleSubmit = () => {
-		const rawContentState = convertToRaw(editorState.getCurrentContent());
-		const serializedContent = JSON.stringify(rawContentState);
-		console.log(serializedContent);
+	const handleSubmit = async () => {
+		if (lib && arProvider.walletAddress) {
+			const rawContentState = convertToRaw(editorState.getCurrentContent());
+			const serializedContent = JSON.stringify(rawContentState);
+			console.log(serializedContent);
+
+			setLoading(true);
+			const contractId = await lib.api.createAsset({
+				content: serializedContent,
+				contentType: CONTENT_TYPES.textPlain,
+				title: 'Test Message',
+				description: serializedContent,
+				type: 'Test-Message',
+				topics: ['Test-Message'],
+				owner: arProvider.walletAddress,
+				ticker: 'MSG',
+				dataProtocol: null,
+				dataSource: null,
+				renderWith: null,
+				channelId: props.channelId,
+				groupId: props.groupId,
+			});
+
+			setLoading(false);
+			console.log(contractId);
+		}
 	};
 
 	return (
 		<S.Wrapper>
 			<S.Header>
-				<IconButton 
+				<IconButton
 					type={'primary'}
 					src={ASSETS.bold}
 					handlePress={handleBold}
 					active={boldActive}
 					disabled={!messageActive}
 				/>
-				<IconButton 
+				<IconButton
 					type={'primary'}
 					src={ASSETS.italic}
 					handlePress={handleItalic}
 					active={italicActive}
 					disabled={!messageActive}
 				/>
-				<IconButton 
+				<IconButton
 					type={'primary'}
 					src={ASSETS.underline}
 					handlePress={handleUnderline}
@@ -131,13 +195,7 @@ export default function MessageCreate() {
 				</S.Editor>
 			</S.Body>
 			<S.Footer>
-				<Button 
-					type={'primary'}
-					label={language.send}
-					handlePress={handleSubmit}
-					disabled={true}
-					noMinWidth
-				/>
+				<Button type={'primary'} label={loading ? `${language.sending}...` : language.send} handlePress={handleSubmit} disabled={loading} noMinWidth />
 			</S.Footer>
 		</S.Wrapper>
 	);

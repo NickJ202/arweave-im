@@ -1,6 +1,12 @@
 export const language = {
-    bold: `Bold`,
-    italic: `Italic`,
-    send: `Send`,
-    underline: `Underline`
-}
+    appName: `Messenger`,
+    close: `Close`, 
+    connect: `Connect`,
+    connectorNotFound: `Connector Not Found`,
+    copyAddress: `Copy Address`,
+    copied: `Copied`,
+    disconnect: `Disconnect`,
+    fetching: `Fetching`,
+	send: `Send`,
+	sending: `Sending`,
+};

@@ -5,12 +5,15 @@ import { ThemeProvider } from 'styled-components';
 import { App } from 'app';
 import { GlobalStyle } from 'app/styles';
 import { defaultTheme } from 'helpers/themes';
+import { ArweaveProvider } from 'providers/ArweaveProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<ThemeProvider theme={defaultTheme}>
-		<HashRouter>
-			<GlobalStyle />
-			<App />
-		</HashRouter>
+		<ArweaveProvider>
+			<HashRouter>
+				<GlobalStyle />
+				<App />
+			</HashRouter>
+		</ArweaveProvider>
 	</ThemeProvider>
 );
