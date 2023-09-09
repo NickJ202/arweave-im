@@ -2,6 +2,7 @@ import arLogo from 'assets/ar-logo.svg';
 import arconnectWallet from 'assets/arconnect-wallet-logo.png';
 import bold from 'assets/bold.svg';
 import close from 'assets/close.svg';
+import info from 'assets/info.svg';
 import italic from 'assets/italic.svg';
 import logo from 'assets/logo.svg';
 import strikethrough from 'assets/strikethrough.svg';
@@ -20,6 +21,7 @@ export const APP = {
 export const ASSETS = {
 	bold: bold,
 	close: close,
+	info: info,
 	italic: italic,
 	logo: logo,
 	strikethrough: strikethrough,
@@ -59,3 +61,5 @@ export const CURRENCIES = {
 };
 
 export const DRE_NODE = 'https://dre-1.warp.cc/contract';
+
+export const DEFAULT_LOGO = 'PH6Q_PJ2tkKfVWUFboMyYSj_UTYsAu8woxmJ8q8R1Fg';

@@ -10,12 +10,21 @@ const DEFAULT = {
 	neutralA1: '#000000',
 	neutralA2: '#031926',
 	neutralA3: '#444444',
-	neutralA4: '#BFC8CA',
-	primary: '#5398A2',
-	primary2: '#457E87',
-	overlay1: '#2D2D2DC4',
+	neutralA4: '#ECF0FE',
+	neutralA5: '#757582',
+	neutralA6: '#C1CAD2',
+	neutralA7: '#9B9BA1',
+	primary: '#F6F8FA',
+	primary2: '#E5EBF1',
+	accent: '#06BA63',
+	accent2: '#059E54',
+	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
+	negative: '#D24646',
+	negativeShadow: '#F27979',
+	positive: '#06BA63',
+	neutral: '#FFC43D',
 };
 
 export const defaultTheme: DefaultTheme = {
@@ -28,34 +37,82 @@ export const defaultTheme: DefaultTheme = {
 		button: {
 			primary: {
 				background: DEFAULT.primary,
-				color: DEFAULT.neutral1,
+				border: DEFAULT.neutral5,
+				color: DEFAULT.neutralA1,
 				active: {
 					background: DEFAULT.primary2,
+					border: DEFAULT.neutralA6,
+					color: DEFAULT.neutralA1,
+				},
+				disabled: {
+					background: DEFAULT.primary,
+					border: DEFAULT.neutral5,
+					color: DEFAULT.neutralA7,
+				},
+			},
+			alt1: {
+				background: DEFAULT.accent,
+				border: DEFAULT.accent,
+				color: DEFAULT.neutral1,
+				active: {
+					background: DEFAULT.accent2,
+					border: DEFAULT.accent2,
 					color: DEFAULT.neutral1,
 				},
 				disabled: {
-					background: DEFAULT.neutralA4,
-					color: DEFAULT.neutral4,
+					background: DEFAULT.primary,
+					border: DEFAULT.neutral5,
+					color: DEFAULT.neutralA7,
 				},
 			},
 		},
 		container: {
 			primary: {
 				background: DEFAULT.neutral1,
+				disabled: DEFAULT.primary,
 				hover: DEFAULT.neutral3,
 			},
 			alt1: {
 				background: DEFAULT.neutral2,
 			},
+			alt2: {
+				background: DEFAULT.neutral3,
+			},
 		},
 		font: {
 			primary: DEFAULT.neutralA1,
+			active: DEFAULT.neutralA3,
 			alt1: DEFAULT.neutralA2,
-			alt2: DEFAULT.neutralA3,
+			alt2: DEFAULT.neutralA5,
 			alt3: DEFAULT.neutral1,
 		},
+		form: {
+			background: DEFAULT.neutral1,
+			border: DEFAULT.neutral5,
+			invalid: {
+				outline: DEFAULT.negative,
+				shadow: DEFAULT.negativeShadow,
+			},
+			valid: {
+				outline: DEFAULT.neutral5,
+				shadow: DEFAULT.neutral3,
+			},
+			disabled: {
+				background: DEFAULT.neutral3,
+				label: DEFAULT.neutralA5,
+			},
+		},
+		icon: {
+			primary: DEFAULT.neutralA1,
+			alt1: DEFAULT.neutral1
+		},
 		loader: {
-			primary: DEFAULT.primary,
+			primary: DEFAULT.neutralA2,
+		},
+		notification: {
+			success: DEFAULT.positive,
+			warning: DEFAULT.negative,
+			neutral: DEFAULT.neutral,
 		},
 		overlay: {
 			primary: DEFAULT.overlay1,
@@ -74,12 +131,26 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.neutral3,
 			},
 		},
+		tabs: {
+			active: DEFAULT.neutral2,
+			inactive: DEFAULT.neutral3,
+			hover: DEFAULT.neutral3,
+			alt1: {
+				active: DEFAULT.primary,
+			},
+		},
 		table: {
 			placeholder: {
 				background: DEFAULT.neutral2,
 				backgroundStart: DEFAULT.transparent,
 				backgroundSlide: DEFAULT.semiTransparent1,
 				backgroundEnd: DEFAULT.transparent,
+			},
+			row: {
+				active: {
+					background: DEFAULT.neutral4,
+					border: DEFAULT.primary,
+				},
 			},
 		},
 	},
@@ -92,6 +163,7 @@ export const defaultTheme: DefaultTheme = {
 			xSmall: '14px',
 			small: '15px',
 			base: '16px',
+			lg: '18px',
 		},
 		weight: {
 			light: '300',

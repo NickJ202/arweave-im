@@ -1,15 +1,16 @@
-import { getGQLData, getGQLDataByIds } from '../gql';
+import { getGQLData } from '../gql';
 import {
 	AGQLResponseType,
+	ASSET_CONTRACT,
 	AssetArgsClientType,
 	AssetCreateArgsClientType,
 	AssetDetailType,
-	AssetsResponseType,
 	AssetType,
 	BalanceType,
 	CONTENT_TYPES,
 	getBalancesEndpoint,
 	getTagValue,
+	GQLNodeResponseType,
 	GQLResponseType,
 	log,
 	logValue,
@@ -25,12 +26,14 @@ import {
 	UserBalancesType,
 } from '../helpers';
 
+import { createContract, createTransaction } from '.';
+
 export async function createAsset(args: AssetCreateArgsClientType): Promise<string | null> {
 	const assetId = await createTransaction({
 		arClient: args.arClient,
 		content: args.content,
 		contentType: args.contentType,
-		tags: createTags(args),
+		tags: createAssetTags(args),
 	});
 	const contractId = await createContract({ arClient: args.arClient, assetId: assetId });
 	if (contractId) {
@@ -41,7 +44,7 @@ export async function createAsset(args: AssetCreateArgsClientType): Promise<stri
 	}
 }
 
-export async function getAssetsByChannel(args: AssetArgsClientType): Promise<AssetsResponseType> {
+export async function getAssetsByChannel(args: AssetArgsClientType): Promise<GQLResponseType> {
 	try {
 		const gqlData: AGQLResponseType = await getGQLData({
 			ids: null,
@@ -55,7 +58,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Ass
 		});
 
 		return {
-			assets: gqlData.data,
+			nodes: gqlData.data,
 			nextCursor: gqlData.nextCursor,
 			previousCursor: null,
 		};
@@ -64,7 +67,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Ass
 	}
 }
 
-export async function getAssetById(args: { assetId: string, arClient: any }): Promise<GQLResponseType | null> {
+export async function getAssetById(args: { assetId: string, arClient: any }): Promise<GQLNodeResponseType | null> {
 	const gqlData: AGQLResponseType = await getGQLData({
 		ids: [args.assetId],
 		tagFilters: null,
@@ -103,7 +106,7 @@ export async function getAssetById(args: { assetId: string, arClient: any }): Pr
 // }
 
 // export async function getAssetsByIds(args: AssetArgsClientType): Promise<AssetType[]> {
-// 	const gqlData: AssetsResponseType = await getGQLDataByIds({
+// 	const gqlData: GQLResponseType = await getGQLDataByIds({
 // 		ids: args.ids,
 // 		owner: args.owner,
 // 		uploader: args.uploader,
@@ -153,7 +156,7 @@ export async function getAssetById(args: { assetId: string, arClient: any }): Pr
 // 	}
 // }
 
-function createTags(args: AssetCreateArgsClientType): TagType[] {
+function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
 	let initStateJson: any = {
@@ -174,7 +177,7 @@ function createTags(args: AssetCreateArgsClientType): TagType[] {
 	initStateJson = JSON.stringify(initStateJson);
 
 	const tags: TagType[] = [
-		{ name: TAGS.keys.contractSrc, value: TAGS.values.assetContractSrc },
+		{ name: TAGS.keys.contractSrc, value: ASSET_CONTRACT.src },
 		{ name: TAGS.keys.smartweaveAppName, value: TAGS.values.smartweaveAppName },
 		{ name: TAGS.keys.smartweaveAppVersion, value: TAGS.values.smartweaveAppVersion },
 		{ name: TAGS.keys.contentType, value: args.contentType },
@@ -197,56 +200,4 @@ function createTags(args: AssetCreateArgsClientType): TagType[] {
 		args.renderWith.forEach((renderWith: string) => tags.push({ name: TAGS.keys.renderWith, value: renderWith }));
 
 	return tags;
-}
-
-async function createTransaction(args: { arClient: any; content: any; contentType: string; tags: TagType[] }) {
-	let finalContent: any;
-	switch (args.contentType) {
-		case CONTENT_TYPES.json as any:
-			finalContent = JSON.stringify(args.content);
-			break;
-		default:
-			finalContent = args.content;
-			break;
-	}
-	try {
-		const txRes = await args.arClient.arweavePost.createTransaction({ data: finalContent }, 'use_wallet');
-		args.tags.forEach((tag: TagType) => txRes.addTag(tag.name, tag.value));
-		const response = await global.window.arweaveWallet.dispatch(txRes);
-		return response.id;
-	} catch (e: any) {
-		throw new Error(`Error creating transaction ...\n ${e}`);
-	}
-}
-
-async function createContract(args: { arClient: any; assetId: string }) {
-	try {
-		const { contractTxId } = await args.arClient.warpDefault.register(args.assetId, 'node2');
-		return contractTxId;
-	} catch (e: any) {
-		logValue(`Error deploying to Warp - Asset ID`, args.assetId, 1);
-
-		const errorString = e.toString();
-		if (errorString.indexOf('500') > -1) {
-			return null;
-		}
-
-		if (errorString.indexOf('502') > -1 || errorString.indexOf('504') > -1 || errorString.indexOf('FetchError') > -1) {
-			let retries = 5;
-			for (let i = 0; i < retries; i++) {
-				await new Promise((r) => setTimeout(r, 2000));
-				try {
-					log(`Retrying Warp ...`, null);
-					const { contractTxId } = await args.arClient.warpDefault.register(args.assetId, 'node2');
-					log(`Retry succeeded`, 0);
-					return contractTxId;
-				} catch (e2: any) {
-					logValue(`Error deploying to Warp - Asset ID`, args.assetId, 1);
-					continue;
-				}
-			}
-		}
-	}
-
-	throw new Error(`Warp retries failed ...`);
 }

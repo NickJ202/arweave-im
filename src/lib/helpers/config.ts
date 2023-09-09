@@ -30,7 +30,6 @@ export const TAGS = {
 			implements: 'Implements',
 			license: 'License',
 		},
-		banner: 'Banner',
 		contentType: 'Content-Type',
 		contractSrc: 'Contract-Src',
 		dataProtocol: 'Data-Protocol',
@@ -39,8 +38,10 @@ export const TAGS = {
 		indexedBy: 'Indexed-By',
 		initialOwner: 'Initial-Owner',
 		initState: 'Init-State',
+		logo: 'Logo',
 		messageChannelId: 'Msg-Channel-Id',
 		messageGroupId: 'Msg-Group-Id',
+		messageGroupVersion: 'Msg-Group-Version',
 		name: 'Name',
 		protocolName: 'Protocol-Name',
 		uploaderTxId: 'Uploader-Tx-Id',
@@ -64,13 +65,16 @@ export const TAGS = {
 	},
 	values: {
 		ansVersion: 'ANS-110',
-		assetContractSrc: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ',
 		collection: 'Collection',
 		comment: 'comment',
 		contentTypes: {
 			textPlain: 'text/plain',
 		},
 		indexer: 'ucm',
+		messageGroupVersions: {
+			'0.1': 'Msg-Group-Version-v0.1',
+			'0.2': 'Msg-Group-Version-v0.2',
+		},
 		profileVersions: {
 			'0.2': 'Account-0.2',
 			'0.3': 'Account-0.3',
@@ -101,3 +105,11 @@ export const BUNDLR_CONFIG = {
 	currency: 'arweave',
 	node: 'https://node2.bundlr.network',
 };
+
+export const ASSET_CONTRACT = {
+	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ'
+}
+
+export const GROUP_CONTRACT = {
+	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ'
+}

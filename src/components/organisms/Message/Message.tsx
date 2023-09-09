@@ -85,10 +85,27 @@ export default function Message(props: IProps) {
 		);
 	React.useEffect(() => {
 		if (props.data) {
-			const rawContent = JSON.parse(props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.ans110.description).value);
-			const contentState = convertFromRaw(rawContent);
-			const newEditorState = EditorState.createWithContent(contentState);
-			setEditorState(newEditorState);
+			const rawContent = props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.ans110.description).value;
+			if (rawContent) {
+				let dataObject;
+				try {
+					dataObject = JSON.parse(`"${rawContent}"`);
+				}
+				catch (e: any) {
+					// dataObject = JSON.parse(rawContent);
+					dataObject = rawContent;
+				}
+				console.log(dataObject)
+				try {
+					// const dataObject = JSON.parse(`"${rawContent}"`);
+					// console.log(dataObject)
+					const contentState = convertFromRaw(JSON.parse(dataObject));
+					const updatedEditorState = EditorState.createWithContent(contentState);
+					setEditorState(updatedEditorState);
+				} catch (e: any) {
+					console.error(e);
+				}
+			}
 		}
 	}, [props.data]);
 
@@ -107,7 +124,9 @@ export default function Message(props: IProps) {
 			<S.MMessage>
 				<S.MMessageHeader>
 					<p>{getHeader()}</p>
-					<span>{formatDate(props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.dateCreated).value, 'epoch')}</span>
+					<span>
+						{formatDate(props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.dateCreated).value, 'epoch')}
+					</span>
 				</S.MMessageHeader>
 				<S.MText>
 					<Editor editorState={editorState} onChange={() => {}} readOnly={true} />

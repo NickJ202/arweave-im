@@ -1,13 +1,14 @@
-import { BUNDLR_CONFIG, CURSORS, PAGINATOR } from '../helpers/config';
+import { BUNDLR_CONFIG, CURSORS, PAGINATOR , STORAGE, TAGS } from '../helpers/config';
 import {
 	AGQLResponseType,
 	ArweaveClientType,
 	CursorEnum,
 	CursorObjectKeyType,
+	GQLNodeResponseType,
 	GQLResponseType,
 	TagFilterType,
 } from '../helpers/types';
-import { unquoteJsonKeys } from '../helpers/utils';
+import { getTagValue, unquoteJsonKeys } from '../helpers/utils';
 
 export async function getGQLData(args: {
 	ids: string[] | null;
@@ -21,7 +22,7 @@ export async function getGQLData(args: {
 	useArweaveNet?: boolean;
 	useArweaveBundlr?: boolean;
 }): Promise<AGQLResponseType> {
-	const data: GQLResponseType[] = [];
+	const data: GQLNodeResponseType[] = [];
 	let nextCursor: string | null = null;
 
 	if (args.ids && args.ids.length <= 0) {
@@ -208,4 +209,14 @@ function getQuery(args: {
 	return query;
 }
 
-export * from './assets';
+export function getGQLResponseObject(gqlResponse: AGQLResponseType): GQLResponseType {
+	const nodes = gqlResponse.data.filter((element: GQLNodeResponseType) => {
+		return getTagValue(element.node.tags, TAGS.keys.uploaderTxId) === STORAGE.none;
+	});
+
+	return {
+		nextCursor: gqlResponse.nextCursor,
+		previousCursor: null,
+		nodes: nodes,
+	};
+}

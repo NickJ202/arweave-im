@@ -1,5 +1,5 @@
-import { GQLResponseType } from 'lib';
+import { GQLNodeResponseType } from 'lib';
 
 export interface IProps {
-	data: GQLResponseType;
+	data: GQLNodeResponseType;
 }

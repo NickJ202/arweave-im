@@ -5,11 +5,20 @@ import * as urls from 'helpers/urls';
 import { View } from 'wrappers/View';
 
 const Channel = getLazyImport('Channel');
+const Landing = getLazyImport('Landing');
 
 export default function _Routes() {
 	return (
 		<Suspense fallback={null}>
 			<Routes>
+				<Route
+					path={`${urls.base}`}
+					element={
+						<View>
+							<Landing />
+						</View>
+					}
+				/>
 				<Route
 					path={`${urls.base}:groupId/:channelId?`}
 					element={

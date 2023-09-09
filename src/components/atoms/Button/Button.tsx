@@ -1,5 +1,7 @@
 import { ReactSVG } from 'react-svg';
 
+import { language } from 'helpers/language';
+
 import * as S from './styles';
 import { IProps } from './types';
 
@@ -28,7 +30,7 @@ export default function Button(props: IProps) {
 						<ReactSVG src={props.icon} />
 					</StyledIcon>
 				)}
-				<span>{props.label}</span>
+				<span>{props.loading ? `${language.loading}...` : props.label}</span>
 				{props.icon && !props.iconLeftAlign && (
 					<StyledIcon disabled={props.disabled} active={props.active} leftAlign={props.iconLeftAlign}>
 						<ReactSVG src={props.icon} />

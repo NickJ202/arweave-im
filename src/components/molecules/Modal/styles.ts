@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{ top: number; noHeader: boolean }>`
 	top: 0;
 	left: 0;
 	background: ${(props) => props.theme.colors.overlay.primary};
-	backdrop-filter: blur(3px);
+	backdrop-filter: blur(1.5px);
 	animation: ${open} ${fadeIn1};
 `;
 
@@ -21,7 +21,7 @@ export const Container = styled.div<{
 	useMax: boolean | undefined;
 }>`
 	max-height: calc(100vh - 100px);
-	width: ${(props) => (props.useMax ? STYLING.cutoffs.max : '600px')};
+	width: ${(props) => (props.useMax ? STYLING.cutoffs.max : '650px')};
 	max-width: ${(props) => (props.noHeader ? '100%' : '90vw')};
 	background: ${(props) => (props.noHeader ? 'transparent' : props.theme.colors.container.primary.background)};
 	border: 1px solid ${(props) => (props.noHeader ? 'transparent' : props.theme.colors.border.primary)};
@@ -44,6 +44,7 @@ export const Header = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
+	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
 export const LT = styled.div`
@@ -54,9 +55,9 @@ export const LT = styled.div`
 
 export const Title = styled.p`
 	color: ${(props) => props.theme.colors.font.primary};
-	font-size: ${(props) => props.theme.typography.size.xSmall};
+	font-size: ${(props) => props.theme.typography.size.lg};
 	font-weight: ${(props) => props.theme.typography.weight.bold};
-	line-height: calc(${(props) => props.theme.typography.size.xSmall} + 5px);
+	line-height: calc(${(props) => props.theme.typography.size.lg} + 5px);
 	font-family: ${(props) => props.theme.typography.family.primary};
 	white-space: nowrap;
 	overflow: hidden;
@@ -69,7 +70,7 @@ export const Close = styled.div`
 
 export const Body = styled.div`
 	width: 100%;
-	padding: 0 20px 20px 20px;
+	padding: 20px;
 `;
 
 export const BodyAlt = styled(Body)<{ zoom: boolean }>`

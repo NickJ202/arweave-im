@@ -51,6 +51,10 @@ export default function Loader(props: IProps) {
 			return <>{getLoader(16.5, 5.5, 1.95)}</>;
 		}
 
+		if (props.relative) {
+			return <>{getLoader(27.5, 7.5, 2.65)}</>
+		}
+
 		return (
 			<Portal node={DOM.loader}>
 				<S.Wrapper>{getLoader(27.5, 7.5, 2.65)}</S.Wrapper>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconButton } from 'components/atoms/IconButton';
+import { Button } from 'components/atoms/Button';
 import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import { formatAddress } from 'helpers/utils';
@@ -74,12 +74,13 @@ export default function WalletConnect(props: { callback?: () => void }) {
 			disabled={false}
 		>
 			<S.Wrapper>
-				<IconButton
+				<Button
 					type={'primary'}
-					src={ASSETS.wallet}
+					label={label ? label : ''}
 					handlePress={handlePress}
-					active={true}
-					dimensions={{ wrapper: 32.5, icon: 17.5 }}
+					height={35}
+					noMinWidth
+					icon={ASSETS.wallet}
 				/>
 
 				{showWalletDropdown && (

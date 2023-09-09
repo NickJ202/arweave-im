@@ -1,14 +1,11 @@
 import {
 	createAsset,
+	createGroup,
 	getActivity,
 	getAssetById,
 	getAssetsByChannel,
-	getCollection,
-	getCollections,
-	getCommentData,
-	getComments,
+	getGroupsByUser,
 	getProfile,
-	search,
 } from '../../api';
 import {
 	ActivityResponseType,
@@ -17,12 +14,14 @@ import {
 	AssetArgsType,
 	AssetCreateArgsType,
 	AssetDetailType,
-	AssetsResponseType,
 	AssetType,
 	CollectionAssetType,
 	CollectionsResponseType,
 	CommentDetailType,
 	CommentsResponseType,
+	CreateGroupArgs,
+	CreateGroupClientArgs,
+	GQLNodeResponseType,
 	GQLResponseType,
 	ProfileType,
 	SearchArgs,
@@ -43,15 +42,26 @@ const apiClient: ApiClientType = {
 		return await createAsset({ ...args, arClient: this.arClient });
 	},
 
-	getAssetsByChannel: async function (args: AssetArgsType): Promise<AssetsResponseType> {
+	getAssetsByChannel: async function (args: AssetArgsType): Promise<GQLResponseType> {
 		return await getAssetsByChannel({ ...args, arClient: this.arClient });
 	},
 
-	getAssetById: async function (args: { assetId: string }): Promise<GQLResponseType | null> {
+	getAssetById: async function (args: { assetId: string }): Promise<GQLNodeResponseType | null> {
 		return await getAssetById({
 			assetId: args.assetId,
 			arClient: this.arClient
 		});
+	},
+
+	getGroupsByUser: async function (args: { walletAddress: string }): Promise<GQLResponseType> {
+		return await getGroupsByUser({
+			walletAddress: args.walletAddress,
+			arClient: this.arClient
+		})
+	},
+
+	createGroup: async function (args: CreateGroupArgs): Promise<string> {
+		return await createGroup({...args, arClient: this.arClient})
 	},
 
 	getProfile: async function (args: { walletAddress: string }): Promise<ProfileType> {

@@ -128,7 +128,7 @@ export type GetCollectionArgs = {
 };
 
 export type SearchReturnType = {
-	assets: AssetType[];
+	nodes: AssetType[];
 };
 
 export type SearchArgs = AssetArgsType & {
@@ -140,8 +140,10 @@ export type ApiClientType = {
 	orderBookContract: string;
 	init: (args: ApiClientInitArgs) => ApiClientType;
 	createAsset: (args: AssetCreateArgsType) => Promise<string>;
-	getAssetsByChannel: (args: AssetArgsType) => Promise<AssetsResponseType>;
-	getAssetById: (args: {assetId: string}) => Promise<GQLResponseType | null>;
+	getAssetsByChannel: (args: AssetArgsType) => Promise<GQLResponseType>;
+	getAssetById: (args: { assetId: string }) => Promise<GQLNodeResponseType | null>;
+	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;
+	createGroup: (args: CreateGroupArgs) => Promise<string>;
 	getProfile: (args: { walletAddress: string }) => Promise<ProfileType>;
 };
 
@@ -246,7 +248,7 @@ export enum CursorEnum {
 
 export type CursorObjectKeyType = CursorEnum.GQL | CursorEnum.idGQL | null;
 
-export type GQLResponseType = {
+export type GQLNodeResponseType = {
 	cursor: string | null;
 	node: {
 		id: string;
@@ -269,10 +271,10 @@ export type GQLResponseType = {
 
 export type TagFilterType = { name: string; values: string[] };
 
-export type AssetsResponseType = {
+export type GQLResponseType = {
 	nextCursor: string | null;
 	previousCursor: string | null;
-	assets: GQLResponseType[];
+	nodes: GQLNodeResponseType[];
 };
 
 export type CollectionsResponseType = {
@@ -281,7 +283,7 @@ export type CollectionsResponseType = {
 	collections: CollectionType[];
 };
 
-export type AGQLResponseType = { data: GQLResponseType[]; nextCursor: string | null };
+export type AGQLResponseType = { data: GQLNodeResponseType[]; nextCursor: string | null };
 
 export type ProfileType = {
 	handle: string | null;
@@ -304,7 +306,7 @@ export type CollectionType = {
 };
 
 export type CollectionAssetType = CollectionType & {
-	assets: string[];
+	nodes: string[];
 };
 
 export type CollectionManifestType = {
@@ -346,3 +348,18 @@ export type CommentsResponseType = {
 };
 
 export type TagType = { name: string; value: string };
+
+export type KeyValueType = { [key: string]: string };
+
+export type CreateGroupArgs = {
+	title: string,
+	logo: {
+		src: any,
+		buffer: any
+	},
+	owner: string
+}
+
+export type CreateGroupClientArgs = CreateGroupArgs & {
+	arClient: any
+}

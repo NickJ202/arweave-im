@@ -6,14 +6,17 @@ import { App } from 'app';
 import { GlobalStyle } from 'app/styles';
 import { defaultTheme } from 'helpers/themes';
 import { ArweaveProvider } from 'providers/ArweaveProvider';
+import { ClientProvider } from 'providers/ClientProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<ThemeProvider theme={defaultTheme}>
 		<ArweaveProvider>
-			<HashRouter>
-				<GlobalStyle />
-				<App />
-			</HashRouter>
+			<ClientProvider>
+				<HashRouter>
+					<GlobalStyle />
+					<App />
+				</HashRouter>
+			</ClientProvider>
 		</ArweaveProvider>
 	</ThemeProvider>
 );

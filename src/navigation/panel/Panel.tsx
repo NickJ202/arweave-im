@@ -60,27 +60,27 @@ export default function Panel(props: IProps) {
 		);
 	}, [arProvider.wallet, arProvider.walletAddress]);
 
-	React.useEffect(() => {
-		(async function () {
-			if (lib) {
-				setGroup(await lib.api.arClient.read(props.groupId));
-			}
-		})();
-	}, [lib]);
+	// React.useEffect(() => {
+	// 	(async function () {
+	// 		if (lib) {
+	// 			setGroup(await lib.api.arClient.read(props.groupId));
+	// 		}
+	// 	})();
+	// }, [lib]);
 
-	React.useEffect(() => {
-		(async function () {
-			if (group && !activeChannelId) {
-				navigate(`${props.groupId}/${group.channels[0].id}`);
-				setActiveChannelId(group.channels[0].id);
-			}
-		})();
-	}, [group, activeChannelId]);
+	// React.useEffect(() => {
+	// 	(async function () {
+	// 		if (group && !activeChannelId) {
+	// 			navigate(`${props.groupId}/${group.channels[0].id}`);
+	// 			setActiveChannelId(group.channels[0].id);
+	// 		}
+	// 	})();
+	// }, [group, activeChannelId]);
 
-	function handleChannelChange(channelId: string) {
-		setActiveChannelId(channelId);
-		navigate(`${props.groupId}/${channelId}`);
-	}
+	// function handleChannelChange(channelId: string) {
+	// 	setActiveChannelId(channelId);
+	// 	navigate(`${props.groupId}/${channelId}`);
+	// }
 
 	function getChannels() {
 		return group ? (
@@ -88,9 +88,9 @@ export default function Panel(props: IProps) {
 				{group.channels.map((channel: any, index: number) => {
 					return (
 						<S.Channel key={index} active={channel.id === activeChannelId}>
-							<button onClick={() => handleChannelChange(channel.id)}>
+							{/* <button onClick={() => handleChannelChange(channel.id)}>
 								<span>{formatChannelName(channel.title)}</span>
-							</button>
+							</button> */}
 						</S.Channel>
 					);
 				})}

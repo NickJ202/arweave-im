@@ -16,6 +16,19 @@ export const Wrapper = styled.div`
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
+export const LWrapper = styled.div`
+	svg {
+		padding: 3.5px 0 0 0;
+		height: 33.5px;
+		width: 30px;
+		transition: all 100ms;
+		&:hover {
+			cursor: pointer;
+			opacity: 0.5;
+		}
+	}
+`;
+
 export const WWrapper = styled.div`
 	width: fit-content;
 	margin: 0 0 0 auto;

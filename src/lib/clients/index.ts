@@ -10,7 +10,6 @@ import {
 	InitArgs,
 	SellArgs,
 } from '../helpers/types';
-import { pairExists } from '../helpers/utils';
 
 import { ApiClient } from './api';
 import { ArweaveClient } from './arweave';
