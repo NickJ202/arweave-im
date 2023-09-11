@@ -50,5 +50,5 @@ export function formatDate(dateArg: string | number | null, dateType: DateType) 
 }
 
 export function formatChannelName(channelName: string) {
-	return `· ${channelName}`
+	return `# ${channelName}`;
 }

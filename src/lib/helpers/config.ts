@@ -35,8 +35,13 @@ export const TAGS = {
 		dataProtocol: 'Data-Protocol',
 		dataSource: 'Data-Source',
 		dateCreated: 'Date-Created',
+		groupChannel: 'Group-Channel',
+		groupId: 'Group-Id',
+		groupMember: 'Group-Member',
+		groupTitle: 'Group-Title',
 		indexedBy: 'Indexed-By',
 		initialOwner: 'Initial-Owner',
+		initialGroupOwner: 'Initial-Group-Owner',
 		initState: 'Init-State',
 		logo: 'Logo',
 		messageChannelId: 'Msg-Channel-Id',
@@ -107,9 +112,9 @@ export const BUNDLR_CONFIG = {
 };
 
 export const ASSET_CONTRACT = {
-	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ'
-}
+	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ',
+};
 
 export const GROUP_CONTRACT = {
-	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ'
-}
+	src: 'xELWpV98xIwrc5Rg6MEv6atUkyvwx-RpEebeooyvnS0',
+};

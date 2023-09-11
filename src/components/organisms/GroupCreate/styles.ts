@@ -4,11 +4,6 @@ import { STYLING } from 'helpers/styling';
 
 export const Form = styled.form``;
 
-export const SWrapper = styled.div`
-    width: fit-content;
-    margin: 0 0 0 auto;
-`;
-
 export const ImageWrapper = styled.div`
 	margin: 0 0 40px 0;
 `;
@@ -50,13 +45,19 @@ export const Image = styled.div<{ disabled: boolean }>`
 		transition: background 0.075s;
 		font-weight: ${(props) => props.theme.typography.weight.medium};
 		border-radius: ${STYLING.dimensions.borderRadius};
-		background: ${(props) => props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.background};
+		background: ${(props) =>
+			props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.background};
 		&:hover {
 			background: ${(props) =>
-		        props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.hover};
+				props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.hover};
 		}
 	}
 	input {
 		display: none;
 	}
+`;
+
+export const SWrapper = styled.div`
+	width: fit-content;
+	margin: 0 0 0 auto;
 `;

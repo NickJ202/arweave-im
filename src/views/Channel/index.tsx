@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { GQLResponseType } from 'lib';
+import { ChannelType, GQLResponseType } from 'lib';
 
 import { Loader } from 'components/atoms/Loader';
 import { formatChannelName } from 'helpers/utils';
@@ -32,7 +32,7 @@ export default function Channel() {
 
 	React.useEffect(() => {
 		(async function () {
-			if (arProvider.walletAddress, cliProvider.lib && channelId) {
+			if ((arProvider.walletAddress, cliProvider.lib && channelId)) {
 				setData(null);
 				setLoading(true);
 				setData(
@@ -66,7 +66,7 @@ export default function Channel() {
 
 	function getChannelName() {
 		if (group && channelId) {
-			return formatChannelName(group.channels.find((channel: any) => channel.id === channelId).title);
+			return formatChannelName(group.channels.find((channel: ChannelType) => channel.id === channelId).title);
 		} else return null;
 	}
 

@@ -52,7 +52,7 @@ export default function Loader(props: IProps) {
 		}
 
 		if (props.relative) {
-			return <>{getLoader(27.5, 7.5, 2.65)}</>
+			return <>{getLoader(27.5, 7.5, 2.65)}</>;
 		}
 
 		return (

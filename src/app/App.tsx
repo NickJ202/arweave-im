@@ -9,8 +9,7 @@ export default function App() {
 			<div id={DOM.loader} />
 			<div id={DOM.modal} />
 			<div id={DOM.notification} />
-			{/* <Panel groupId={'EodNWrXM0bXpH_TGAqw02_yRUqKZojvJQeRaa-f_V3g'} /> */}
-			<Panel groupId={''} />
+			<Panel />
 			<Header />
 			<Routes />
 		</>

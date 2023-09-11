@@ -67,7 +67,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<GQL
 	}
 }
 
-export async function getAssetById(args: { assetId: string, arClient: any }): Promise<GQLNodeResponseType | null> {
+export async function getAssetById(args: { assetId: string; arClient: any }): Promise<GQLNodeResponseType | null> {
 	const gqlData: AGQLResponseType = await getGQLData({
 		ids: [args.assetId],
 		tagFilters: null,

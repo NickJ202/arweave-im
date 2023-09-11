@@ -29,7 +29,7 @@ export const Dropdown = styled.ul`
 	width: 225px;
 	padding: 10px 0;
 	position: absolute;
-	top: 46.5px;
+	top: 50px;
 	right: 13.5px;
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	background: ${(props) => props.theme.colors.container.primary.background};

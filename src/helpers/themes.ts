@@ -104,7 +104,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		icon: {
 			primary: DEFAULT.neutralA1,
-			alt1: DEFAULT.neutral1
+			alt1: DEFAULT.neutral1,
 		},
 		loader: {
 			primary: DEFAULT.neutralA2,

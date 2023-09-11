@@ -20,5 +20,15 @@ export const language = {
 	submit: `Submit`,
 	logo: `Logo`,
 	upload: `Upload`,
-	uploadImage: `Upload Image`
+	uploadImage: `Upload Image`,
+	initialChannel: `Initial Channel`,
+	errorOccurred: `Error Occurred`,
+	arweaveAppConnectionError: `Connection error with Arweave.app. The connector window must remain open after the initial connection.`,
+	groupCreated: `Group Created`,
+	addGroupMember: `Add group member`,
+	createChannel: `Create a channel`,
+	walletAddress: `Wallet Address`,
+	channelTitle: `Channel Title`,
+	channelCreated: `Channel created`,
+	memberAdded: `Member Added`
 };

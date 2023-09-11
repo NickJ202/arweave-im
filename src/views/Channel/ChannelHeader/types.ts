@@ -1,3 +1,3 @@
 export interface IProps {
-    header: string | null;
+	header: string | null;
 }

@@ -18,13 +18,39 @@ export const Group = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: center;
-	padding: 0 15px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+`;
+
+export const GroupAction = styled.button`
+	width: calc(100% - 15px);
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	text-align: left;
+	border: 1px solid transparent;
+	border-radius: ${STYLING.dimensions.borderRadius};
+	padding: 5px 10px;
+	background: transparent;
+	&:hover {
+		background: ${(props) => props.theme.colors.button.primary.active.background};
+		border: 1px solid ${(props) => props.theme.colors.button.primary.active.border};
+	}
 	span {
-		font-size: clamp(20px, 1.15vw, 22px);
+		font-size: ${(props) => props.theme.typography.size.lg};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};
+		max-width: 75%;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	svg {
+		height: 17.5px;
+		width: 17.5px;
+		padding: 5px 0 0 0;
+		fill: ${(props) => props.theme.colors.font.primary};
 	}
 `;
 
@@ -71,17 +97,27 @@ export const Channel = styled.div<{ active: boolean }>`
 		height: 100%;
 		width: 100%;
 		text-align: left;
+		border: 1px solid
+		${(props) =>
+			props.active ? props.theme.colors.button.primary.active.border : 'transparent'};
 		border-radius: ${STYLING.dimensions.borderRadius};
 		padding: 0 7.5px;
-		background: ${(props) => (props.active ? props.theme.colors.button.primary.background : 'transparent')};
+		background: ${(props) =>
+			props.active ? props.theme.colors.button.primary.active.background : props.theme.colors.button.primary.background};
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		span {
 			font-size: ${(props) => props.theme.typography.size.base};
 			font-family: ${(props) => props.theme.typography.family.primary};
 			font-weight: ${(props) => props.theme.typography.weight.bold};
-			color: ${(props) => (props.active ? props.theme.colors.font.alt3 : props.theme.colors.font.alt1)};
+			color: ${(props) =>
+				props.active ? props.theme.colors.button.primary.active.color : props.theme.colors.button.primary.color};
 		}
 		&:hover {
-			background: ${(props) => props.theme.colors.button.primary.background};
+			border: 1px solid
+				${(props) => props.theme.colors.button.primary.active.border};
+			background: ${(props) => props.theme.colors.button.primary.active.background};
 			span {
 				color: ${(props) => props.theme.colors.button.primary.color};
 			}

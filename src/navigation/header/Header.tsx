@@ -7,15 +7,14 @@ import { WalletConnect } from 'wallet/WalletConnect';
 
 import * as S from './styles';
 
-
 export default function Header() {
 	return (
 		<S.Wrapper>
 			<Link to={urls.base}>
-					<S.LWrapper>
-						<ReactSVG src={ASSETS.logo} />
-					</S.LWrapper>
-				</Link>
+				<S.LWrapper>
+					<ReactSVG src={ASSETS.logo} />
+				</S.LWrapper>
+			</Link>
 			<S.WWrapper>
 				<WalletConnect />
 			</S.WWrapper>

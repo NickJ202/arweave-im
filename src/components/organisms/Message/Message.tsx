@@ -87,18 +87,13 @@ export default function Message(props: IProps) {
 		if (props.data) {
 			const rawContent = props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.ans110.description).value;
 			if (rawContent) {
-				let dataObject;
+				let dataObject: any;
 				try {
 					dataObject = JSON.parse(`"${rawContent}"`);
-				}
-				catch (e: any) {
-					// dataObject = JSON.parse(rawContent);
+				} catch (e: any) {
 					dataObject = rawContent;
 				}
-				console.log(dataObject)
 				try {
-					// const dataObject = JSON.parse(`"${rawContent}"`);
-					// console.log(dataObject)
 					const contentState = convertFromRaw(JSON.parse(dataObject));
 					const updatedEditorState = EditorState.createWithContent(contentState);
 					setEditorState(updatedEditorState);

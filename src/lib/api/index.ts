@@ -20,7 +20,6 @@ export async function createTransaction(args: { arClient: any; content: any; con
 	}
 }
 
-
 export async function createContract(args: { arClient: any; assetId: string }) {
 	try {
 		const { contractTxId } = await args.arClient.warpDefault.register(args.assetId, 'node2');

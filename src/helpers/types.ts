@@ -16,3 +16,5 @@ export type ProfileType = {
 export type RefType = { current: HTMLElement };
 
 export type DateType = 'iso' | 'epoch';
+
+export type ResponseType = { status: boolean; message: string | null };

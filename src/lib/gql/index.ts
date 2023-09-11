@@ -1,4 +1,4 @@
-import { BUNDLR_CONFIG, CURSORS, PAGINATOR , STORAGE, TAGS } from '../helpers/config';
+import { BUNDLR_CONFIG, CURSORS, PAGINATOR, STORAGE, TAGS } from '../helpers/config';
 import {
 	AGQLResponseType,
 	ArweaveClientType,

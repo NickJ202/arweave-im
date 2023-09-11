@@ -1,5 +1,6 @@
 import arLogo from 'assets/ar-logo.svg';
 import arconnectWallet from 'assets/arconnect-wallet-logo.png';
+import arrowDown from 'assets/arrow-down.svg';
 import bold from 'assets/bold.svg';
 import close from 'assets/close.svg';
 import info from 'assets/info.svg';
@@ -19,6 +20,7 @@ export const APP = {
 };
 
 export const ASSETS = {
+	arrowDown: arrowDown,
 	bold: bold,
 	close: close,
 	info: info,

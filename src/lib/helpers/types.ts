@@ -144,6 +144,8 @@ export type ApiClientType = {
 	getAssetById: (args: { assetId: string }) => Promise<GQLNodeResponseType | null>;
 	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;
 	createGroup: (args: CreateGroupArgs) => Promise<string>;
+	addGroupMember: (args: { groupId: string, groupTitle: string, walletAddress: string, wallet: any }) => Promise<string>;
+	addGroupChannel: (args: { groupId: string, channelTitle: string, wallet: any }) => Promise<string>;
 	getProfile: (args: { walletAddress: string }) => Promise<ProfileType>;
 };
 
@@ -352,14 +354,29 @@ export type TagType = { name: string; value: string };
 export type KeyValueType = { [key: string]: string };
 
 export type CreateGroupArgs = {
-	title: string,
+	title: string;
+	initialChannel: string;
 	logo: {
-		src: any,
-		buffer: any
-	},
-	owner: string
-}
+		src: any;
+		buffer: any;
+	};
+	owner: string;
+	wallet: any;
+};
 
 export type CreateGroupClientArgs = CreateGroupArgs & {
-	arClient: any
-}
+	arClient: any;
+};
+
+export type ChannelType = { id: string, title: string };
+
+// TODO: group type
+export type GroupType = {
+	balances: any,
+	channels: ChannelType[],
+	dateCreated: string,
+	logo: string,
+	members: string[],
+	owner: string,
+	title: string
+};

@@ -31,7 +31,7 @@ export const Avatar = styled.div`
 		width: 21.5px;
 		padding: 3.5px 0 0 0px;
 		margin: 0 0 2.5px 0;
-		stroke: ${(props) => props.theme.colors.primary};
+		stroke: ${(props) => props.theme.colors.icon.primary};
 	}
 `;
 
