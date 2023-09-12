@@ -23,13 +23,18 @@ export const Header = styled.div`
 export const Logo = styled.div`
 	height: 40px;
 	width: 40px;
+	position: relative;
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	img {
-		height: 100%;
-		width: 100%;
+		height: 75%;
+		width: 75%;
 		object-fit: contain;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 `;
 
@@ -45,6 +50,12 @@ export const Title = styled.div`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+`;
+
+export const Close = styled.div`
+	width: fit-content;
+	padding: 2.5px 0 0 0;
+	margin: 0 0 0 auto;
 `;
 
 export const Body = styled.div`

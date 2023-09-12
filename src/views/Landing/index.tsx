@@ -21,22 +21,24 @@ export default function Landing() {
 	const cliProvider = useClientProvider();
 
 	const [groups, setGroups] = React.useState<GQLNodeResponseType[] | null>(null);
+	const [handleUpdate, setHandleUpdate] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
 		(async function () {
 			if (arProvider.walletAddress && cliProvider.lib) {
+				console.log('!')
 				const groupsResponse = await cliProvider.lib.api.getGroupsByUser({
 					walletAddress: arProvider.walletAddress,
 				});
 				setGroups(groupsResponse.nodes);
 			}
 		})();
-	}, [arProvider.walletAddress, cliProvider.lib]);
+	}, [arProvider.walletAddress, cliProvider.lib, handleUpdate]);
 
 	function getGroups() {
 		if (groups === null) return <p>{`${language.loading}...`}</p>;
 		if (groups.length <= 0) {
-			return <GroupCreate />;
+			return <GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />;
 		} else {
 			return (
 				<>
@@ -57,7 +59,7 @@ export default function Landing() {
 							)
 						})}
 					</S.GWrapper>
-					<GroupCreate />
+					<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />
 				</>
 			);
 		}

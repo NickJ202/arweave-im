@@ -71,10 +71,10 @@ export default function Channel() {
 	}
 
 	function getData() {
-		if (data) {
+		if (data && group) {
 			return (
 				<>
-					<ChannelHeader header={getChannelName()} />
+					<ChannelHeader header={getChannelName()} members={group.members} />
 					<ChannelDetail
 						channelId={channelId}
 						channelName={getChannelName()}

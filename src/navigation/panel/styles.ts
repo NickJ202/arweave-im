@@ -36,6 +36,10 @@ export const GroupAction = styled.button`
 		background: ${(props) => props.theme.colors.button.primary.active.background};
 		border: 1px solid ${(props) => props.theme.colors.button.primary.active.border};
 	}
+	&:disabled {
+		border: 1px solid transparent;
+		background: transparent;
+	}
 	span {
 		font-size: ${(props) => props.theme.typography.size.lg};
 		font-family: ${(props) => props.theme.typography.family.primary};

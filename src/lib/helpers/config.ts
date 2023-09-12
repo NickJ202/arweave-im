@@ -77,7 +77,7 @@ export const TAGS = {
 		},
 		indexer: 'ucm',
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.1',
+			'0.1': 'Msg-Group-Version-v0.11',
 			'0.2': 'Msg-Group-Version-v0.2',
 		},
 		profileVersions: {

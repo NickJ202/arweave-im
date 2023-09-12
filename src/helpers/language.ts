@@ -30,5 +30,6 @@ export const language = {
 	walletAddress: `Wallet Address`,
 	channelTitle: `Channel Title`,
 	channelCreated: `Channel created`,
-	memberAdded: `Member Added`
+	memberAdded: `Member Added`,
+	members: `Members`
 };

@@ -5,7 +5,9 @@ import { getTxEndpoint } from 'lib';
 
 import { Button } from 'components/atoms/Button';
 import { FormField } from 'components/atoms/FormField';
+import { IconButton } from 'components/atoms/IconButton';
 import { Modal } from 'components/molecules/Modal';
+import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import { ResponseType, WalletEnum } from 'helpers/types';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -26,12 +28,9 @@ export default function GroupDropdown(props: IProps) {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [submitResponse, setSubmitResponse] = React.useState<ResponseType | null>(null);
 
-    React.useEffect(() => {
-		if (submitResponse && submitResponse.message) alert(submitResponse.message);
-	}, [submitResponse])
-
 	function handleShowModal(type: 'member' | 'channel') {
 		setShowModal(true);
+		props.setDisabled(true);
 		setModalType(type);
 	}
 
@@ -55,25 +54,25 @@ export default function GroupDropdown(props: IProps) {
 					await signer.setPublicKey();
 
 					let id: string;
-                    let responseMessage: string;
+					let responseMessage: string;
 
 					switch (modalType) {
 						case 'member':
-                            id = await cliProvider.lib.api.addGroupMember({
-                                groupId: props.groupId,
-                                groupTitle: props.group.title,
-                                walletAddress: walletAddress,
-                                wallet: signer
-                            });
-                            responseMessage = `${language.memberAdded}!`
+							id = await cliProvider.lib.api.addGroupMember({
+								groupId: props.groupId,
+								groupTitle: props.group.title,
+								walletAddress: walletAddress,
+								wallet: signer,
+							});
+							responseMessage = `${language.memberAdded}!`;
 							break;
 						case 'channel':
 							id = await cliProvider.lib.api.addGroupChannel({
-                                groupId: props.groupId,
-                                channelTitle: channelTitle,
-                                wallet: signer
-                            });
-                            responseMessage = `${language.channelCreated}!`
+								groupId: props.groupId,
+								channelTitle: channelTitle,
+								wallet: signer,
+							});
+							responseMessage = `${language.channelCreated}!`;
 							break;
 					}
 
@@ -154,19 +153,27 @@ export default function GroupDropdown(props: IProps) {
 				handleClose={() => {
 					setShowModal(false);
 					setModalType(null);
+					props.setDisabled(false);
+					props.handleClose();
 				}}
 			>
-				{formField}
-				<S.SWrapper>
-					<Button
-						type={'primary'}
-						label={language.submit}
-						handlePress={async (e) => await handleSubmit(e)}
-						loading={loading}
-						disabled={getSubmitDisabled() || loading}
-						noMinWidth
-					/>
-				</S.SWrapper>
+				{submitResponse ? (
+					<p>{submitResponse.message}</p>
+				) : (
+					<>
+						{formField}
+						<S.SWrapper>
+							<Button
+								type={'primary'}
+								label={language.submit}
+								handlePress={async (e) => await handleSubmit(e)}
+								loading={loading}
+								disabled={getSubmitDisabled() || loading}
+								noMinWidth
+							/>
+						</S.SWrapper>
+					</>
+				)}
 			</Modal>
 		);
 	}
@@ -181,6 +188,16 @@ export default function GroupDropdown(props: IProps) {
 					<S.Title>
 						<span>{props.group.title}</span>
 					</S.Title>
+					<S.Close>
+						<IconButton
+							type={'primary'}
+							sm
+							warning
+							src={ASSETS.close}
+							handlePress={() => props.handleClose()}
+							active={false}
+						/>
+					</S.Close>
 				</S.Header>
 				<S.Body>
 					<S.Action onClick={() => handleShowModal('member')}>
