@@ -108,6 +108,13 @@ export const GlobalStyle = createGlobalStyle`
   p, span {
     line-height: 1.25;
   }
+
+  * {
+    &:focus {
+      outline: none;
+      opacity: 0.85;
+    }
+  }
 `;
 
 export const Panel = styled.div`

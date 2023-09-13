@@ -1,10 +1,11 @@
-import { GQLResponseType } from 'lib';
+import { ChannelResponseType } from 'lib';
 
 export interface IProps {
 	groupId: string;
 	channelId: string;
 	channelName: string | null;
-	data: GQLResponseType | null;
+	channelData: ChannelResponseType | null;
 	handleUpdate: (contractId: string) => Promise<void>;
-	updateMessages: boolean;
+	scrollToRecent: boolean;
+	setUpdateData: () => void;
 }

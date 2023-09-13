@@ -1,7 +1,14 @@
 import React from 'react';
-import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
+import {
+	convertToRaw,
+	Editor,
+	EditorState,
+	getDefaultKeyBinding,
+	KeyBindingUtil,
+	RichUtils,
+} from 'draft-js';
 
-import { CONTENT_TYPES, TAGS } from 'lib';
+import { CONTENT_TYPES, MessageEnum, TAGS } from 'lib';
 const { hasCommandModifier } = KeyBindingUtil;
 
 import { Button } from 'components/atoms/Button';
@@ -106,9 +113,16 @@ export default function MessageCreate(props: IProps) {
 	const handleSubmit = async () => {
 		if (cliProvider.lib && arProvider.walletAddress) {
 			const rawContentState = convertToRaw(editorState.getCurrentContent());
-			const serializedContent = JSON.stringify(rawContentState);
-			setEditorState(() => EditorState.createEmpty());
+			const serializedContent = JSON.stringify({ type: MessageEnum.Text, data: rawContentState });
 			
+			editorRef.current?.blur();
+			setTimeout(() => {
+				setEditorState(EditorState.createEmpty());
+			}, 0);
+			setTimeout(() => {
+				editorRef.current?.focus();
+			}, 100);
+
 			setLoading(true);
 			const contractId = await cliProvider.lib.api.createAsset({
 				content: serializedContent,

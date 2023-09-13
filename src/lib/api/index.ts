@@ -11,7 +11,7 @@ export async function createTransaction(args: { arClient: any; content: any; con
 			break;
 	}
 	try {
-		const txRes = await args.arClient.arweavePost.createTransaction({ data: finalContent }, 'use_wallet');
+		const txRes = await args.arClient.arweave.createTransaction({ data: finalContent }, 'use_wallet');
 		args.tags.forEach((tag: TagType) => txRes.addTag(tag.name, tag.value));
 		const response = await global.window.arweaveWallet.dispatch(txRes);
 		return response.id;
@@ -22,7 +22,7 @@ export async function createTransaction(args: { arClient: any; content: any; con
 
 export async function createContract(args: { arClient: any; assetId: string }) {
 	try {
-		const { contractTxId } = await args.arClient.warpDefault.register(args.assetId, 'node2');
+		const { contractTxId } = await args.arClient.warp.register(args.assetId, 'node2');
 		return contractTxId;
 	} catch (e: any) {
 		logValue(`Error deploying to Warp - Asset ID`, args.assetId, 1);
@@ -38,7 +38,7 @@ export async function createContract(args: { arClient: any; assetId: string }) {
 				await new Promise((r) => setTimeout(r, 2000));
 				try {
 					log(`Retrying Warp ...`, null);
-					const { contractTxId } = await args.arClient.warpDefault.register(args.assetId, 'node2');
+					const { contractTxId } = await args.arClient.warp.register(args.assetId, 'node2');
 					log(`Retry succeeded`, 0);
 					return contractTxId;
 				} catch (e2: any) {

@@ -6,7 +6,7 @@ import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 import { ClientType } from 'lib';
 import { Client } from 'lib/clients';
 
-import { API_CONFIG, CURRENCIES, DRE_NODE } from 'helpers/config';
+import { API_CONFIG, DRE_NODE } from 'helpers/config';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 
 LoggerFactory.INST.logLevel('fatal');
@@ -35,16 +35,8 @@ export function ClientProvider(props: ClientProviderProps) {
 	const [lib, setLib] = React.useState<ClientType | null>(null);
 
 	React.useEffect(() => {
-		const arweaveGet = Arweave.init({
-			host: API_CONFIG.arweaveGet,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const arweavePost = Arweave.init({
-			host: API_CONFIG.arweavePost,
+		const arweave = Arweave.init({
+			host: API_CONFIG.arweave,
 			port: API_CONFIG.port,
 			protocol: API_CONFIG.protocol,
 			timeout: API_CONFIG.timeout,
@@ -58,12 +50,10 @@ export function ClientProvider(props: ClientProviderProps) {
 
 		setLib(
 			Client.init({
-				currency: CURRENCIES.default,
-				arweaveGet: arweaveGet,
-				arweavePost: arweavePost,
+				arweave: arweave,
 				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
 				warp: warp,
-				warpDreNode: DRE_NODE,
+				dreNode: DRE_NODE,
 			})
 		);
 	}, [arProvider.wallet, arProvider.walletAddress]);

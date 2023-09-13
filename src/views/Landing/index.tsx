@@ -26,7 +26,6 @@ export default function Landing() {
 	React.useEffect(() => {
 		(async function () {
 			if (arProvider.walletAddress && cliProvider.lib) {
-				console.log('!')
 				const groupsResponse = await cliProvider.lib.api.getGroupsByUser({
 					walletAddress: arProvider.walletAddress,
 				});

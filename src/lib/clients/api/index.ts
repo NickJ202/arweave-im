@@ -3,40 +3,28 @@ import {
 	addGroupMember,
 	createAsset,
 	createGroup,
-	getActivity,
 	getAssetById,
 	getAssetsByChannel,
 	getGroupsByUser,
-	getProfile,
+	getProfiles,
 } from '../../api';
 import {
-	ActivityResponseType,
 	ApiClientInitArgs,
 	ApiClientType,
 	AssetArgsType,
 	AssetCreateArgsType,
-	AssetDetailType,
 	AssetType,
-	CollectionAssetType,
-	CollectionsResponseType,
-	CommentDetailType,
-	CommentsResponseType,
+	ChannelResponseType,
 	CreateGroupArgs,
-	CreateGroupClientArgs,
-	GQLNodeResponseType,
 	GQLResponseType,
 	ProfileType,
-	SearchArgs,
-	SearchReturnType,
 } from '../../helpers';
 
 const apiClient: ApiClientType = {
 	arClient: null,
-	orderBookContract: null,
 
 	init: function (args: ApiClientInitArgs) {
 		this.arClient = args.arClient;
-		this.orderBookContract = args.orderBookContract;
 		return this;
 	},
 
@@ -44,11 +32,11 @@ const apiClient: ApiClientType = {
 		return await createAsset({ ...args, arClient: this.arClient });
 	},
 
-	getAssetsByChannel: async function (args: AssetArgsType): Promise<GQLResponseType> {
+	getAssetsByChannel: async function (args: AssetArgsType): Promise<ChannelResponseType> {
 		return await getAssetsByChannel({ ...args, arClient: this.arClient });
 	},
 
-	getAssetById: async function (args: { assetId: string }): Promise<GQLNodeResponseType | null> {
+	getAssetById: async function (args: { assetId: string }): Promise<AssetType | null> {
 		return await getAssetById({
 			assetId: args.assetId,
 			arClient: this.arClient,
@@ -74,10 +62,9 @@ const apiClient: ApiClientType = {
 		return await addGroupChannel({ ...args, arClient: this.arClient });
 	},
 
-	getProfile: async function (args: { walletAddress: string }): Promise<ProfileType> {
-		return await getProfile({
-			walletAddress: args.walletAddress,
-			arClient: this.arClient,
+	getProfiles: async function (args: { addresses: string[] }): Promise<ProfileType[]> {
+		return await getProfiles({
+			addresses: args.addresses
 		});
 	},
 };

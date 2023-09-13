@@ -8,7 +8,7 @@ import { ClientType } from 'lib';
 import { Client } from 'lib/clients';
 
 import { Modal } from 'components/molecules/Modal';
-import { API_CONFIG, APP, AR_WALLETS, ASSETS, CURRENCIES, DRE_NODE, WALLET_PERMISSIONS } from 'helpers/config';
+import { API_CONFIG, APP, AR_WALLETS, ASSETS, DRE_NODE, WALLET_PERMISSIONS } from 'helpers/config';
 import { getArweaveBalanceEndpoint } from 'helpers/endpoints';
 import { language } from 'helpers/language';
 import { ProfileType, WalletEnum } from 'helpers/types';
@@ -91,16 +91,8 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 	const [lib, setLib] = React.useState<ClientType | null>(null);
 
 	React.useEffect(() => {
-		const arweaveGet = Arweave.init({
-			host: API_CONFIG.arweaveGet,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const arweavePost = Arweave.init({
-			host: API_CONFIG.arweavePost,
+		const arweave = Arweave.init({
+			host: API_CONFIG.arweave,
 			port: API_CONFIG.port,
 			protocol: API_CONFIG.protocol,
 			timeout: API_CONFIG.timeout,
@@ -114,12 +106,10 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
 		setLib(
 			Client.init({
-				currency: CURRENCIES.default,
-				arweaveGet: arweaveGet,
-				arweavePost: arweavePost,
+				arweave: arweave,
 				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
 				warp: warp,
-				warpDreNode: DRE_NODE,
+				dreNode: DRE_NODE,
 			})
 		);
 	}, [wallet, walletAddress]);
@@ -226,7 +216,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 	React.useEffect(() => {
 		(async function () {
 			if (walletAddress && lib) {
-				const profile = await lib.api.getProfile({ walletAddress: walletAddress });
+				const profile = (await lib.api.getProfiles({ addresses: [walletAddress] }))[0];
 				if (profile) {
 					setArProfile(profile);
 				}

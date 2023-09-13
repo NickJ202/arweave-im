@@ -52,18 +52,17 @@ export const DOM = {
 };
 
 export const API_CONFIG = {
-	arweaveGet: 'arweave-search.goldsky.com',
-	arweavePost: 'arweave.net',
+	arweave: 'arweave.net',
 	protocol: 'https',
 	port: 443,
 	timeout: 40000,
 	logging: false,
 };
 
-export const CURRENCIES = {
-	default: 'U' as 'U',
-};
-
 export const DRE_NODE = 'https://dre-1.warp.cc/contract';
 
 export const DEFAULT_LOGO = 'PH6Q_PJ2tkKfVWUFboMyYSj_UTYsAu8woxmJ8q8R1Fg';
+
+export const AR_PROFILE = {
+	defaultAvatar: 'OrG-ZG2WN3wdcwvpjz1ihPe4MI24QBJUpsJGIdL85wA',
+};

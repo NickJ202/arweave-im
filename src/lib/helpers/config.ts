@@ -1,8 +1,12 @@
-export const CURRENCY_DICT = {
-	U: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
+export const ASSET_CONTRACT = {
+	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ',
 };
 
-export const PAGINATOR = 23;
+export const GROUP_CONTRACT = {
+	src: 'xELWpV98xIwrc5Rg6MEv6atUkyvwx-RpEebeooyvnS0',
+};
+
+export const PAGINATOR = 5;
 
 export const STORAGE = {
 	none: 'N/A',
@@ -11,11 +15,6 @@ export const STORAGE = {
 export const CURSORS = {
 	p1: 'P1',
 	end: 'END',
-};
-
-export const SEARCH = {
-	idTerm: '`*',
-	ownerTerm: '`%',
 };
 
 export const TAGS = {
@@ -58,14 +57,12 @@ export const TAGS = {
 	},
 	values: {
 		ansVersion: 'ANS-110',
-		collection: 'Collection',
-		comment: 'comment',
 		contentTypes: {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.11',
-			'0.2': 'Msg-Group-Version-v0.2',
+			'0.1': 'Msg-Group-Version-v0.12'
+			// '0.1': 'Msg-Group-Version-v0.11'
 		},
 		profileVersions: {
 			'0.2': 'Account-0.2',
@@ -85,12 +82,4 @@ export const CONTENT_TYPES = {
 export const BUNDLR_CONFIG = {
 	currency: 'arweave',
 	node: 'https://node2.bundlr.network',
-};
-
-export const ASSET_CONTRACT = {
-	src: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ',
-};
-
-export const GROUP_CONTRACT = {
-	src: 'xELWpV98xIwrc5Rg6MEv6atUkyvwx-RpEebeooyvnS0',
 };

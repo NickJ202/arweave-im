@@ -9,7 +9,7 @@ import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
 
-export default function WalletConnect(props: { callback?: () => void }) {
+export default function WalletConnect(_props: { callback?: () => void }) {
 	const arProvider = useArweaveProvider();
 
 	const [showWallet, setShowWallet] = React.useState<boolean>(false);

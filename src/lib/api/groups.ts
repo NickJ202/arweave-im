@@ -19,11 +19,10 @@ export async function getGroupsByUser(args: { walletAddress: string; arClient: a
 				),
 			},
 		],
-		uploader: null,
+		owners: null,
 		cursor: null,
 		reduxCursor: null,
 		cursorObject: CursorEnum.GQL,
-		arClient: args.arClient,
 		useArweaveNet: true
 	});
 

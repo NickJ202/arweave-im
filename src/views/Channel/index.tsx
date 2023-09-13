@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ChannelType, GQLResponseType } from 'lib';
+import { ChannelResponseType, ChannelType,CURSORS } from 'lib';
 
 import { Loader } from 'components/atoms/Loader';
 import { formatChannelName } from 'helpers/utils';
@@ -11,8 +11,6 @@ import { useClientProvider } from 'providers/ClientProvider';
 import { ChannelDetail } from './ChannelDetail';
 import { ChannelHeader } from './ChannelHeader';
 
-// TODO: add profiles to messages data
-// TODO: wallet block
 // TODO: paginate messages
 export default function Channel() {
 	const arProvider = useArweaveProvider();
@@ -23,9 +21,10 @@ export default function Channel() {
 	const [loading, setLoading] = React.useState<boolean>(false);
 
 	const [group, setGroup] = React.useState<any>(null);
-	const [data, setData] = React.useState<GQLResponseType | null>(null);
+	const [channelData, setChannelData] = React.useState<ChannelResponseType | null>(null);
 
-	const [updateMessages, setUpdateMessages] = React.useState<boolean>(false);
+	const [scrollToRecent, setScrollToRecent] = React.useState<boolean>(false);
+	const [updateData, setUpdateData] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
 		(async function () {
@@ -35,18 +34,17 @@ export default function Channel() {
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupId]);
 
-	async function fetchData() {
+	async function fetchData(args: { cursor: string }) {
 		if (arProvider.walletAddress && cliProvider.lib && channelId) {
 			const response = await cliProvider.lib.api.getAssetsByChannel({
 				ids: [channelId],
-				owner: null,
-				uploader: null,
-				cursor: null,
+				owners: null,
+				cursor: args.cursor,
 				reduxCursor: null,
 				walletAddress: null,
 			});
 
-			if (response && response.nodes) return response;
+			if (response && response.data) return response;
 			return null;
 		}
 	}
@@ -54,26 +52,35 @@ export default function Channel() {
 	React.useEffect(() => {
 		(async function () {
 			setLoading(true);
-			setData(await fetchData());
+			setChannelData(await fetchData({ cursor: null }));
 			setLoading(false);
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, channelId]);
 
 	React.useEffect(() => {
-		async function updateData() {
-			const updatedResponse = await fetchData();
+		async function pollData() {
+			const updatedResponse = await fetchData({ cursor: null });
 
-			if (updatedResponse && updatedResponse.nodes && data && data.nodes) {
-				if (updatedResponse.nodes.length > data.nodes.length) {
-					setData(updatedResponse);
-					setUpdateMessages(!updateMessages);
-				};
+			if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
+				if (updatedResponse.data.length > channelData.data.length) {
+					setChannelData(updatedResponse);
+					setScrollToRecent(!scrollToRecent);
+				}
 			}
 		}
 
-		const intervalId = setInterval(updateData, 1000);
+		const intervalId = setInterval(pollData, 1000);
 		return () => clearInterval(intervalId);
-	}, [arProvider.walletAddress, cliProvider.lib, channelId, data]);
+	}, [arProvider.walletAddress, cliProvider.lib, channelId, channelData]);
+
+	React.useEffect(() => {
+		(async function () {
+			if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end){
+				const updatedResponse = await fetchData({ cursor: channelData.nextCursor });
+				console.log(updatedResponse)
+			}
+		})()
+	}, [updateData])
 
 	async function handleUpdate(contractId: string) {
 		if (cliProvider.lib && contractId) {
@@ -81,12 +88,12 @@ export default function Channel() {
 				assetId: contractId,
 			});
 			if (asset)
-				setData({
-					nodes: [...data.nodes, asset],
-					nextCursor: data.nextCursor,
-					previousCursor: data.previousCursor,
+				setChannelData({
+					data: [...channelData.data, asset],
+					nextCursor: channelData.nextCursor,
+					previousCursor: channelData.previousCursor,
 				});
-				setUpdateMessages(!updateMessages)
+			setScrollToRecent(!scrollToRecent);
 		}
 	}
 
@@ -97,7 +104,7 @@ export default function Channel() {
 	}
 
 	function getData() {
-		if (data && group) {
+		if (channelData && group) {
 			return (
 				<>
 					<ChannelHeader header={getChannelName()} members={group.members} />
@@ -105,9 +112,10 @@ export default function Channel() {
 						channelId={channelId}
 						channelName={getChannelName()}
 						groupId={groupId}
-						data={data}
+						channelData={channelData}
 						handleUpdate={handleUpdate}
-						updateMessages={updateMessages}
+						scrollToRecent={scrollToRecent}
+						setUpdateData={() => setUpdateData(!updateData)}
 					/>
 				</>
 			);

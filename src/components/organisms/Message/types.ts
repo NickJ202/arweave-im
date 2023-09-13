@@ -1,5 +1,5 @@
-import { GQLNodeResponseType } from 'lib';
+import { AssetType } from 'lib';
 
 export interface IProps {
-	data: GQLNodeResponseType;
+	data: AssetType;
 }

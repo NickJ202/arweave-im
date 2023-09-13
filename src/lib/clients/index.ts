@@ -1,4 +1,3 @@
-import { CURRENCY_DICT } from '../helpers/config';
 import {
 	ApiClientType,
 	ClientType,
@@ -14,21 +13,16 @@ const client: ClientType = {
 
 	init: function (args: InitArgs) {
 		this.env = {
-			orderBookContract: 'TEMP',
-			currency: args.currency,
-			currencyContract: CURRENCY_DICT[args.currency],
 			arClient: ArweaveClient.init({
-				arweaveGet: args.arweaveGet,
-				arweavePost: args.arweavePost,
+				arweave: args.arweave,
 				bundlrKey: args.bundlrKey,
 				warp: args.warp,
-				warpDreNode: args.warpDreNode,
+				dreNode: args.dreNode,
 			}),
 		};
 
 		let api: ApiClientType = ApiClient.init({
 			arClient: this.env.arClient,
-			orderBookContract: 'TEMP',
 		});
 
 		this.api = api;

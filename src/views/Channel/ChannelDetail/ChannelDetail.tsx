@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GQLNodeResponseType } from 'lib';
+import { AssetType, CURSORS } from 'lib';
 
 import { Message } from 'components/organisms/Message';
 import { MessageCreate } from 'components/organisms/MessageCreate';
@@ -16,13 +16,21 @@ export default function ChannelDetail(props: IProps) {
 		if (mWrapperRef.current) {
 			mWrapperRef.current.scrollTop = mWrapperRef.current.scrollHeight - mWrapperRef.current.clientHeight;
 		}
-	}, [props.updateMessages]);	
+	}, [props.scrollToRecent]);
 
-	return props.data ? (
+	const handleScroll = () => {
+		if (mWrapperRef.current && mWrapperRef.current.scrollTop === 0) {
+			if (props.channelData && props.channelData.nextCursor && props.channelData.nextCursor !== CURSORS.end) {
+				props.setUpdateData();
+			}
+		}
+	};
+
+	return props.channelData ? (
 		<S.Wrapper>
-			<S.MWrapper ref={mWrapperRef}>
-				{props.data.nodes.length > 0 ? (
-					props.data.nodes.map((asset: GQLNodeResponseType, index: number) => {
+			<S.MWrapper ref={mWrapperRef} onScroll={handleScroll}>
+				{props.channelData.data.length > 0 ? (
+					props.channelData.data.map((asset: AssetType, index: number) => {
 						return <Message key={index} data={asset} />;
 					})
 				) : (

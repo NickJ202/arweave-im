@@ -3,10 +3,9 @@ import Bundlr from '@bundlr-network/client';
 import { ArweaveClientInitArgs, ArweaveClientType, BUNDLR_CONFIG, WriteContractArgs } from '../../helpers';
 
 const arClient: ArweaveClientType = {
-	arweaveGet: null,
-	arweavePost: null,
+	arweave: null,
 	bundlr: null,
-	warpDefault: null,
+	warp: null,
 	options: {
 		allowBigInt: true,
 		internalWrites: true,
@@ -16,19 +15,18 @@ const arClient: ArweaveClientType = {
 	},
 
 	init: function (args: ArweaveClientInitArgs) {
-		this.arweaveGet = args.arweaveGet;
-		this.arweavePost = args.arweavePost;
+		this.arweave = args.arweave;
 
 		if (args.bundlrKey) this.bundlr = new Bundlr(BUNDLR_CONFIG.node, BUNDLR_CONFIG.currency, args.bundlrKey);
 
-		this.warpDefault = args.warp;
-		this.options.remoteStateSyncSource = args.warpDreNode;
+		this.warp = args.warp;
+		this.options.remoteStateSyncSource = args.dreNode;
 
 		return this;
 	},
 
 	writeContract: async function (args: WriteContractArgs) {
-		let res = await this.warpDefault
+		let res = await this.warp
 			.contract(args.contract)
 			.connect(args.wallet)
 			.setEvaluationOptions(this.options)
@@ -37,7 +35,7 @@ const arClient: ArweaveClientType = {
 	},
 
 	read: async function (id: string) {
-		return (await this.warpDefault.contract(id).setEvaluationOptions(this.options).readState()).cachedValue.state;
+		return (await this.warp.contract(id).setEvaluationOptions(this.options).readState()).cachedValue.state;
 	},
 };
 
