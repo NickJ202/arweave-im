@@ -12,7 +12,8 @@ import { ChannelDetail } from './ChannelDetail';
 import { ChannelHeader } from './ChannelHeader';
 
 // TODO: add profiles to messages data
-// TODO: change message data tag to message-data
+// TODO: wallet block
+// TODO: paginate messages
 export default function Channel() {
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();

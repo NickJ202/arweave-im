@@ -4,26 +4,11 @@ import {
 	ASSET_CONTRACT,
 	AssetArgsClientType,
 	AssetCreateArgsClientType,
-	AssetDetailType,
-	AssetType,
-	BalanceType,
-	CONTENT_TYPES,
-	getBalancesEndpoint,
-	getTagValue,
 	GQLNodeResponseType,
 	GQLResponseType,
-	log,
 	logValue,
-	ORDERBOOK_CONTRACT,
-	OrderBookPairOrderType,
-	OrderBookPairType,
-	STORAGE,
 	TAGS,
-	TagType,
-	UDL_ICONS,
-	UDL_LICENSE_VALUE,
-	UDLType,
-	UserBalancesType,
+	TagType
 } from '../helpers';
 
 import { createContract, createTransaction } from '.';
@@ -83,79 +68,6 @@ export async function getAssetById(args: { assetId: string; arClient: any }): Pr
 	else return null;
 }
 
-// export async function getAssetIdsByUser(args: { walletAddress: string; arClient: any }): Promise<string[]> {
-// 	try {
-// 		const result: any = await fetch(getBalancesEndpoint(args.walletAddress));
-// 		if (result.status === 200) {
-// 			const balances = ((await result.json()) as UserBalancesType).balances;
-
-// 			const assetIds = balances
-// 				.filter((balance: BalanceType) => {
-// 					return balance.balance && parseInt(balance.balance) !== 0;
-// 				})
-// 				.map((balance: BalanceType) => {
-// 					return balance.contract_tx_id;
-// 				});
-// 			return assetIds;
-// 		} else {
-// 			return [];
-// 		}
-// 	} catch (e: any) {
-// 		return [];
-// 	}
-// }
-
-// export async function getAssetsByIds(args: AssetArgsClientType): Promise<AssetType[]> {
-// 	const gqlData: GQLResponseType = await getGQLDataByIds({
-// 		ids: args.ids,
-// 		owner: args.owner,
-// 		uploader: args.uploader,
-// 		cursor: args.cursor,
-// 		reduxCursor: args.reduxCursor,
-// 		arClient: args.arClient,
-// 		walletAddress: args.walletAddress,
-// 		useArweaveBundlr: args.useArweaveBundlr ? args.useArweaveBundlr : false,
-// 	});
-
-// 	return getValidatedAssets(gqlData, pairs);
-// }
-
-// export async function getAssetById(args: {
-// 	id: string;
-// 	arClient: any;
-// 	orderBookContract: string;
-// }): Promise<AssetDetailType> {
-// 	const asset = (
-// 		await getAssetsByIds({
-// 			ids: [args.id],
-// 			owner: null,
-// 			uploader: null,
-// 			cursor: null,
-// 			reduxCursor: null,
-// 			walletAddress: null,
-// 			arClient: args.arClient,
-// 			useArweaveBundlr: true,
-// 		})
-// 	)[0];
-
-// 	if (asset) {
-// 		const state = await args.arClient.read(args.id);
-// 		let orders = [];
-// 		let orderBookState = await args.arClient.read(args.orderBookContract);
-// 		let pair = orderBookState.pairs.find((p: any) => {
-// 			return p.pair[0] === args.id;
-// 		});
-// 		if (pair) {
-// 			orders = pair.orders.map((order: OrderBookPairOrderType) => {
-// 				return { ...order, currency: pair.pair[1] };
-// 			});
-// 		}
-// 		return { ...asset, state: state, orders: orders };
-// 	} else {
-// 		return null;
-// 	}
-// }
-
 function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
@@ -190,6 +102,7 @@ function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 		{ name: TAGS.keys.dateCreated, value: dateTime },
 		{ name: TAGS.keys.messageChannelId, value: args.channelId },
 		{ name: TAGS.keys.messageGroupId, value: args.groupId },
+		{ name: TAGS.keys.messageData, value: args.content },
 	];
 
 	args.topics.forEach((topic: string) => tags.push({ name: TAGS.keys.topic(topic), value: topic }));

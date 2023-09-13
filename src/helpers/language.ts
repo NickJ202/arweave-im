@@ -31,5 +31,5 @@ export const language = {
 	channelTitle: `Channel Title`,
 	channelCreated: `Channel created`,
 	memberAdded: `Member Added`,
-	members: `Members`
+	members: `Members`,
 };

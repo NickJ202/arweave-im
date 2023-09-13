@@ -44,7 +44,7 @@ export default function Message(props: IProps) {
 		);
 	React.useEffect(() => {
 		if (props.data) {
-			const rawContent = props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.ans110.description).value;
+			const rawContent = props.data.node.tags.find((tag: any) => tag.name === TAGS.keys.messageData)?.value;
 			if (rawContent) {
 				let dataObject: any;
 				try {

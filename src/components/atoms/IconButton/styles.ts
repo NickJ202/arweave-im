@@ -24,9 +24,11 @@ export const Primary = styled.div<{
 		props.disabled
 			? props.theme.colors.button.primary.disabled.background
 			: props.active
-			? props.theme.colors.button.primary.background
+			? props.theme.colors.button.primary.active.background
 			: 'transparent'};
-	border: 1.25px solid ${(props) => props.theme.colors.border.primary};
+	border: 1px solid
+		${(props) =>
+			props.active ? props.theme.colors.button.primary.active.border : props.theme.colors.button.primary.border};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	position: relative;
 	transition: all 100ms;
@@ -52,6 +54,7 @@ export const Primary = styled.div<{
 			props.disabled
 				? props.theme.colors.button.primary.disabled.background
 				: props.theme.colors.button.primary.active.background};
+		border: 1px solid ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.border : props.theme.colors.button.primary.active.border};
 		svg {
 			fill: ${(props) =>
 				props.disabled ? props.theme.colors.button.primary.disabled.color : props.theme.colors.button.primary.color};

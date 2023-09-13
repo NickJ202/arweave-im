@@ -1,5 +1,3 @@
-export const ORDERBOOK_CONTRACT = 'V6fwgkTtbRJVu_yKGJM2RQ6bHte35_g0Sj2C_BIdScs';
-
 export const CURRENCY_DICT = {
 	U: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
 };
@@ -45,6 +43,7 @@ export const TAGS = {
 		initState: 'Init-State',
 		logo: 'Logo',
 		messageChannelId: 'Msg-Channel-Id',
+		messageData: 'Msg-Data',
 		messageGroupId: 'Msg-Group-Id',
 		messageGroupVersion: 'Msg-Group-Version',
 		name: 'Name',
@@ -56,17 +55,6 @@ export const TAGS = {
 		smartweaveAppVersion: 'App-Version',
 		thumbnail: 'Thumbnail',
 		topic: (topic: string) => `topic:${topic}`,
-		udl: {
-			access: 'Access',
-			accessFee: 'Access-Fee',
-			commercial: 'Commercial',
-			commercialFee: 'Commercial-Fee',
-			currency: 'Currency',
-			derivation: 'Derivation',
-			derivationFee: 'Derivation-Fee',
-			license: 'License',
-			paymentMode: 'Payment-Mode',
-		},
 	},
 	values: {
 		ansVersion: 'ANS-110',
@@ -75,7 +63,6 @@ export const TAGS = {
 		contentTypes: {
 			textPlain: 'text/plain',
 		},
-		indexer: 'ucm',
 		messageGroupVersions: {
 			'0.1': 'Msg-Group-Version-v0.11',
 			'0.2': 'Msg-Group-Version-v0.2',
@@ -84,6 +71,7 @@ export const TAGS = {
 			'0.2': 'Account-0.2',
 			'0.3': 'Account-0.3',
 		},
+		ticker: 'MSG',
 		smartweaveAppName: 'SmartWeaveContract',
 		smartweaveAppVersion: '0.3.0',
 	},
@@ -92,18 +80,6 @@ export const TAGS = {
 export const CONTENT_TYPES = {
 	json: 'application/json',
 	textPlain: 'text/plain',
-};
-
-export const DEFAULT_COLLECTION_BANNER =
-	'https://pfyk3jkw3r37rwor3gknr5t4p2drukyqiyicauhtamrg7oyikt5a.arweave.net/eXCtpVbcd_jZ0dmU2PZ8focaKxBGECBQ8wMib7sIVPo';
-export const DEFAULT_COLLECTION_THUMB =
-	'https://mbxncnknoa66kt4m7fajlej7ggwnhwa4oqdycccaihwvmfjfeiia.arweave.net/YG7RNU1wPeVPjPlAlZE_MazT2Bx0B4EIQEHtVhUlIhA';
-
-export const UDL_LICENSE_VALUE = 'udlicense';
-
-export const UDL_ICONS = {
-	ar: 'AR',
-	u: 'U',
 };
 
 export const BUNDLR_CONFIG = {

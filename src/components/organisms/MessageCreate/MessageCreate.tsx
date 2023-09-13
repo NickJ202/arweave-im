@@ -1,17 +1,15 @@
 import React from 'react';
-import Arweave from 'arweave';
 import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
-import { defaultCacheOptions, WarpFactory } from 'warp-contracts';
-import { DeployPlugin } from 'warp-contracts-plugin-deploy';
+
+import { CONTENT_TYPES, TAGS } from 'lib';
 const { hasCommandModifier } = KeyBindingUtil;
-import { ClientType, CONTENT_TYPES } from 'lib';
-import { Client } from 'lib/clients';
 
 import { Button } from 'components/atoms/Button';
 import { IconButton } from 'components/atoms/IconButton';
-import { API_CONFIG, ASSETS, CURRENCIES, DRE_NODE } from 'helpers/config';
+import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
+import { useClientProvider } from 'providers/ClientProvider';
 
 import 'draft-js/dist/Draft.css';
 
@@ -20,6 +18,7 @@ import { IProps } from './types';
 
 export default function MessageCreate(props: IProps) {
 	const arProvider = useArweaveProvider();
+	const cliProvider = useClientProvider();
 
 	const editorRef = React.useRef<Editor | null>(null);
 
@@ -32,54 +31,35 @@ export default function MessageCreate(props: IProps) {
 	const [underlineActive, setUnderlineActive] = React.useState<boolean>(false);
 
 	const [loading, setLoading] = React.useState<boolean>(false);
-	const [lib, setLib] = React.useState<ClientType | null>(null);
-
-	React.useEffect(() => {
-		const arweaveGet = Arweave.init({
-			host: API_CONFIG.arweaveGet,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const arweavePost = Arweave.init({
-			host: API_CONFIG.arweavePost,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const warp = WarpFactory.forMainnet({
-			...defaultCacheOptions,
-			inMemory: true,
-		}).use(new DeployPlugin());
-
-		setLib(
-			Client.init({
-				currency: CURRENCIES.default,
-				arweaveGet: arweaveGet,
-				arweavePost: arweavePost,
-				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
-				warp: warp,
-				warpDreNode: DRE_NODE,
-			})
-		);
-	}, [arProvider.wallet, arProvider.walletAddress]);
 
 	const mapKeyToEditorCommand = (e: React.KeyboardEvent) => {
 		if (e.keyCode === 83 && hasCommandModifier(e)) {
 			return 'myeditor-save';
 		}
+
+		if (e.keyCode === 13 && e.shiftKey) {
+			return 'insert-line-break';
+		}
+
+		if (e.keyCode === 13) {
+			return 'submit-message';
+		}
+
 		return getDefaultKeyBinding(e);
 	};
 
-	const handleContainerClick = () => {
-		editorRef.current?.focus();
-	};
-
 	const handleKeyCommand = (command: string, editorState: EditorState) => {
+		if (command === 'submit-message' && !getSubmitDisabled(editorState)) {
+			handleSubmit();
+			return 'handled';
+		}
+
+		if (command === 'insert-line-break') {
+			const newState = RichUtils.insertSoftNewline(editorState);
+			setEditorState(newState);
+			return 'handled';
+		}
+
 		const newState = RichUtils.handleKeyCommand(editorState, command);
 		switch (command) {
 			case 'bold':
@@ -101,6 +81,10 @@ export default function MessageCreate(props: IProps) {
 		return 'not-handled';
 	};
 
+	const handleContainerClick = () => {
+		editorRef.current?.focus();
+	};
+
 	const handleBold = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
 		setEditorState(newState);
@@ -120,20 +104,21 @@ export default function MessageCreate(props: IProps) {
 	};
 
 	const handleSubmit = async () => {
-		if (lib && arProvider.walletAddress) {
+		if (cliProvider.lib && arProvider.walletAddress) {
 			const rawContentState = convertToRaw(editorState.getCurrentContent());
 			const serializedContent = JSON.stringify(rawContentState);
-
+			setEditorState(() => EditorState.createEmpty());
+			
 			setLoading(true);
-			const contractId = await lib.api.createAsset({
+			const contractId = await cliProvider.lib.api.createAsset({
 				content: serializedContent,
 				contentType: CONTENT_TYPES.textPlain,
-				title: 'Test Message',
-				description: serializedContent,
-				type: 'Test-Message',
-				topics: ['Test-Message'],
+				title: language.message(props.channelId),
+				description: language.message(props.channelId),
+				type: language.message(props.channelId),
+				topics: [language.message(props.channelId)],
 				owner: arProvider.walletAddress,
-				ticker: 'MSG',
+				ticker: TAGS.values.ticker,
 				dataProtocol: null,
 				dataSource: null,
 				renderWith: null,
@@ -142,12 +127,11 @@ export default function MessageCreate(props: IProps) {
 			});
 
 			await props.handleUpdate(contractId);
-			setEditorState(() => EditorState.createEmpty());
 			setLoading(false);
 		}
 	};
 
-	const isEditorEmpty = (editorState: EditorState) => {
+	const getSubmitDisabled = (editorState: EditorState) => {
 		const plainText = editorState.getCurrentContent().getPlainText();
 		return !plainText.trim().length;
 	};
@@ -193,10 +177,10 @@ export default function MessageCreate(props: IProps) {
 			</S.Body>
 			<S.Footer>
 				<Button
-					type={'primary'}
+					type={'alt1'}
 					label={loading ? `${language.sending}...` : language.send}
 					handlePress={handleSubmit}
-					disabled={loading || isEditorEmpty(editorState)}
+					disabled={loading || getSubmitDisabled(editorState)}
 					noMinWidth
 				/>
 			</S.Footer>

@@ -11,55 +11,8 @@ export type AssetType = {
 		dateCreated: number;
 		blockHeight: number;
 		creator: string;
-		udl?: UDLType;
 	};
-	orders?: OrderBookPairOrderType[];
 	stamps?: { total: number; vouched: number };
-};
-
-export type LicenseValueType = {
-	key: string;
-	value: string;
-	icon?: string;
-	endText?: string;
-};
-
-export type UDLType = {
-	license: LicenseValueType;
-	access: LicenseValueType;
-	accessFee: LicenseValueType;
-	derivation: LicenseValueType;
-	derivationFee: LicenseValueType;
-	commercial: LicenseValueType;
-	commercialFee: LicenseValueType;
-	paymentMode: LicenseValueType;
-};
-
-export type AssetDetailType = AssetType & {
-	state: any;
-	orders: any;
-};
-
-export type SellArgs = {
-	assetId: string;
-	price: number;
-	qty: number;
-	collection?: string;
-	wallet: any;
-	walletAddress: string | null;
-};
-
-export type BuyArgs = {
-	assetId: string;
-	spend: number;
-	wallet: any;
-	walletAddress: string | null;
-};
-
-export type CancelArgs = {
-	orderId: string;
-	wallet: any;
-	walletAddress: string | null;
 };
 
 export type EnvType = {
@@ -156,33 +109,6 @@ export type WriteContractArgs = {
 	options?: any;
 };
 
-export type ValidateAssetArgs = {
-	asset: string;
-	assetState: any;
-	arClient: ArweaveClientType;
-};
-
-export type ValidateSellArgs = {
-	sellArgs: SellArgs;
-	assetState: any;
-	orderBookState: any;
-};
-
-export type ValidateBuyArgs = {
-	buyArgs: BuyArgs;
-	assetState: any;
-	orderBookState: any;
-	currencyContract: string;
-};
-
-export type TransactionFlowArgs = {
-	from: string;
-	to: string;
-	orderBookState: any;
-	arClient: ArweaveClientType;
-	env: EnvType;
-};
-
 export type ArweaveClientInitArgs = {
 	arweaveGet: any;
 	arweavePost: any;
@@ -206,41 +132,6 @@ export type ClientType = {
 	env: EnvType;
 	init: (args: InitArgs) => ClientType;
 	api: ApiClientType;
-};
-
-export type PagingType = {
-	limit: number;
-	items: number;
-	page: number;
-};
-
-export type BalanceType = {
-	contract_tx_id: string;
-	token_ticker: string;
-	token_name: string;
-	balance: string;
-	sort_key: string;
-};
-
-export type UserBalancesType = {
-	paging: PagingType;
-	balances: BalanceType[];
-};
-
-export type OrderBookPairType = {
-	pair: [string, string];
-	orders: OrderBookPairOrderType[];
-};
-
-export type OrderBookPairOrderType = {
-	creator: string;
-	id: string;
-	originalQuantity: number;
-	price: number;
-	quantity: number;
-	token: string;
-	transfer: string;
-	currency?: string;
 };
 
 export enum CursorEnum {

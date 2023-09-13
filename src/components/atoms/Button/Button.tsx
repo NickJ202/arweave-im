@@ -15,10 +15,21 @@ export default function Button(props: IProps) {
 			wrapper: any;
 			icon: any;
 		};
-		buttonObj = {
-			wrapper: S.Primary,
-			icon: S.IconPrimary,
-		};
+
+		switch (props.type) {
+			case 'primary':
+				buttonObj = {
+					wrapper: S.Primary,
+					icon: S.IconPrimary,
+				};
+				break;
+			case 'alt1':
+				buttonObj = {
+					wrapper: S.Alt1,
+					icon: S.IconAlt1,
+				};
+				break;
+		}
 		return buttonObj;
 	}
 
@@ -30,7 +41,7 @@ export default function Button(props: IProps) {
 						<ReactSVG src={props.icon} />
 					</StyledIcon>
 				)}
-				<span>{props.loading ? `${language.loading}...` : props.label}</span>
+				<span>{props.label}</span>
 				{props.icon && !props.iconLeftAlign && (
 					<StyledIcon disabled={props.disabled} active={props.active} leftAlign={props.iconLeftAlign}>
 						<ReactSVG src={props.icon} />
@@ -61,7 +72,7 @@ export default function Button(props: IProps) {
 			width={props.width}
 			height={props.height}
 		>
-			{getLabel()}
+			{props.loading ? <span>{`${language.loading}...`}</span> : getLabel()}
 		</StyledButton>
 	);
 }

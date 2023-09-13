@@ -1,4 +1,4 @@
-export type ButtonType = 'primary';
+export type ButtonType = 'primary' | 'alt1';
 
 export enum WalletEnum {
 	arConnect = 'arconnect',

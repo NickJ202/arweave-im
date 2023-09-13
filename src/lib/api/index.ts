@@ -52,7 +52,6 @@ export async function createContract(args: { arClient: any; assetId: string }) {
 	throw new Error(`Warp retries failed ...`);
 }
 
-export * from './activity';
 export * from './assets';
 export * from './groups';
 export * from './profile';

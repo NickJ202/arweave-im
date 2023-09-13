@@ -4,7 +4,7 @@ import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
 	width: 100%;
-	border: 1px solid ${(props) => props.theme.colors.border.primary};
+	border: 1px solid ${(props) => props.theme.colors.border.alt1};
 	border-radius: ${STYLING.dimensions.borderRadius};
 `;
 
@@ -38,6 +38,7 @@ export const Editor = styled.div`
 	overflow: auto;
 	position: relative;
 	padding: 15px;
+	background: ${(props) => props.theme.colors.container.primary.background};
 
 	scrollbar-width: thin;
 	scrollbar-color: transparent transparent;

@@ -16,8 +16,8 @@ const DEFAULT = {
 	neutralA7: '#9B9BA1',
 	primary: '#F6F8FA',
 	primary2: '#E5EBF1',
-	accent: '#06BA63',
-	accent2: '#059E54',
+	accent: '#4EBC9B',
+	accent2: '#3EA384',
 	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
@@ -33,6 +33,7 @@ export const defaultTheme: DefaultTheme = {
 		primary: DEFAULT.primary,
 		border: {
 			primary: DEFAULT.neutral5,
+			alt1: DEFAULT.neutral6
 		},
 		button: {
 			primary: {

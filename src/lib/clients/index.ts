@@ -1,14 +1,8 @@
-import { getContractEndpoint, getTransactionLink, validateAsset, validateBuy, validateSell } from '../helpers';
-import { CURRENCY_DICT, ORDERBOOK_CONTRACT } from '../helpers/config';
+import { CURRENCY_DICT } from '../helpers/config';
 import {
 	ApiClientType,
-	ArweaveClientType,
-	BuyArgs,
-	CancelArgs,
 	ClientType,
-	EnvType,
 	InitArgs,
-	SellArgs,
 } from '../helpers/types';
 
 import { ApiClient } from './api';
@@ -20,7 +14,7 @@ const client: ClientType = {
 
 	init: function (args: InitArgs) {
 		this.env = {
-			orderBookContract: ORDERBOOK_CONTRACT,
+			orderBookContract: 'TEMP',
 			currency: args.currency,
 			currencyContract: CURRENCY_DICT[args.currency],
 			arClient: ArweaveClient.init({
@@ -34,7 +28,7 @@ const client: ClientType = {
 
 		let api: ApiClientType = ApiClient.init({
 			arClient: this.env.arClient,
-			orderBookContract: ORDERBOOK_CONTRACT,
+			orderBookContract: 'TEMP',
 		});
 
 		this.api = api;
