@@ -16,6 +16,10 @@ export const Wrapper = styled.div`
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
+export const CWrapper = styled.div`
+	margin: 0 0 0 20px;
+`;
+
 export const LWrapper = styled.div`
 	svg {
 		padding: 3.5px 0 0 0;

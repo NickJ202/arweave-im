@@ -1,4 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+import { STYLING } from 'helpers/styling';
 
 export const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -105,5 +107,11 @@ export const GlobalStyle = createGlobalStyle`
 
   p, span {
     line-height: 1.25;
+  }
+`;
+
+export const Panel = styled.div`
+  @media(max-width: ${STYLING.cutoffs.initial}) {
+    display: none;
   }
 `;

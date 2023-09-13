@@ -6,6 +6,7 @@ import close from 'assets/close.svg';
 import info from 'assets/info.svg';
 import italic from 'assets/italic.svg';
 import logo from 'assets/logo.svg';
+import menu from 'assets/menu.svg';
 import strikethrough from 'assets/strikethrough.svg';
 import underline from 'assets/underline.svg';
 import user from 'assets/user.svg';
@@ -26,6 +27,7 @@ export const ASSETS = {
 	info: info,
 	italic: italic,
 	logo: logo,
+	menu: menu,
 	strikethrough: strikethrough,
 	underline: underline,
 	user: user,

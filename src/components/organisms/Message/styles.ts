@@ -50,11 +50,18 @@ export const MMessageHeader = styled.div`
 		color: ${(props) => props.theme.colors.font.alt1};
 	}
 	span {
-		margin: 0 0 0 7.5px;
 		font-size: ${(props) => props.theme.typography.size.xxSmall};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.regular};
 		color: ${(props) => props.theme.colors.font.alt2};
+		margin: 0 0 0 7.5px;
+	}
+	@media(max-width: ${STYLING.cutoffs.secondary}) {
+		flex-direction: column;
+		align-items: flex-start;
+		span {
+			margin: 7.5px 0 0 0;
+		}
 	}
 `;
 

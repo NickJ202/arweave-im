@@ -1,11 +1,14 @@
 import React from 'react';
-// import Arweave from 'arweave';
+import Arweave from 'arweave';
 import { ArweaveWebWallet } from 'arweave-wallet-connector';
+import { defaultCacheOptions, WarpFactory } from 'warp-contracts';
+import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 
-// import { defaultCacheOptions, WarpFactory } from 'warp-contracts';
-// import { DeployPlugin } from 'warp-contracts-plugin-deploy';
+import { ClientType } from 'lib';
+import { Client } from 'lib/clients';
+
 import { Modal } from 'components/molecules/Modal';
-import { APP, AR_WALLETS, ASSETS, WALLET_PERMISSIONS } from 'helpers/config';
+import { API_CONFIG, APP, AR_WALLETS, ASSETS, CURRENCIES, DRE_NODE, WALLET_PERMISSIONS } from 'helpers/config';
 import { getArweaveBalanceEndpoint } from 'helpers/endpoints';
 import { language } from 'helpers/language';
 import { ProfileType, WalletEnum } from 'helpers/types';
@@ -84,6 +87,42 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 	const [newVersion, setNewVersion] = React.useState<boolean>(
 		!localStorage.getItem(APP.providerKey) || localStorage.getItem(APP.providerKey) !== APP.providerVersion
 	);
+
+	const [lib, setLib] = React.useState<ClientType | null>(null);
+
+	React.useEffect(() => {
+		const arweaveGet = Arweave.init({
+			host: API_CONFIG.arweaveGet,
+			port: API_CONFIG.port,
+			protocol: API_CONFIG.protocol,
+			timeout: API_CONFIG.timeout,
+			logging: API_CONFIG.logging,
+		});
+
+		const arweavePost = Arweave.init({
+			host: API_CONFIG.arweavePost,
+			port: API_CONFIG.port,
+			protocol: API_CONFIG.protocol,
+			timeout: API_CONFIG.timeout,
+			logging: API_CONFIG.logging,
+		});
+
+		const warp = WarpFactory.forMainnet({
+			...defaultCacheOptions,
+			inMemory: true,
+		}).use(new DeployPlugin());
+
+		setLib(
+			Client.init({
+				currency: CURRENCIES.default,
+				arweaveGet: arweaveGet,
+				arweavePost: arweavePost,
+				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
+				warp: warp,
+				warpDreNode: DRE_NODE,
+			})
+		);
+	}, [wallet, walletAddress]);
 
 	async function handleArConnect() {
 		if (!walletAddress) {
@@ -183,6 +222,17 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 			window.removeEventListener('arweaveWalletLoaded', handleWallet);
 		};
 	}, [walletType]);
+
+	React.useEffect(() => {
+		(async function () {
+			if (walletAddress && lib) {
+				const profile = await lib.api.getProfile({ walletAddress: walletAddress });
+				if (profile) {
+					setArProfile(profile);
+				}
+			}
+		})();
+	}, [walletAddress]);
 
 	return (
 		<>

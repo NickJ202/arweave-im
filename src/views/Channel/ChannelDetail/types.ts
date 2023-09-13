@@ -6,4 +6,5 @@ export interface IProps {
 	channelName: string | null;
 	data: GQLResponseType | null;
 	handleUpdate: (contractId: string) => Promise<void>;
+	updateMessages: boolean;
 }

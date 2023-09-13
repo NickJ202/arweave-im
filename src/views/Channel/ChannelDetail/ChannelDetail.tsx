@@ -14,9 +14,9 @@ export default function ChannelDetail(props: IProps) {
 
 	React.useEffect(() => {
 		if (mWrapperRef.current) {
-			mWrapperRef.current.scrollTop = mWrapperRef.current.scrollHeight;
+			mWrapperRef.current.scrollTop = mWrapperRef.current.scrollHeight - mWrapperRef.current.clientHeight;
 		}
-	}, [props.data]);
+	}, [props.updateMessages]);	
 
 	return props.data ? (
 		<S.Wrapper>

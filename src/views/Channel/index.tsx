@@ -11,6 +11,8 @@ import { useClientProvider } from 'providers/ClientProvider';
 import { ChannelDetail } from './ChannelDetail';
 import { ChannelHeader } from './ChannelHeader';
 
+// TODO: add profiles to messages data
+// TODO: change message data tag to message-data
 export default function Channel() {
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
@@ -22,6 +24,8 @@ export default function Channel() {
 	const [group, setGroup] = React.useState<any>(null);
 	const [data, setData] = React.useState<GQLResponseType | null>(null);
 
+	const [updateMessages, setUpdateMessages] = React.useState<boolean>(false);
+
 	React.useEffect(() => {
 		(async function () {
 			if (arProvider.walletAddress && cliProvider.lib && groupId) {
@@ -30,25 +34,45 @@ export default function Channel() {
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupId]);
 
+	async function fetchData() {
+		if (arProvider.walletAddress && cliProvider.lib && channelId) {
+			const response = await cliProvider.lib.api.getAssetsByChannel({
+				ids: [channelId],
+				owner: null,
+				uploader: null,
+				cursor: null,
+				reduxCursor: null,
+				walletAddress: null,
+			});
+
+			if (response && response.nodes) return response;
+			return null;
+		}
+	}
+
 	React.useEffect(() => {
 		(async function () {
-			if ((arProvider.walletAddress, cliProvider.lib && channelId)) {
-				setData(null);
-				setLoading(true);
-				setData(
-					await cliProvider.lib.api.getAssetsByChannel({
-						ids: [channelId],
-						owner: null,
-						uploader: null,
-						cursor: null,
-						reduxCursor: null,
-						walletAddress: null,
-					})
-				);
-				setLoading(false);
-			}
+			setLoading(true);
+			setData(await fetchData());
+			setLoading(false);
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, channelId]);
+
+	React.useEffect(() => {
+		async function updateData() {
+			const updatedResponse = await fetchData();
+
+			if (updatedResponse && updatedResponse.nodes && data && data.nodes) {
+				if (updatedResponse.nodes.length > data.nodes.length) {
+					setData(updatedResponse);
+					setUpdateMessages(!updateMessages);
+				};
+			}
+		}
+
+		const intervalId = setInterval(updateData, 1000);
+		return () => clearInterval(intervalId);
+	}, [arProvider.walletAddress, cliProvider.lib, channelId, data]);
 
 	async function handleUpdate(contractId: string) {
 		if (cliProvider.lib && contractId) {
@@ -61,6 +85,7 @@ export default function Channel() {
 					nextCursor: data.nextCursor,
 					previousCursor: data.previousCursor,
 				});
+				setUpdateMessages(!updateMessages)
 		}
 	}
 
@@ -81,6 +106,7 @@ export default function Channel() {
 						groupId={groupId}
 						data={data}
 						handleUpdate={handleUpdate}
+						updateMessages={updateMessages}
 					/>
 				</>
 			);

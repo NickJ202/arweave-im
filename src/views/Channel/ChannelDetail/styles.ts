@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const MWrapper = styled.div`
+	height: 100%;
 	overflow: auto;
 
 	scrollbar-width: thin;

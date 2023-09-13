@@ -1,77 +1,36 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import Arweave from 'arweave';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { defaultCacheOptions, LoggerFactory, WarpFactory } from 'warp-contracts';
-import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 
-import { ClientType, ProfileType, TAGS } from 'lib';
-import { Client } from 'lib/clients';
+import { ProfileType, TAGS } from 'lib';
 
-import { API_CONFIG, ASSETS, CURRENCIES, DRE_NODE } from 'helpers/config';
+import { ASSETS } from 'helpers/config';
 import { getTxEndpoint } from 'helpers/endpoints';
 import { formatAddress, formatDate } from 'helpers/utils';
-import { useArweaveProvider } from 'providers/ArweaveProvider';
+import { useClientProvider } from 'providers/ClientProvider';
 
 import * as S from './styles';
 import { IProps } from './types';
 
-LoggerFactory.INST.logLevel('fatal');
-
 export default function Message(props: IProps) {
-	const arProvider = useArweaveProvider();
+	const cliProvider = useClientProvider();
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 
-	const [lib, setLib] = React.useState<ClientType | null>(null);
 	const [profile, setProfile] = React.useState<ProfileType | null>(null);
 	const [hasError, setHasError] = React.useState(false);
 
 	React.useEffect(() => {
-		const arweaveGet = Arweave.init({
-			host: API_CONFIG.arweaveGet,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const arweavePost = Arweave.init({
-			host: API_CONFIG.arweavePost,
-			port: API_CONFIG.port,
-			protocol: API_CONFIG.protocol,
-			timeout: API_CONFIG.timeout,
-			logging: API_CONFIG.logging,
-		});
-
-		const warp = WarpFactory.forMainnet({
-			...defaultCacheOptions,
-			inMemory: true,
-		}).use(new DeployPlugin());
-
-		setLib(
-			Client.init({
-				currency: CURRENCIES.default,
-				arweaveGet: arweaveGet,
-				arweavePost: arweavePost,
-				bundlrKey: window.arweaveWallet ? window.arweaveWallet : null,
-				warp: warp,
-				warpDreNode: DRE_NODE,
-			})
-		);
-	}, [arProvider.wallet, arProvider.walletAddress]);
-
-	React.useEffect(() => {
 		(async function () {
-			if (lib && props.data) {
+			if (cliProvider.lib && props.data) {
 				setProfile(
-					await lib.api.getProfile({
+					await cliProvider.lib.api.getProfile({
 						walletAddress: props.data.node.address,
 					})
 				);
 			}
 		})();
-	}, [lib]);
+	}, [cliProvider.lib]);
 
 	const handleError = () => {
 		setHasError(true);
@@ -108,7 +67,7 @@ export default function Message(props: IProps) {
 		if (profile) {
 			if (profile.handle) return `${profile.handle}`;
 			else return `${formatAddress(profile.walletAddress, false)}`;
-		} else return null;
+		} else return '-';
 	}
 
 	return props.data ? (

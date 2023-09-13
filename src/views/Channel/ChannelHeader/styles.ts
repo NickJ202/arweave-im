@@ -13,6 +13,9 @@ export const Wrapper = styled.div`
 	padding: 0 15px;
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+	@media(max-width: ${STYLING.cutoffs.initial}) {
+		width: 100%;
+	}
 `;
 
 export const Title = styled.div`

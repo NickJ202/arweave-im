@@ -11,6 +11,10 @@ export const Wrapper = styled.div`
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-radius: ${STYLING.dimensions.borderRadius};
+	@media(max-width: ${STYLING.cutoffs.initial}) {
+		top: 90px;
+		background: ${(props) => props.theme.colors.container.alt1.background};
+	}
 `;
 
 export const Header = styled.div`

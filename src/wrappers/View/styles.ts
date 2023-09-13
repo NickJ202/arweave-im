@@ -8,4 +8,8 @@ export const Wrapper = styled.main`
 	position: fixed;
 	top: ${STYLING.dimensions.navHeaderHeight};
 	left: ${STYLING.dimensions.navPanelWidth};
+	@media(max-width: ${STYLING.cutoffs.initial}) {
+		width: 100%;
+		left: 0;
+	}
 `;

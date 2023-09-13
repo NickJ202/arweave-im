@@ -1,18 +1,21 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 
 import { ChannelType, GroupType } from 'lib';
 
+import { IconButton } from 'components/atoms/IconButton';
 import { GroupDropdown } from 'components/organisms/GroupDropdown';
 import { ASSETS } from 'helpers/config';
+import * as urls from 'helpers/urls';
 import { formatChannelName } from 'helpers/utils';
 import { useClientProvider } from 'providers/ClientProvider';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
+import { IProps } from './types';
 
-export default function Panel() {
+export default function Panel(props: IProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -76,19 +79,51 @@ export default function Panel() {
 		) : null;
 	}
 
+	const Wrapper = props.overlay ? S.Wrapper : React.Fragment;
+
 	return group && activeChannelId ? (
-		<>
-			<S.Wrapper>
-				<S.Group>
-					<S.GroupAction onClick={() => setShowDropdown(!showDropdown)} disabled={showDropdown}>
-						<span>{group ? group.title : null}</span>
-						<ReactSVG src={ASSETS.arrowDown} />
-					</S.GroupAction>
-				</S.Group>
-				<S.Channels>{getChannels()}</S.Channels>
-			</S.Wrapper>
+		<Wrapper>
+			<S.PWrapper overlay={props.overlay}>
+				<CloseHandler
+					active={props.active && !showDropdown}
+					disabled={!props.active || showDropdown}
+					callback={props.handleClose}
+				>
+					{props.overlay && (
+						<S.TWrapper>
+							<Link to={urls.base}>
+								<S.LWrapper>
+									<ReactSVG src={ASSETS.logo} />
+								</S.LWrapper>
+							</Link>
+
+							<IconButton
+								type={'primary'}
+								src={ASSETS.close}
+								handlePress={props.handleClose}
+								active={false}
+								dimensions={{
+									wrapper: 27.5,
+									icon: 13.5,
+								}}
+							/>
+						</S.TWrapper>
+					)}
+					<S.Group>
+						<S.GroupAction onClick={() => setShowDropdown(!showDropdown)} disabled={showDropdown}>
+							<span>{group ? group.title : null}</span>
+							<ReactSVG src={ASSETS.arrowDown} />
+						</S.GroupAction>
+					</S.Group>
+					<S.Channels>{getChannels()}</S.Channels>
+				</CloseHandler>
+			</S.PWrapper>
 			{showDropdown && (
-				<CloseHandler active={showDropdown} disabled={!showDropdown || dropdownDisabled} callback={() => setShowDropdown(false)}>
+				<CloseHandler
+					active={showDropdown}
+					disabled={!showDropdown || dropdownDisabled}
+					callback={() => setShowDropdown(false)}
+				>
 					<GroupDropdown
 						groupId={groupId}
 						group={group}
@@ -97,6 +132,6 @@ export default function Panel() {
 					/>
 				</CloseHandler>
 			)}
-		</>
+		</Wrapper>
 	) : null;
 }
