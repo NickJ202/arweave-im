@@ -1,5 +1,5 @@
 import { AssetType } from 'lib';
 
 export interface IProps {
-	data: AssetType;
+	data: AssetType | null;
 }

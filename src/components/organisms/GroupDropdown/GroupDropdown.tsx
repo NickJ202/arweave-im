@@ -16,6 +16,7 @@ import { useClientProvider } from 'providers/ClientProvider';
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: hot update member / channel update in reducer
 export default function GroupDropdown(props: IProps) {
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();

@@ -1,8 +1,4 @@
-import {
-	ApiClientType,
-	ClientType,
-	InitArgs,
-} from '../helpers/types';
+import { ApiClientType, ClientType, InitArgs } from '../helpers/types';
 
 import { ApiClient } from './api';
 import { ArweaveClient } from './arweave';

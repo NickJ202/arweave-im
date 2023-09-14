@@ -54,17 +54,22 @@ const apiClient: ApiClientType = {
 		return await createGroup({ ...args, arClient: this.arClient });
 	},
 
-	addGroupMember: async function (args: { groupId: string, groupTitle: string, walletAddress: string, wallet: any }): Promise<string> {
+	addGroupMember: async function (args: {
+		groupId: string;
+		groupTitle: string;
+		walletAddress: string;
+		wallet: any;
+	}): Promise<string> {
 		return await addGroupMember({ ...args, arClient: this.arClient });
 	},
 
-	addGroupChannel: async function (args: { groupId: string, channelTitle: string, wallet: any }): Promise<string> {
+	addGroupChannel: async function (args: { groupId: string; channelTitle: string; wallet: any }): Promise<string> {
 		return await addGroupChannel({ ...args, arClient: this.arClient });
 	},
 
 	getProfiles: async function (args: { addresses: string[] }): Promise<ProfileType[]> {
 		return await getProfiles({
-			addresses: args.addresses
+			addresses: args.addresses,
 		});
 	},
 };

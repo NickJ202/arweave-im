@@ -10,9 +10,8 @@ import {
 	getTagValue,
 	GQLNodeResponseType,
 	logValue,
-	ProfileType,
 	TAGS,
-	TagType
+	TagType,
 } from '../helpers';
 
 import { createContract, createTransaction, getProfiles } from '.';
@@ -27,21 +26,17 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			reduxCursor: null,
 			cursorObject: CursorEnum.GQL,
 			useBundlrGateway: true,
-			useArweaveNet: false
+			useArweaveNet: false,
 		});
 
-		const ownerAddresses = gqlData.data.map((element: GQLNodeResponseType) => getTagValue(element.node.tags, TAGS.keys.initialOwner))
-		const profiles = await getProfiles({ addresses: ownerAddresses });
-
 		const responseData: AssetType[] = gqlData.data.map((element: GQLNodeResponseType) => {
-			const profile = profiles.find((profile: ProfileType) => profile.walletAddress === getTagValue(element.node.tags, TAGS.keys.initialOwner));
-			return ({
+			return {
 				id: element.node.id,
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 				message: getTagValue(element.node.tags, TAGS.keys.messageData),
-				owner: profile,
-				stamps: { total: 0, vouched: 0 }
-			})
+				owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
+				stamps: { total: 0, vouched: 0 },
+			};
 		});
 
 		return {
@@ -50,7 +45,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			previousCursor: null,
 		};
 	} catch (error: any) {
-		console.error(error)
+		console.error(error);
 		return {
 			data: null,
 			nextCursor: null,
@@ -68,22 +63,20 @@ export async function getAssetById(args: { assetId: string; arClient: any }): Pr
 		reduxCursor: null,
 		cursorObject: null,
 		useBundlrGateway: true,
-		useArweaveNet: false
+		useArweaveNet: false,
 	});
 
 	if (gqlData && gqlData.data.length) {
 		const element = gqlData.data[0];
-		const profile = (await getProfiles({ addresses: [getTagValue(element.node.tags, TAGS.keys.initialOwner)] }))[0];
-		return ({
+		return {
 			id: element.node.id,
 			dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 			message: getTagValue(element.node.tags, TAGS.keys.messageData),
-			owner: profile,
-			stamps: { total: 0, vouched: 0 }
-		})
-		return null
-	}
-	else return null;
+			owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
+			stamps: { total: 0, vouched: 0 },
+		};
+		return null;
+	} else return null;
 }
 
 export async function createAsset(args: AssetCreateArgsClientType): Promise<string | null> {

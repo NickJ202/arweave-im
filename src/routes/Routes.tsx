@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import * as urls from 'helpers/urls';
 import { View } from 'wrappers/View';
 
-const Channel = getLazyImport('Channel');
+const Group = getLazyImport('Group');
 const Landing = getLazyImport('Landing');
 
 export default function _Routes() {
@@ -20,10 +20,10 @@ export default function _Routes() {
 					}
 				/>
 				<Route
-					path={`${urls.base}:groupId/:channelId?`}
+					path={`${urls.base}:groupId/*`}
 					element={
 						<View>
-							<Channel />
+							<Group />
 						</View>
 					}
 				/>

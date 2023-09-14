@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-radius: ${STYLING.dimensions.borderRadius};
-	@media(max-width: ${STYLING.cutoffs.initial}) {
+	@media (max-width: ${STYLING.cutoffs.initial}) {
 		top: 90px;
 		background: ${(props) => props.theme.colors.container.alt1.background};
 	}
@@ -75,7 +75,7 @@ export const Action = styled.button`
 		background: ${(props) => props.theme.colors.button.primary.active.background};
 	}
 	span {
-		font-size: ${(props) => props.theme.typography.size.base};
+		font-size: ${(props) => props.theme.typography.size.small};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};

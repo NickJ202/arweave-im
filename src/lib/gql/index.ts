@@ -50,7 +50,9 @@ export async function getGQLData(args: {
 	});
 
 	if (response.data.data) {
-		const responseData = args.useBundlrGateway ? response.data.data.transactions.edges.reverse() : response.data.data.transactions.edges;
+		const responseData = args.useBundlrGateway
+			? response.data.data.transactions.edges.reverse()
+			: response.data.data.transactions.edges;
 		if (responseData.length > 0) {
 			data.push(...responseData);
 			if (args.cursorObject && args.cursorObject === CursorEnum.GQL) {
@@ -86,27 +88,27 @@ async function getResponse(args: {
 		cursor,
 		after,
 		block,
-	})
+	});
 
 	const endpoints = [
 		{
 			enabled: useBundlrGateway,
 			execute: async () => {
-				return await runQuery({ endpoint: `${BUNDLR_CONFIG.node}/graphql`, query: query })
-			}
+				return await runQuery({ endpoint: `${BUNDLR_CONFIG.node}/graphql`, query: query });
+			},
 		},
 		{
 			enabled: useArweaveNet,
 			execute: async () => {
-				return await runQuery({ endpoint: `https://arweave.net/graphql`, query: query })
-			}
+				return await runQuery({ endpoint: `https://arweave.net/graphql`, query: query });
+			},
 		},
 		{
 			enabled: true,
 			execute: async () => {
-				return await runQuery({ endpoint: `https://arweave-search.goldsky.com`, query: query })
-			}
-		}
+				return await runQuery({ endpoint: `https://arweave-search.goldsky.com`, query: query });
+			},
+		},
 	];
 
 	for (const endpoint of endpoints) {
@@ -124,13 +126,13 @@ async function getResponse(args: {
 	return { data: [] };
 }
 
-async function runQuery(args: { endpoint: string, query: any }): Promise<{ data: any }> {
+async function runQuery(args: { endpoint: string; query: any }): Promise<{ data: any }> {
 	const response = await fetch(args.endpoint, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify(args.query)
+		body: JSON.stringify(args.query),
 	});
 	return { data: await response.json() };
 }
@@ -158,10 +160,12 @@ function getQuery(args: {
 				timestamp
 			}`;
 	const order = args.useBundlrGateway ? `order: DESC` : '';
-	const pageInfo = args.useBundlrGateway ? `pageInfo {
+	const pageInfo = args.useBundlrGateway
+		? `pageInfo {
 		hasNextPage
 		endCursor
-	}` : ''
+	}`
+		: '';
 
 	const query = {
 		query: `

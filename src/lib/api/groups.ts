@@ -23,7 +23,7 @@ export async function getGroupsByUser(args: { walletAddress: string; arClient: a
 		cursor: null,
 		reduxCursor: null,
 		cursorObject: CursorEnum.GQL,
-		useArweaveNet: true
+		useArweaveNet: true,
 	});
 
 	return getGQLResponseObject(gqlData);
@@ -61,7 +61,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 				groupId: groupContractId,
 				groupTitle: args.title,
 				walletAddress: args.owner,
-				wallet: args.wallet
+				wallet: args.wallet,
 			});
 
 			logValue(`Added Group Member`, memberTxId, 0);
@@ -70,7 +70,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 				arClient: args.arClient,
 				groupId: groupContractId,
 				channelTitle: args.initialChannel,
-				wallet: args.wallet
+				wallet: args.wallet,
 			});
 
 			logValue(`Added Group Channel`, channelTxId, 0);
@@ -79,8 +79,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 		} else {
 			return null;
 		}
-	}
-	catch (e: any) {
+	} catch (e: any) {
 		console.error(e);
 		return null;
 	}
@@ -98,7 +97,7 @@ function createGroupTags(args: { owner: string; title: string; logo: string }): 
 		owner: args.owner,
 		channels: [],
 		dateCreated: dateTime,
-		logo: args.logo
+		logo: args.logo,
 	};
 
 	initStateJson = JSON.stringify(initStateJson);
@@ -120,37 +119,41 @@ function createGroupTags(args: { owner: string; title: string; logo: string }): 
 	return tags;
 }
 
-export async function addGroupChannel(args: { arClient: any, groupId: string, channelTitle: string, wallet: any }): Promise<string | null> {
+export async function addGroupChannel(args: {
+	arClient: any;
+	groupId: string;
+	channelTitle: string;
+	wallet: any;
+}): Promise<string | null> {
 	try {
 		const txId = await createTransaction({
 			arClient: args.arClient,
 			tags: createGroupChannelTags({
 				groupId: args.groupId,
-				channelTitle: args.channelTitle
+				channelTitle: args.channelTitle,
 			}),
 			content: TAGS.keys.groupChannel,
 			contentType: CONTENT_TYPES.textPlain,
-		})
+		});
 
 		await args.arClient.writeContract({
 			contract: args.groupId,
 			wallet: args.wallet,
 			input: {
 				function: 'addChannel',
-				channel: { id: txId, title: args.channelTitle }
+				channel: { id: txId, title: args.channelTitle },
 			},
 			options: { strict: true },
 		});
 
 		return txId;
-	}
-	catch (e: any) {
+	} catch (e: any) {
 		console.error(e);
 		return null;
 	}
 }
 
-function createGroupChannelTags(args: { groupId: string, channelTitle: string }): TagType[] {
+function createGroupChannelTags(args: { groupId: string; channelTitle: string }): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
 	const tags: TagType[] = [
@@ -158,43 +161,48 @@ function createGroupChannelTags(args: { groupId: string, channelTitle: string })
 		{ name: TAGS.keys.groupChannel, value: args.channelTitle },
 		{ name: TAGS.keys.messageGroupVersion, value: TAGS.values.messageGroupVersions['0.1'] },
 		{ name: TAGS.keys.dateCreated, value: dateTime },
-	]
+	];
 
 	return tags;
 }
 
-export async function addGroupMember(args: { arClient: any, groupId: string, groupTitle: string, walletAddress: string, wallet: any }): Promise<string | null> {
+export async function addGroupMember(args: {
+	arClient: any;
+	groupId: string;
+	groupTitle: string;
+	walletAddress: string;
+	wallet: any;
+}): Promise<string | null> {
 	try {
 		const txId = await createTransaction({
 			arClient: args.arClient,
 			tags: createGroupMemberTags({
 				groupId: args.groupId,
 				groupTitle: args.groupTitle,
-				walletAddress: args.walletAddress
+				walletAddress: args.walletAddress,
 			}),
 			content: TAGS.keys.groupMember,
 			contentType: CONTENT_TYPES.textPlain,
-		})
-		
+		});
+
 		await args.arClient.writeContract({
 			contract: args.groupId,
 			wallet: args.wallet,
 			input: {
 				function: 'addMembers',
-				members: [args.walletAddress]
+				members: [args.walletAddress],
 			},
 			options: { strict: true },
 		});
 
 		return txId;
-	}
-	catch (e: any) {
+	} catch (e: any) {
 		console.error(e);
 		return null;
 	}
 }
 
-function createGroupMemberTags(args: { groupId: string, groupTitle: string, walletAddress: string }): TagType[] {
+function createGroupMemberTags(args: { groupId: string; groupTitle: string; walletAddress: string }): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
 	const tags: TagType[] = [
@@ -203,7 +211,7 @@ function createGroupMemberTags(args: { groupId: string, groupTitle: string, wall
 		{ name: TAGS.keys.groupTitle, value: args.groupTitle },
 		{ name: TAGS.keys.messageGroupVersion, value: TAGS.values.messageGroupVersions['0.1'] },
 		{ name: TAGS.keys.dateCreated, value: dateTime },
-	]
+	];
 
 	return tags;
 }

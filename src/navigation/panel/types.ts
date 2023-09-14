@@ -1,5 +1,5 @@
 export interface IProps {
-    overlay: boolean;
-    active: boolean;
+	overlay: boolean;
+	active: boolean;
 	handleClose: () => void | null;
 }

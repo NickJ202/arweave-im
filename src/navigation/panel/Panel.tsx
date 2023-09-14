@@ -1,74 +1,42 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 
 import { ChannelType, GroupType } from 'lib';
 
 import { IconButton } from 'components/atoms/IconButton';
+import { Loader } from 'components/atoms/Loader';
 import { GroupDropdown } from 'components/organisms/GroupDropdown';
 import { ASSETS } from 'helpers/config';
 import * as urls from 'helpers/urls';
 import { formatChannelName } from 'helpers/utils';
-import { useClientProvider } from 'providers/ClientProvider';
+import { RootState } from 'store';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: update groupReducer.activeChannelId on change
 export default function Panel(props: IProps) {
-	const location = useLocation();
 	const navigate = useNavigate();
 
-	const cliProvider = useClientProvider();
-
-	const [groupId, setGroupId] = React.useState<string | null>(null);
-	const [group, setGroup] = React.useState<GroupType | null>(null);
-	const [activeChannelId, setActiveChannelId] = React.useState<string | null>(null);
+	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
 	const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
 	const [dropdownDisabled, setDropdownDisabled] = React.useState<boolean>(false);
 
-	React.useEffect(() => {
-		if (location.pathname && location.pathname.length > 1) {
-			const locationId = location.pathname.split('/')[1];
-			if (!locationId) {
-				setActiveChannelId(null);
-			} else setGroupId(locationId);
-		} else {
-			setGroup(null);
-			setGroupId(null);
-			setActiveChannelId(null);
-		}
-	}, [location.pathname]);
-
-	React.useEffect(() => {
-		(async function () {
-			if (cliProvider.lib && groupId) {
-				setGroup(await cliProvider.lib.api.arClient.read(groupId));
-			}
-		})();
-	}, [cliProvider.lib, groupId]);
-
-	React.useEffect(() => {
-		(async function () {
-			if (group && !activeChannelId) {
-				navigate(`${groupId}/${group.channels[0].id}`);
-				setActiveChannelId(group.channels[0].id);
-			}
-		})();
-	}, [group, activeChannelId]);
-
 	function handleChannelChange(channelId: string) {
-		setActiveChannelId(channelId);
-		navigate(`${groupId}/${channelId}`);
+		// setActiveChannelId(channelId);
+		navigate(`${groupReducer.groupId}/${channelId}`);
 	}
 
 	function getChannels() {
-		return group ? (
+		return groupReducer ? (
 			<>
-				{group.channels.map((channel: ChannelType, index: number) => {
+				{groupReducer.data.channels.map((channel: ChannelType, index: number) => {
 					return (
-						<S.Channel key={index} active={channel.id === activeChannelId}>
+						<S.Channel key={index} active={channel.id === groupReducer.activeChannelId}>
 							<button onClick={() => handleChannelChange(channel.id)}>
 								<span>{formatChannelName(channel.title)}</span>
 							</button>
@@ -80,58 +48,66 @@ export default function Panel(props: IProps) {
 	}
 
 	const Wrapper = props.overlay ? S.Wrapper : React.Fragment;
-
-	return group && activeChannelId ? (
+	
+	return (
 		<Wrapper>
 			<S.PWrapper overlay={props.overlay}>
-				<CloseHandler
-					active={props.active && !showDropdown}
-					disabled={!props.active || showDropdown}
-					callback={props.handleClose}
-				>
-					{props.overlay && (
-						<S.TWrapper>
-							<Link to={urls.base}>
-								<S.LWrapper>
-									<ReactSVG src={ASSETS.logo} />
-								</S.LWrapper>
-							</Link>
+				{groupReducer ? (
+					<>
+						<CloseHandler
+							active={props.active && !showDropdown}
+							disabled={!props.active || showDropdown}
+							callback={props.handleClose}
+						>
+							{props.overlay && (
+								<S.TWrapper>
+									<Link to={urls.base}>
+										<S.LWrapper>
+											<ReactSVG src={ASSETS.logo} />
+										</S.LWrapper>
+									</Link>
 
-							<IconButton
-								type={'primary'}
-								src={ASSETS.close}
-								handlePress={props.handleClose}
-								active={false}
-								dimensions={{
-									wrapper: 27.5,
-									icon: 13.5,
-								}}
-							/>
-						</S.TWrapper>
-					)}
-					<S.Group>
-						<S.GroupAction onClick={() => setShowDropdown(!showDropdown)} disabled={showDropdown}>
-							<span>{group ? group.title : null}</span>
-							<ReactSVG src={ASSETS.arrowDown} />
-						</S.GroupAction>
-					</S.Group>
-					<S.Channels>{getChannels()}</S.Channels>
-				</CloseHandler>
+									<IconButton
+										type={'primary'}
+										src={ASSETS.close}
+										handlePress={props.handleClose}
+										active={false}
+										dimensions={{
+											wrapper: 27.5,
+											icon: 13.5,
+										}}
+									/>
+								</S.TWrapper>
+							)}
+							<S.Group>
+								<S.GroupAction onClick={() => setShowDropdown(!showDropdown)} disabled={showDropdown}>
+									<span>{groupReducer.data.title}</span>
+									<ReactSVG src={ASSETS.arrowDown} />
+								</S.GroupAction>
+							</S.Group>
+							<S.Channels>{getChannels()}</S.Channels>
+						</CloseHandler>
+						{showDropdown && (
+							<CloseHandler
+								active={showDropdown}
+								disabled={!showDropdown || dropdownDisabled}
+								callback={() => setShowDropdown(false)}
+							>
+								<GroupDropdown
+									groupId={groupReducer.groupId}
+									group={groupReducer.data}
+									handleClose={() => setShowDropdown(false)}
+									setDisabled={(disabled: boolean) => setDropdownDisabled(disabled)}
+								/>
+							</CloseHandler>
+						)}
+					</>
+				) : (
+					<S.LoadingWrapper>
+						<Loader xSm relative />
+					</S.LoadingWrapper>
+				)}
 			</S.PWrapper>
-			{showDropdown && (
-				<CloseHandler
-					active={showDropdown}
-					disabled={!showDropdown || dropdownDisabled}
-					callback={() => setShowDropdown(false)}
-				>
-					<GroupDropdown
-						groupId={groupId}
-						group={group}
-						handleClose={() => setShowDropdown(false)}
-						setDisabled={(disabled: boolean) => setDropdownDisabled(disabled)}
-					/>
-				</CloseHandler>
-			)}
 		</Wrapper>
-	) : null;
+	);
 }

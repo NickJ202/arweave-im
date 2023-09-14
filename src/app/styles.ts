@@ -118,7 +118,7 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const Panel = styled.div`
-  @media(max-width: ${STYLING.cutoffs.initial}) {
-    display: none;
-  }
+	@media (max-width: ${STYLING.cutoffs.initial}) {
+		display: none;
+	}
 `;

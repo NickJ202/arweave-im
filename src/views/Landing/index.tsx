@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getTagValue,GQLNodeResponseType, STORAGE, TAGS } from 'lib';
+import { getTagValue, GQLNodeResponseType, STORAGE, TAGS } from 'lib';
 
 import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/molecules/Modal';
@@ -46,16 +46,9 @@ export default function Landing() {
 							const groupId = getTagValue(group.node.tags, TAGS.keys.groupId);
 							const groupTitle = getTagValue(group.node.tags, TAGS.keys.groupTitle);
 
-							const label = groupTitle === STORAGE.none ? formatAddress(groupId, false) : groupTitle
+							const label = groupTitle === STORAGE.none ? formatAddress(groupId, false) : groupTitle;
 
-							return (
-								<Button
-									key={index}
-									type={'primary'}
-									label={label}
-									handlePress={() => navigate(groupId)}
-								/>
-							)
+							return <Button key={index} type={'primary'} label={label} handlePress={() => navigate(groupId)} />;
 						})}
 					</S.GWrapper>
 					<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />

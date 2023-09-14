@@ -2,7 +2,7 @@ export type AssetType = {
 	id: string;
 	dateCreated: number;
 	message: string;
-	owner: ProfileType;
+	owner: string;
 	stamps: StampType;
 };
 
@@ -10,12 +10,12 @@ export type ChannelResponseType = {
 	data: AssetType[] | null;
 	nextCursor: string | null;
 	previousCursor: string | null;
-}
+};
 
 export type StampType = {
-	total: number,
-	vouched: number
-}
+	total: number;
+	vouched: number;
+};
 
 export type EnvType = {
 	arClient: ArweaveClientType;
@@ -74,8 +74,13 @@ export type ApiClientType = {
 	getAssetById: (args: { assetId: string }) => Promise<AssetType | null>;
 	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;
 	createGroup: (args: CreateGroupArgs) => Promise<string>;
-	addGroupMember: (args: { groupId: string, groupTitle: string, walletAddress: string, wallet: any }) => Promise<string>;
-	addGroupChannel: (args: { groupId: string, channelTitle: string, wallet: any }) => Promise<string>;
+	addGroupMember: (args: {
+		groupId: string;
+		groupTitle: string;
+		walletAddress: string;
+		wallet: any;
+	}) => Promise<string>;
+	addGroupChannel: (args: { groupId: string; channelTitle: string; wallet: any }) => Promise<string>;
 	getProfiles: (args: { addresses: string[] }) => Promise<ProfileType[]>;
 };
 
@@ -174,19 +179,18 @@ export type CreateGroupClientArgs = CreateGroupArgs & {
 	arClient: any;
 };
 
-export type ChannelType = { id: string, title: string };
+export type ChannelType = { id: string; title: string };
 
-// TODO: group type
 export type GroupType = {
-	balances: any,
-	channels: ChannelType[],
-	dateCreated: string,
-	logo: string,
-	members: string[],
-	owner: string,
-	title: string
+	balances: any;
+	channels: ChannelType[];
+	dateCreated: string;
+	logo: string;
+	members: string[];
+	owner: string;
+	title: string;
 };
 
 export enum MessageEnum {
-	Text = 'text'
+	Text = 'text',
 }

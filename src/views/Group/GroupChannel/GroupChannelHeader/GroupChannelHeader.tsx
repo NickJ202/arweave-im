@@ -3,7 +3,7 @@ import { language } from 'helpers/language';
 import * as S from './styles';
 import { IProps } from './types';
 
-export default function ChannelHeader(props: IProps) {
+export default function GroupChannelHeader(props: IProps) {
 	return (
 		<S.Wrapper>
 			<S.Title>

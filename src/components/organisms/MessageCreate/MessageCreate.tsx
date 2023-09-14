@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-	convertToRaw,
-	Editor,
-	EditorState,
-	getDefaultKeyBinding,
-	KeyBindingUtil,
-	RichUtils,
-} from 'draft-js';
+import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
 
 import { CONTENT_TYPES, MessageEnum, TAGS } from 'lib';
 const { hasCommandModifier } = KeyBindingUtil;
@@ -114,7 +107,7 @@ export default function MessageCreate(props: IProps) {
 		if (cliProvider.lib && arProvider.walletAddress) {
 			const rawContentState = convertToRaw(editorState.getCurrentContent());
 			const serializedContent = JSON.stringify({ type: MessageEnum.Text, data: rawContentState });
-			
+
 			editorRef.current?.blur();
 			setTimeout(() => {
 				setEditorState(EditorState.createEmpty());

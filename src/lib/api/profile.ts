@@ -1,9 +1,15 @@
 import { getGQLData } from '../gql';
-import { AGQLResponseType, CursorEnum, getTxEndpoint, GQLNodeResponseType, PAGINATOR, ProfileType, TAGS } from '../helpers';
+import {
+	AGQLResponseType,
+	CursorEnum,
+	getTxEndpoint,
+	GQLNodeResponseType,
+	PAGINATOR,
+	ProfileType,
+	TAGS,
+} from '../helpers';
 
-export async function getProfiles(args: {
-	addresses: string[]
-}): Promise<ProfileType[]> {
+export async function getProfiles(args: { addresses: string[] }): Promise<ProfileType[]> {
 	const profiles: ProfileType[] = [];
 	let gqlData: GQLNodeResponseType[] = [];
 
@@ -20,7 +26,7 @@ export async function getProfiles(args: {
 			cursor: null,
 			reduxCursor: null,
 			cursorObject: CursorEnum.GQL,
-			useArweaveNet: true
+			useArweaveNet: true,
 		});
 
 		gqlData = [...gqlData, ...gqlResponse.data];
@@ -52,8 +58,7 @@ export async function getProfiles(args: {
 					};
 				}
 			}
-		}
-		else {
+		} else {
 			finalProfile = {
 				handle: null,
 				avatar: null,
@@ -63,7 +68,7 @@ export async function getProfiles(args: {
 			};
 		}
 
-		profiles.push(finalProfile)
+		profiles.push(finalProfile);
 	}
 
 	return profiles;

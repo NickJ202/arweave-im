@@ -6,7 +6,7 @@ export const GROUP_CONTRACT = {
 	src: 'xELWpV98xIwrc5Rg6MEv6atUkyvwx-RpEebeooyvnS0',
 };
 
-export const PAGINATOR = 5;
+export const PAGINATOR = 100;
 
 export const STORAGE = {
 	none: 'N/A',
@@ -61,7 +61,7 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.12'
+			'0.1': 'Msg-Group-Version-v0.12',
 			// '0.1': 'Msg-Group-Version-v0.11'
 		},
 		profileVersions: {

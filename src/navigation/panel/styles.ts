@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { openLeft } from 'helpers/animations';
+import { fadeIn1, open, openLeft } from 'helpers/animations';
 import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
@@ -22,11 +22,17 @@ export const PWrapper = styled.div<{ overlay: boolean }>`
 	top: 0;
 	left: 0;
 	z-index: 1;
-	padding: ${(props) => props.overlay ? '0' : `${STYLING.dimensions.navHeaderHeight} 0 0 0`};
-	background: ${(props) => props.overlay ? props.theme.colors.container.primary.background : props.theme.colors.navigation.panel.background};
+	padding: ${(props) => (props.overlay ? '0' : `${STYLING.dimensions.navHeaderHeight} 0 0 0`)};
+	background: ${(props) =>
+		props.overlay ? props.theme.colors.container.primary.background : props.theme.colors.navigation.panel.background};
 	border-right: 1px solid ${(props) => props.theme.colors.border.primary};
 	will-change: transform;
-	animation: ${props => props.overlay ? css`${openLeft} 0.15s ease-in-out forwards` : 'none'};
+	animation: ${(props) =>
+		props.overlay
+			? css`
+					${openLeft} 0.15s ease-in-out forwards
+			  `
+			: 'none'};
 `;
 
 export const TWrapper = styled.div`
@@ -37,6 +43,7 @@ export const TWrapper = styled.div`
 	align-items: center;
 	padding: 0 15px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+	animation: ${open} ${fadeIn1};
 `;
 
 export const LWrapper = styled.div`
@@ -58,6 +65,7 @@ export const Group = styled.div`
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+	animation: ${open} ${fadeIn1};
 `;
 
 export const GroupAction = styled.button`
@@ -102,6 +110,7 @@ export const Channels = styled.div`
 	width: 100%;
 	padding: 15px 0;
 	overflow: auto;
+	animation: ${open} ${fadeIn1};
 	scrollbar-width: thin;
 	scrollbar-color: transparent transparent;
 	::-webkit-scrollbar {
@@ -140,13 +149,13 @@ export const Channel = styled.div<{ active: boolean }>`
 		height: 100%;
 		width: 100%;
 		text-align: left;
-		border: 1px solid
-		${(props) =>
-		props.active ? props.theme.colors.button.primary.active.border : 'transparent'};
+		border: 1px solid ${(props) => (props.active ? props.theme.colors.button.primary.active.border : 'transparent')};
 		border-radius: ${STYLING.dimensions.borderRadius};
 		padding: 0 7.5px;
 		background: ${(props) =>
-		props.active ? props.theme.colors.button.primary.active.background : props.theme.colors.button.primary.background};
+			props.active
+				? props.theme.colors.button.primary.active.background
+				: props.theme.colors.button.primary.background};
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -155,15 +164,19 @@ export const Channel = styled.div<{ active: boolean }>`
 			font-family: ${(props) => props.theme.typography.family.primary};
 			font-weight: ${(props) => props.theme.typography.weight.bold};
 			color: ${(props) =>
-		props.active ? props.theme.colors.button.primary.active.color : props.theme.colors.button.primary.color};
+				props.active ? props.theme.colors.button.primary.active.color : props.theme.colors.button.primary.color};
 		}
 		&:hover {
-			border: 1px solid
-				${(props) => props.theme.colors.button.primary.active.border};
+			border: 1px solid ${(props) => props.theme.colors.button.primary.active.border};
 			background: ${(props) => props.theme.colors.button.primary.active.background};
 			span {
 				color: ${(props) => props.theme.colors.button.primary.color};
 			}
 		}
 	}
+`;
+
+export const LoadingWrapper = styled.div`
+	width: fit-content;
+	margin: 10px auto 0 auto;
 `;

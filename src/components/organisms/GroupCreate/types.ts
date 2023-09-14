@@ -1,3 +1,3 @@
 export interface IProps {
-    setHandleUpdate: () => void;
+	setHandleUpdate: () => void;
 }

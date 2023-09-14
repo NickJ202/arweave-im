@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { fadeIn1, open } from 'helpers/animations';
 import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
@@ -13,7 +14,8 @@ export const Wrapper = styled.div`
 	padding: 0 15px;
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
-	@media(max-width: ${STYLING.cutoffs.initial}) {
+	animation: ${open} ${fadeIn1};
+	@media (max-width: ${STYLING.cutoffs.initial}) {
 		width: 100%;
 	}
 `;

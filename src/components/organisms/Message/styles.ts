@@ -16,6 +16,7 @@ export const Avatar = styled.div`
 	height: 100%;
 	width: 100%;
 	margin: 0 8.5px 0 0;
+	background: ${(props) => props.theme.colors.icon.alt2};
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	overflow: hidden;
@@ -31,7 +32,7 @@ export const Avatar = styled.div`
 		width: 21.5px;
 		padding: 3.5px 0 0 0px;
 		margin: 0 0 2.5px 0;
-		stroke: ${(props) => props.theme.colors.icon.primary};
+		stroke: ${(props) => props.theme.colors.icon.alt1};
 	}
 `;
 
@@ -56,7 +57,7 @@ export const MMessageHeader = styled.div`
 		color: ${(props) => props.theme.colors.font.alt2};
 		margin: 0 0 0 7.5px;
 	}
-	@media(max-width: ${STYLING.cutoffs.secondary}) {
+	@media (max-width: ${STYLING.cutoffs.secondary}) {
 		flex-direction: column;
 		align-items: flex-start;
 		span {
@@ -75,4 +76,22 @@ export const MText = styled.div`
 	.public-DraftEditorPlaceholder-inner {
 		color: ${(props) => props.theme.colors.font.alt2};
 	}
+`;
+
+export const Loader = styled.div`
+	max-width: 100%;
+	border: 1px solid ${(props) => props.theme.colors.border.primary};
+	border-radius: ${STYLING.dimensions.borderRadius};
+	overflow: hidden;
+`;
+
+export const HLoader = styled(Loader)`
+	height: 18.5px;
+	width: 200px;
+`;
+
+export const MLoader = styled(Loader)`
+	height: 17.5px;
+	width: 400px;
+	margin: 7.5px 0;
 `;

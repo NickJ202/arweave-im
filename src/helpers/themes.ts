@@ -33,12 +33,12 @@ export const defaultTheme: DefaultTheme = {
 		primary: DEFAULT.primary,
 		border: {
 			primary: DEFAULT.neutral5,
-			alt1: DEFAULT.neutral6
+			alt1: DEFAULT.neutral6,
 		},
 		button: {
 			primary: {
 				background: DEFAULT.primary,
-				border: DEFAULT.neutral5,
+				border: DEFAULT.neutralA6,
 				color: DEFAULT.neutralA1,
 				active: {
 					background: DEFAULT.primary2,
@@ -106,6 +106,7 @@ export const defaultTheme: DefaultTheme = {
 		icon: {
 			primary: DEFAULT.neutralA1,
 			alt1: DEFAULT.neutral1,
+			alt2: DEFAULT.neutralA6,
 		},
 		loader: {
 			primary: DEFAULT.neutralA2,
@@ -142,7 +143,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		table: {
 			placeholder: {
-				background: DEFAULT.neutral2,
+				background: DEFAULT.neutral4,
 				backgroundStart: DEFAULT.transparent,
 				backgroundSlide: DEFAULT.semiTransparent1,
 				backgroundEnd: DEFAULT.transparent,
