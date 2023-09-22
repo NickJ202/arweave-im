@@ -29,11 +29,37 @@ export const Title = styled.div`
 	}
 `;
 
-export const MemberCount = styled.div`
-	span {
-		font-size: ${(props) => props.theme.typography.size.base};
+export const Members = styled.div`
+	position: relative;
+`;
+
+export const MembersDropdown = styled.div`
+	height: fit-content;
+	width: 300px;
+	max-width: 90vw;
+	position: absolute;
+	padding: 10px 0;
+	top: 40px;
+	right: 0;
+	z-index: 1;
+`;
+
+export const MemberLine = styled.button`
+	height: 47.5px;
+	width: 100%;
+	padding: 0 15px;
+	display: flex;
+	align-items: center;
+	background: ${(props) => props.theme.colors.container.primary.background};
+	transition: all 100ms;
+	p {
+		margin: 0 0 2.5px 10px;
+		font-size: ${(props) => props.theme.typography.size.xSmall};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
-		color: ${(props) => props.theme.colors.font.primary};
+		color: ${(props) => props.theme.colors.font.alt1};
+	}
+	&:hover {
+		background: ${(props) => props.theme.colors.container.alt3.background};
 	}
 `;

@@ -47,8 +47,8 @@ export default function Panel(props: IProps) {
 		) : null;
 	}
 
-	const Wrapper = props.overlay ? S.Wrapper : React.Fragment;
-	
+	const Wrapper: any = props.overlay ? S.Wrapper : React.Fragment;
+
 	return (
 		<Wrapper>
 			<S.PWrapper overlay={props.overlay}>
@@ -67,16 +67,7 @@ export default function Panel(props: IProps) {
 										</S.LWrapper>
 									</Link>
 
-									<IconButton
-										type={'primary'}
-										src={ASSETS.close}
-										handlePress={props.handleClose}
-										active={false}
-										dimensions={{
-											wrapper: 27.5,
-											icon: 13.5,
-										}}
-									/>
+									<IconButton type={'primary'} src={ASSETS.close} handlePress={props.handleClose} active={false} sm />
 								</S.TWrapper>
 							)}
 							<S.Group>

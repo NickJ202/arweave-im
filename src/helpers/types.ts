@@ -1,6 +1,6 @@
 import { GroupType } from 'lib';
 
-export type ButtonType = 'primary' | 'alt1';
+export type ButtonType = 'primary' | 'alt1' | 'alt2';
 
 export enum WalletEnum {
 	arConnect = 'arconnect',

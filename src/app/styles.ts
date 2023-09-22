@@ -115,9 +115,28 @@ export const GlobalStyle = createGlobalStyle`
       opacity: 0.85;
     }
   }
+
+  .border-wrapper-primary {
+    border: 1px solid ${(props) => props.theme.colors.border.primary};
+    background: ${(props) => props.theme.colors.container.primary.background};
+    border-radius: ${STYLING.dimensions.borderRadius};
+    box-shadow: 0 0 7.5px ${(props) => props.theme.colors.shadow};
+  }
+
+  .overlay {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 11;
+    top: 0;
+    left: 0;
+    background: ${(props) => props.theme.colors.overlay.primary};
+    backdrop-filter: blur(2px);
+  }
 `;
 
-export const Panel = styled.div`
+export const Panel = styled.aside`
 	@media (max-width: ${STYLING.cutoffs.initial}) {
 		display: none;
 	}

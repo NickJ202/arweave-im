@@ -26,6 +26,7 @@ export default function GroupDropdown(props: IProps) {
 
 	const [walletAddress, setWalletAddress] = React.useState<string>('');
 	const [channelTitle, setChannelTitle] = React.useState<string>('');
+
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [submitResponse, setSubmitResponse] = React.useState<ResponseType | null>(null);
 
@@ -181,7 +182,7 @@ export default function GroupDropdown(props: IProps) {
 
 	return (
 		<>
-			<S.Wrapper>
+			<S.Wrapper className={'border-wrapper-primary'}>
 				<S.Header>
 					<S.Logo>
 						<img src={getTxEndpoint(props.group.logo)} />

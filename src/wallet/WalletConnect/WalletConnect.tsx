@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Button } from 'components/atoms/Button';
-import { ASSETS } from 'helpers/config';
+import { Avatar } from 'components/atoms/Avatar';
+import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -14,7 +14,8 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 
 	const [showWallet, setShowWallet] = React.useState<boolean>(false);
 	const [showWalletDropdown, setShowWalletDropdown] = React.useState<boolean>(false);
-	const [showGetBalanceDropdown, setShowGetBalanceDropdown] = React.useState<boolean>(false);
+	const [showProfile, setShowProfile] = React.useState<boolean>(false);
+
 	const [copied, setCopied] = React.useState<boolean>(false);
 	const [label, setLabel] = React.useState<string | null>(null);
 
@@ -46,7 +47,6 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 		} else {
 			arProvider.setWalletModalVisible(true);
 		}
-		setShowGetBalanceDropdown(false);
 	}
 
 	const copyAddress = React.useCallback(async () => {
@@ -65,31 +65,39 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 	}
 
 	return (
-		<CloseHandler
-			callback={() => {
-				setShowWalletDropdown(false);
-				setShowGetBalanceDropdown(false);
-			}}
-			active={showWalletDropdown || showGetBalanceDropdown}
-			disabled={false}
-		>
-			<S.Wrapper>
-				<Button
-					type={'primary'}
-					label={label ? label : ''}
-					handlePress={handlePress}
-					height={35}
-					noMinWidth
-					icon={ASSETS.wallet}
-				/>
-
-				{showWalletDropdown && (
-					<S.Dropdown>
-						<li onClick={copyAddress}>{copied ? `${language.copied}!` : language.copyAddress}</li>
-						<li onClick={handleDisconnect}>{language.disconnect}</li>
-					</S.Dropdown>
-				)}
-			</S.Wrapper>
-		</CloseHandler>
+		<>
+			<CloseHandler
+				callback={() => {
+					setShowWalletDropdown(false);
+				}}
+				active={showWalletDropdown}
+				disabled={false}
+			>
+				<S.Wrapper>
+					<Avatar owner={arProvider.walletAddress} dimensions={{ wrapper: 32.5, icon: 22.5 }} callback={handlePress} />
+					{showWalletDropdown && (
+						<S.Dropdown className={'border-wrapper-primary'}>
+							<S.DHeaderWrapper>
+								<Avatar owner={arProvider.walletAddress} dimensions={{ wrapper: 32.5, icon: 22.5 }} callback={null} />
+								<S.DHeader>
+									<p>{label}</p>
+									<span>{formatAddress(arProvider.walletAddress, false)}</span>
+								</S.DHeader>
+							</S.DHeaderWrapper>
+							<S.DBodyWrapper>
+								<li onClick={copyAddress}>{copied ? `${language.copied}!`: language.copyWalletAddress}</li>
+								<li onClick={() => setShowProfile(!showProfile)}>{language.viewProfile}</li>
+							</S.DBodyWrapper>
+							<S.DFooterWrapper>
+								<li onClick={handleDisconnect}>{language.disconnect}</li>
+							</S.DFooterWrapper>
+						</S.Dropdown>
+					)}
+				</S.Wrapper>
+			</CloseHandler>
+			{showProfile && (
+				<Profile owner={arProvider.walletAddress} active={showProfile} handleClose={() => setShowProfile(false)} />
+			)}
+		</>
 	);
 }

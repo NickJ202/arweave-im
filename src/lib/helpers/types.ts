@@ -153,11 +153,11 @@ export type GQLResponseType = {
 export type AGQLResponseType = { data: GQLNodeResponseType[]; nextCursor: string | null };
 
 export type ProfileType = {
+	walletAddress?: string;
 	handle: string | null;
 	avatar: string | null;
 	twitter: string | null;
 	discord: string | null;
-	walletAddress?: string;
 };
 
 export type TagType = { name: string; value: string };
@@ -194,3 +194,5 @@ export type GroupType = {
 export enum MessageEnum {
 	Text = 'text',
 }
+
+export type MemberType = { address: string, profileHexCode: string };

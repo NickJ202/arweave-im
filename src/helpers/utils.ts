@@ -1,4 +1,4 @@
-import { DateType } from './types';
+import { DateType, GroupReduxType, ProfileType } from './types';
 
 export function formatAddress(address: string | null, wrap: boolean) {
 	if (!address) {
@@ -51,4 +51,11 @@ export function formatDate(dateArg: string | number | null, dateType: DateType) 
 
 export function formatChannelName(channelName: string) {
 	return `# ${channelName}`;
+}
+
+export function getOwner(groupReducer: GroupReduxType, owner: string | null) {
+	if (groupReducer && owner) {
+		return groupReducer.data.profiles.find((profile: ProfileType) => profile.walletAddress === owner);
+	}
+	else return null;
 }

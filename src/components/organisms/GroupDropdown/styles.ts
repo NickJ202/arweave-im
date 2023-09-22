@@ -8,19 +8,15 @@ export const Wrapper = styled.div`
 	top: 100px;
 	left: 15px;
 	z-index: 1;
-	border: 1px solid ${(props) => props.theme.colors.border.primary};
-	background: ${(props) => props.theme.colors.container.primary.background};
-	border-radius: ${STYLING.dimensions.borderRadius};
 	@media (max-width: ${STYLING.cutoffs.initial}) {
 		top: 90px;
-		background: ${(props) => props.theme.colors.container.alt1.background};
 	}
 `;
 
 export const Header = styled.div`
 	width: 100%;
 	display: flex;
-	padding: 15px 20px;
+	padding: 20px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
@@ -32,8 +28,8 @@ export const Logo = styled.div`
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	img {
-		height: 75%;
-		width: 75%;
+		height: 65%;
+		width: 65%;
 		object-fit: contain;
 		position: absolute;
 		top: 50%;
@@ -69,13 +65,14 @@ export const Body = styled.div`
 
 export const Action = styled.button`
 	width: 100%;
+	height: 37.5px;
 	padding: 7.5px 20px;
 	text-align: left;
 	&:hover {
 		background: ${(props) => props.theme.colors.button.primary.active.background};
 	}
 	span {
-		font-size: ${(props) => props.theme.typography.size.small};
+		font-size: ${(props) => props.theme.typography.size.xSmall};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};

@@ -49,6 +49,7 @@ export const DOM = {
 	loader: 'loader',
 	modal: 'modal',
 	notification: 'notification',
+	panel: 'panel',
 };
 
 export const API_CONFIG = {
@@ -66,3 +67,9 @@ export const DEFAULT_LOGO = 'PH6Q_PJ2tkKfVWUFboMyYSj_UTYsAu8woxmJ8q8R1Fg';
 export const AR_PROFILE = {
 	defaultAvatar: 'OrG-ZG2WN3wdcwvpjz1ihPe4MI24QBJUpsJGIdL85wA',
 };
+
+export const REDIRECTS = {
+	twitter: {
+		profile: (handle: string) => `https://twitter.com/${handle}`
+	}
+}

@@ -25,8 +25,9 @@ export default function App() {
 	return (
 		<>
 			<div id={DOM.loader} />
-			<div id={DOM.modal} />
 			<div id={DOM.notification} />
+			<div id={DOM.modal} />
+			<div id={DOM.panel} />
 			{showWalletBlock && <WalletBlock />}
 			<S.Panel>
 				<Panel overlay={false} active={false} handleClose={null} />

@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const DEFAULT = {
 	neutral1: '#FFFFFF',
 	neutral2: '#FCFDFF',
-	neutral3: '#F6F8FA',
+	neutral3: '#F6F9FC',
 	neutral4: '#F2F5F8',
 	neutral5: '#D7E1EA',
 	neutral6: '#BCCDDC',
@@ -18,13 +18,16 @@ const DEFAULT = {
 	primary2: '#E5EBF1',
 	accent: '#4EBC9B',
 	accent2: '#3EA384',
+	accent3: '#4774C2',
+	accent4: '#3D6AB8',
 	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
+	semiTransparent2: 'rgba(0, 0, 0, 0.275)',
 	negative: '#D24646',
 	negativeShadow: '#F27979',
 	positive: '#06BA63',
-	neutral: '#FFC43D',
+	neutral: '#FFC43D'
 };
 
 export const defaultTheme: DefaultTheme = {
@@ -66,6 +69,15 @@ export const defaultTheme: DefaultTheme = {
 					color: DEFAULT.neutralA7,
 				},
 			},
+			alt2: {
+				color: DEFAULT.accent3,
+				active: {
+					color: DEFAULT.accent4,
+				},
+				disabled: {
+					color: DEFAULT.neutralA7,
+				},
+			},
 		},
 		container: {
 			primary: {
@@ -78,6 +90,9 @@ export const defaultTheme: DefaultTheme = {
 			},
 			alt2: {
 				background: DEFAULT.neutral3,
+			},
+			alt3: {
+				background: DEFAULT.primary2,
 			},
 		},
 		font: {
@@ -118,6 +133,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		overlay: {
 			primary: DEFAULT.overlay1,
+			alt1: DEFAULT.semiTransparent2
 		},
 		scrollbar: {
 			thumb: DEFAULT.neutral6,
@@ -133,6 +149,7 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.neutral3,
 			},
 		},
+		shadow: DEFAULT.neutral5,
 		tabs: {
 			active: DEFAULT.neutral2,
 			inactive: DEFAULT.neutral3,
@@ -166,9 +183,9 @@ export const defaultTheme: DefaultTheme = {
 			small: '15px',
 			base: '16px',
 			lg: '18px',
+			xLg: '24px',
 		},
 		weight: {
-			light: '300',
 			regular: '400',
 			bold: '600',
 		},

@@ -1,4 +1,4 @@
-import { CONTENT_TYPES, GROUP_CONTRACT, logValue, TAGS } from 'lib/helpers';
+import { CONTENT_TYPES, GROUP_CONTRACT, logValue, PROFILE_HEX_CODES, TAGS } from 'lib/helpers';
 
 import { DEFAULT_LOGO } from 'helpers/config';
 
@@ -61,7 +61,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 				groupId: groupContractId,
 				groupTitle: args.title,
 				walletAddress: args.owner,
-				wallet: args.wallet,
+				wallet: args.wallet
 			});
 
 			logValue(`Added Group Member`, memberTxId, 0);
@@ -93,7 +93,7 @@ function createGroupTags(args: { owner: string; title: string; logo: string }): 
 			[args.owner]: 1,
 		},
 		title: args.title,
-		members: [args.owner],
+		members: [],
 		owner: args.owner,
 		channels: [],
 		dateCreated: dateTime,
@@ -174,6 +174,9 @@ export async function addGroupMember(args: {
 	wallet: any;
 }): Promise<string | null> {
 	try {
+		const hexCodes = Object.values(PROFILE_HEX_CODES);
+		const hexIndex = Math.floor(Math.random() * hexCodes.length);
+
 		const txId = await createTransaction({
 			arClient: args.arClient,
 			tags: createGroupMemberTags({
@@ -190,7 +193,7 @@ export async function addGroupMember(args: {
 			wallet: args.wallet,
 			input: {
 				function: 'addMembers',
-				members: [args.walletAddress],
+				members: [{ address: args.walletAddress, profileHexCode: hexCodes[hexIndex] }],
 			},
 			options: { strict: true },
 		});

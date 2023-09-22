@@ -41,8 +41,8 @@ export const Image = styled.div<{ disabled: boolean }>`
 		justify-content: center;
 		align-items: center;
 		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
-		color: ${(props) => props.theme.colors.font.primary.alt1};
-		transition: background 0.075s;
+		color: ${(props) => props.disabled ? props.theme.colors.font.alt2 : props.theme.colors.font.primary};
+		transition: all 100ms;
 		font-weight: ${(props) => props.theme.typography.weight.medium};
 		border-radius: ${STYLING.dimensions.borderRadius};
 		background: ${(props) =>

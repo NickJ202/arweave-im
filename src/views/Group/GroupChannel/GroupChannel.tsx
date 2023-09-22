@@ -48,23 +48,23 @@ export default function GroupChannel() {
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
 
 	// TODO: poll data
-	// React.useEffect(() => {
-	// 	async function pollData() {
-	// 		const updatedResponse = await fetchData({ cursor: null });
+	React.useEffect(() => {
+		async function pollData() {
+			const updatedResponse = await fetchData({ cursor: null });
 
-	// 		if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
-	// 			if (updatedResponse.data.length > channelData.data.length) {
-	// 				setChannelData(updatedResponse);
-	// 				setScrollToRecent(!scrollToRecent);
-	// 			}
-	// 		}
-	// 	}
+			if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
+				if (updatedResponse.data.length > channelData.data.length) {
+					setChannelData(updatedResponse);
+					setScrollToRecent(!scrollToRecent);
+				}
+			}
+		}
 
-	// 	const intervalId = setInterval(pollData, 1000);
-	// 	return () => clearInterval(intervalId);
-	// }, [arProvider.walletAddress, cliProvider.lib, channelId, channelData]);
+		const intervalId = setInterval(pollData, 1000);
+		return () => clearInterval(intervalId);
+	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
-	// TODO: update previous messages
+	// // TODO: update previous messages
 	// React.useEffect(() => {
 	// 	(async function () {
 	// 		if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end) {
@@ -101,7 +101,7 @@ export default function GroupChannel() {
 		if (groupReducer) {
 			return (
 				<>
-					<GroupChannelHeader header={getChannelName()} members={groupReducer.data.members} />
+					<GroupChannelHeader />
 					<GroupChannelDetail
 						channelId={groupReducer.activeChannelId}
 						channelName={getChannelName()}

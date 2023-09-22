@@ -157,3 +157,36 @@ export const IconWarning = styled(IconPrimary)`
 				: props.theme.colors.notification.warning};
 	}
 `;
+
+export const Alt2 = styled.button`
+	position: relative;
+	span {
+        color: ${(props) => props.theme.colors.button.alt2.color} !important;
+        font-size: ${(props) => props.theme.typography.size.xSmall} !important;
+        font-weight: ${(props) => props.theme.typography.weight.bold} !important;
+    }
+	&:hover {
+		span {
+			color: ${(props) => props.theme.colors.button.alt2.active.color} !important;
+			text-decoration: underline;
+			text-decoration-thickness: 1.35px;
+		}
+	}
+	&:disabled {
+		span {
+			color: ${(props) => props.theme.colors.button.alt2.disabled.color} !important;
+			text-decoration: none !important;
+		}
+	}
+`;
+
+export const IconAlt2 = styled(IconPrimary)`
+	svg {
+		fill: ${(props) =>
+			props.disabled
+				? props.theme.colors.button.alt2.disabled.color
+				: props.active
+				? props.theme.colors.button.alt2.active.color
+				: props.theme.colors.button.alt2.color};
+	}
+`;

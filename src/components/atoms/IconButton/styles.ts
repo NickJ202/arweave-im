@@ -25,7 +25,7 @@ export const Primary = styled.div<{
 			? props.theme.colors.button.primary.disabled.background
 			: props.active
 			? props.theme.colors.button.primary.active.background
-			: 'transparent'};
+			: props.theme.colors.button.primary.background};
 	border: 1px solid
 		${(props) =>
 			props.active ? props.theme.colors.button.primary.active.border : props.theme.colors.button.primary.border};
@@ -57,7 +57,7 @@ export const Primary = styled.div<{
 		border: 1px solid
 			${(props) =>
 				props.disabled
-					? props.theme.colors.button.primary.disabled.border
+					? props.theme.colors.button.primary.border
 					: props.theme.colors.button.primary.active.border};
 		svg {
 			fill: ${(props) =>

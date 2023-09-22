@@ -3,7 +3,7 @@ export const ASSET_CONTRACT = {
 };
 
 export const GROUP_CONTRACT = {
-	src: 'xELWpV98xIwrc5Rg6MEv6atUkyvwx-RpEebeooyvnS0',
+	src: '4lRo3P3k0DIrXJNttwvhXppKwHWU06fBA2q-X_M6BKw',
 };
 
 export const PAGINATOR = 100;
@@ -46,6 +46,7 @@ export const TAGS = {
 		messageGroupId: 'Msg-Group-Id',
 		messageGroupVersion: 'Msg-Group-Version',
 		name: 'Name',
+		profileHexCode: 'Profile-Hex-Code',
 		protocolName: 'Protocol-Name',
 		uploaderTxId: 'Uploader-Tx-Id',
 		renderWith: 'Render-With',
@@ -61,7 +62,8 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.12',
+			'0.1': 'Msg-Group-Version-v0.16',
+			// '0.1': 'Msg-Group-Version-v0.12',
 			// '0.1': 'Msg-Group-Version-v0.11'
 		},
 		profileVersions: {
@@ -83,3 +85,16 @@ export const BUNDLR_CONFIG = {
 	currency: 'arweave',
 	node: 'https://node2.bundlr.network',
 };
+
+export const PROFILE_HEX_CODES = {
+	'1': '#9A4C95',
+	'2': '#EB9486',
+	'3': '#5B507A',
+	'4': '#BC69AA',
+	'5': '#4E598C',
+	'6': '#713E5A',
+	'7': '#E58F65',
+	'8': '#235789',
+	'9': '#538083',
+	'10': '#966B9D',
+}

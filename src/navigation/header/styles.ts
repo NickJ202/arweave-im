@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { STYLING } from 'helpers/styling';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.header`
 	height: ${STYLING.dimensions.navHeaderHeight};
 	width: 100vw;
 	position: fixed;
@@ -23,8 +23,8 @@ export const CWrapper = styled.div`
 export const LWrapper = styled.div`
 	svg {
 		padding: 3.5px 0 0 0;
-		height: 33.5px;
-		width: 30px;
+		height: 37.5px;
+		width: 55px;
 		transition: all 100ms;
 		&:hover {
 			cursor: pointer;
