@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
+import { useTheme } from 'styled-components';
 
 import { MessageEnum } from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Loader } from 'components/atoms/Loader';
+import { MessageActions } from 'components/molecules/MessageActions';
+import { EDITOR_STYLE_MAP } from 'helpers/config';
 import { formatAddress, formatDate, getOwner } from 'helpers/utils';
 import { RootState } from 'store';
 
@@ -14,7 +17,10 @@ import { Profile } from '../Profile';
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: first message hover issue actions
 export default function Message(props: IProps) {
+	const theme = useTheme();
+
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
@@ -59,33 +65,49 @@ export default function Message(props: IProps) {
 				<button onClick={() => setShowProfile(!showProfile)}>
 					{owner.handle ? owner.handle : formatAddress(owner.walletAddress, false)}
 				</button>
-			)
-			if (owner.handle) return <p>{owner.handle}</p>;
-			else return <p>{formatAddress(owner.walletAddress, false)}</p>;
+			);
 		} else return null;
 	}
 
 	function getDate() {
 		if (!props.data) return null;
-		return <span>{formatDate(props.data.dateCreated, 'epoch')}</span>;
+		return <span>{formatDate(props.data.dateCreated, 'epoch', false)}</span>;
+	}
+
+	function getShortTime() {
+		if (props.data && props.data.dateCreated) {
+			return formatDate(props.data.dateCreated, 'epoch', true);
+		} else return null;
 	}
 
 	return (
 		<>
-			<S.Wrapper>
-				<Avatar
-					owner={props.data ? props.data.owner : null}
-					dimensions={{ wrapper: 32.5, icon: 22.5 }}
-					callback={() => setShowProfile(!showProfile)}
-				/>
-				<S.MMessage>
-					<S.MMessageHeader>
-						{getHeader()}
-						{getDate()}
-					</S.MMessageHeader>
-					<S.MText>
+			<S.Wrapper textOnly={props.useSameOwner} disabled={!props.data}>
+				<S.AWrapper>
+					<MessageActions id={props.data ? props.data.id : null} />
+				</S.AWrapper>
+				{!props.useSameOwner && (
+					<Avatar
+						owner={props.data ? props.data.owner : null}
+						dimensions={{ wrapper: 32.5, icon: 22.5 }}
+						callback={() => setShowProfile(!showProfile)}
+					/>
+				)}
+				<S.MMessage textOnly={props.useSameOwner}>
+					{!props.useSameOwner && (
+						<S.MMessageHeader>
+							{getHeader()}
+							{getDate()}
+						</S.MMessageHeader>
+					)}
+					{props.useSameOwner && (
+						<S.TWrapper>
+							<span>{getShortTime()}</span>
+						</S.TWrapper>
+					)}
+					<S.MText textOnly={props.useSameOwner}>
 						{props.data ? (
-							<Editor editorState={editorState} onChange={() => {}} readOnly={true} tabIndex={-1} />
+							<Editor customStyleMap={EDITOR_STYLE_MAP(theme)} editorState={editorState} onChange={() => {}} readOnly={true} tabIndex={-1} />
 						) : (
 							<>
 								{Array.from({ length: 2 }, (_, i) => i + 1).map((index: number) => {
@@ -98,6 +120,9 @@ export default function Message(props: IProps) {
 							</>
 						)}
 					</S.MText>
+					{/* <S.MFooter>
+
+					</S.MFooter> */}
 				</S.MMessage>
 			</S.Wrapper>
 			{showProfile && (

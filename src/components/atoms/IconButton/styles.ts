@@ -65,3 +65,27 @@ export const Primary = styled.div<{
 		}
 	}
 `;
+
+export const Alt1 = styled(Primary)`
+	background: ${(props) =>
+		props.disabled
+			? 'transparent'
+			: props.active
+			? props.theme.colors.button.primary.active.background
+			: 'transparent'};
+	border: 1px solid
+		${(props) =>
+			props.active ? props.theme.colors.button.primary.active.border : 'transparent'};
+	&:hover {
+		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+		background: ${(props) =>
+			props.disabled
+				? 'transparent'
+				: props.theme.colors.button.primary.active.background};
+		border: 1px solid
+			${(props) =>
+				props.disabled
+					? 'transparent'
+					: props.theme.colors.button.primary.active.border};
+	}
+`;

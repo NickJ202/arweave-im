@@ -50,8 +50,6 @@ export default function Profile(props: IProps) {
 		}
 	}, [owner]);
 
-	console.log(owner);
-
 	return owner ? (
 		<Portal node={DOM.panel}>
 			<S.Wrapper className={'overlay'}>

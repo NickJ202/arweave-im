@@ -1,12 +1,13 @@
 import React from 'react';
 import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
+import { useTheme } from 'styled-components';
 
 import { CONTENT_TYPES, MessageEnum, TAGS } from 'lib';
 const { hasCommandModifier } = KeyBindingUtil;
 
 import { Button } from 'components/atoms/Button';
 import { IconButton } from 'components/atoms/IconButton';
-import { ASSETS } from 'helpers/config';
+import { ASSETS , EDITOR_STYLE_MAP } from 'helpers/config';
 import { language } from 'helpers/language';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
@@ -17,6 +18,8 @@ import * as S from './styles';
 import { IProps } from './types';
 
 export default function MessageCreate(props: IProps) {
+	const theme = useTheme();
+
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
 
@@ -29,6 +32,7 @@ export default function MessageCreate(props: IProps) {
 	const [boldActive, setBoldActive] = React.useState<boolean>(false);
 	const [italicActive, setItalicActive] = React.useState<boolean>(false);
 	const [underlineActive, setUnderlineActive] = React.useState<boolean>(false);
+	const [codeActive, setCodeActive] = React.useState<boolean>(false);
 
 	const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -43,6 +47,10 @@ export default function MessageCreate(props: IProps) {
 
 		if (e.keyCode === 13) {
 			return 'submit-message';
+		}
+
+		if (e.keyCode === 220 && hasCommandModifier(e)) {
+			return 'code';
 		}
 
 		return getDefaultKeyBinding(e);
@@ -70,6 +78,9 @@ export default function MessageCreate(props: IProps) {
 				break;
 			case 'underline':
 				setUnderlineActive(!underlineActive);
+				break;
+			case 'code':
+				setCodeActive(!codeActive);
 				break;
 			default:
 				break;
@@ -101,6 +112,12 @@ export default function MessageCreate(props: IProps) {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'UNDERLINE');
 		setEditorState(newState);
 		setUnderlineActive(!underlineActive);
+	};
+
+	const handleCode = () => {
+		const newState = RichUtils.toggleInlineStyle(editorState, 'CODE');
+		setEditorState(newState);
+		setCodeActive(!codeActive);
 	};
 
 	const handleSubmit = async () => {
@@ -147,31 +164,56 @@ export default function MessageCreate(props: IProps) {
 		<S.Wrapper>
 			<S.Header>
 				<IconButton
-					type={'primary'}
+					type={'alt1'}
 					src={ASSETS.bold}
 					handlePress={handleBold}
 					active={boldActive}
 					disabled={!messageActive}
+					dimensions={{
+						wrapper: 22.5,
+						icon: 13.5,
+					}}
 				/>
 				<IconButton
-					type={'primary'}
+					type={'alt1'}
 					src={ASSETS.italic}
 					handlePress={handleItalic}
 					active={italicActive}
 					disabled={!messageActive}
+					dimensions={{
+						wrapper: 22.5,
+						icon: 13.5,
+					}}
 				/>
 				<IconButton
-					type={'primary'}
+					type={'alt1'}
 					src={ASSETS.underline}
 					handlePress={handleUnderline}
 					active={underlineActive}
 					disabled={!messageActive}
+					dimensions={{
+						wrapper: 22.5,
+						icon: 13.5,
+					}}
+				/>
+				<S.IDivider />
+				<IconButton
+					type={'alt1'}
+					src={ASSETS.code}
+					handlePress={handleCode}
+					active={codeActive}
+					disabled={!messageActive}
+					dimensions={{
+						wrapper: 22.5,
+						icon: 13.5,
+					}}
 				/>
 			</S.Header>
 			<S.Body>
 				<S.Editor onClick={handleContainerClick}>
 					<Editor
 						ref={editorRef}
+						customStyleMap={EDITOR_STYLE_MAP(theme)}
 						editorState={editorState}
 						handleKeyCommand={handleKeyCommand}
 						onChange={setEditorState}

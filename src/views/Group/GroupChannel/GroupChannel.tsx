@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChannelResponseType, ChannelType, CURSORS } from 'lib';
+import { ChannelResponseType, ChannelType } from 'lib';
 
 import { formatChannelName } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -18,7 +18,7 @@ export default function GroupChannel() {
 
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
-	const [loading, setLoading] = React.useState<boolean>(false);
+	const [_loading, setLoading] = React.useState<boolean>(false);
 	const [channelData, setChannelData] = React.useState<ChannelResponseType | null>(null);
 
 	const [scrollToRecent, setScrollToRecent] = React.useState<boolean>(false);
@@ -41,6 +41,7 @@ export default function GroupChannel() {
 
 	React.useEffect(() => {
 		(async function () {
+			setChannelData(null);
 			setLoading(true);
 			setChannelData(await fetchData({ cursor: null }));
 			setLoading(false);

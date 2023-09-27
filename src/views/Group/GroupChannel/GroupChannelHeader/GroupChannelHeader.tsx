@@ -43,9 +43,8 @@ export default function GroupChannelHeader() {
 				<>
 					{groupReducer.data.members.map((member: MemberType, index: number) => {
 						return (
-							<>
+							<React.Fragment key={index}>
 								<S.MemberLine
-									key={index}
 									onClick={() => {
 										setActiveAddress(member.address);
 										setShowMembersDropdown(false);
@@ -55,7 +54,7 @@ export default function GroupChannelHeader() {
 									<Avatar owner={member.address} dimensions={{ wrapper: 27.5, icon: 17.5 }} callback={null} />
 									{getHandle(member.address)}
 								</S.MemberLine>
-							</>
+							</React.Fragment>
 						);
 					})}
 				</>
@@ -78,12 +77,17 @@ export default function GroupChannelHeader() {
 						>
 							<Button
 								type={'primary'}
-								label={`${groupReducer.data.members.length} ${language.members}`}
+								label={`${groupReducer.data.members.length} ${ groupReducer.data.members.length > 1 ? language.members : language.member}`}
 								handlePress={() => setShowMembersDropdown(!showMembersDropdown)}
 								noMinWidth
 							/>
 							{showMembersDropdown && (
-								<S.MembersDropdown className={'border-wrapper-primary'}>{getMembers()}</S.MembersDropdown>
+								<S.MembersDropdown className={'border-wrapper-primary scroll-wrapper'}>
+									<S.MDHeader>
+										<p>{language.groupMembers}</p>
+									</S.MDHeader>
+									{getMembers()}
+								</S.MembersDropdown>
 							)}
 						</CloseHandler>
 					)}

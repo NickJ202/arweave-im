@@ -14,18 +14,20 @@ const DEFAULT = {
 	neutralA5: '#757582',
 	neutralA6: '#C1CAD2',
 	neutralA7: '#9B9BA1',
+	neutralA8: '#4C4C53',
 	primary: '#F6F8FA',
 	primary2: '#E5EBF1',
 	accent: '#4EBC9B',
 	accent2: '#3EA384',
 	accent3: '#4774C2',
 	accent4: '#3D6AB8',
+	accent5: '#031926',
 	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
 	semiTransparent2: 'rgba(0, 0, 0, 0.275)',
-	negative: '#D24646',
-	negativeShadow: '#F27979',
+	negative: '#E83151',
+	negativeShadow: '#EF6C82',
 	positive: '#06BA63',
 	neutral: '#FFC43D'
 };
@@ -95,11 +97,18 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.primary2,
 			},
 		},
+		editor: {
+			codeLine: {
+				background: DEFAULT.neutral3,
+				border: DEFAULT.neutral6,
+				color: DEFAULT.accent5
+			}
+		},
 		font: {
 			primary: DEFAULT.neutralA1,
 			active: DEFAULT.neutralA3,
 			alt1: DEFAULT.neutralA2,
-			alt2: DEFAULT.neutralA5,
+			alt2: DEFAULT.neutralA8,
 			alt3: DEFAULT.neutral1,
 		},
 		form: {
@@ -175,9 +184,11 @@ export const defaultTheme: DefaultTheme = {
 	},
 	typography: {
 		family: {
-			primary: `'Lato', sans-serif;`,
+			primary: `'Public Sans', sans-serif;`,
+			code: 'Monaco,Menlo,Consolas,Courier New,monospace',
 		},
 		size: {
+			xxxSmall: '12px',
 			xxSmall: '13px',
 			xSmall: '14px',
 			small: '15px',

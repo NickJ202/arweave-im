@@ -1,9 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 
-import { ChannelType, GroupType } from 'lib';
+import { ChannelType } from 'lib';
 
 import { IconButton } from 'components/atoms/IconButton';
 import { Loader } from 'components/atoms/Loader';
@@ -12,14 +12,14 @@ import { ASSETS } from 'helpers/config';
 import * as urls from 'helpers/urls';
 import { formatChannelName } from 'helpers/utils';
 import { RootState } from 'store';
+import * as groupActions from 'store/group/actions';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: update groupReducer.activeChannelId on change
 export default function Panel(props: IProps) {
-	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
@@ -27,8 +27,7 @@ export default function Panel(props: IProps) {
 	const [dropdownDisabled, setDropdownDisabled] = React.useState<boolean>(false);
 
 	function handleChannelChange(channelId: string) {
-		// setActiveChannelId(channelId);
-		navigate(`${groupReducer.groupId}/${channelId}`);
+		dispatch(groupActions.setActiveChannelId(channelId));
 	}
 
 	function getChannels() {
@@ -76,7 +75,7 @@ export default function Panel(props: IProps) {
 									<ReactSVG src={ASSETS.arrowDown} />
 								</S.GroupAction>
 							</S.Group>
-							<S.Channels>{getChannels()}</S.Channels>
+							<S.Channels className={'scroll-wrapper'}>{getChannels()}</S.Channels>
 						</CloseHandler>
 						{showDropdown && (
 							<CloseHandler

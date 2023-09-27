@@ -32,10 +32,16 @@ export default function GroupChannelDetail(props: IProps) {
 				<>
 					{props.channelData.data.length > 0 ? (
 						props.channelData.data.map((asset: AssetType, index: number) => {
-							return <Message key={index} data={asset} />;
+							let useSameOwner: boolean = false;
+							if (index > 0) {
+								useSameOwner = asset.owner === props.channelData.data[index - 1].owner;
+							}
+							return <Message key={index} data={asset} useSameOwner={useSameOwner} />;
 						})
 					) : (
-						<p>{language.noMessages}</p>
+						<S.EWrapper>
+							<p>{language.noMessages}</p>
+						</S.EWrapper>
 					)}
 				</>
 			);
@@ -44,7 +50,7 @@ export default function GroupChannelDetail(props: IProps) {
 			return (
 				<>
 					{Array.from({ length: 10 }, (_, i) => i + 1).map((index: number) => {
-						return <Message key={index} data={null} />;
+						return <Message key={index} data={null} useSameOwner={false} />;
 					})}
 				</>
 			)
@@ -53,7 +59,7 @@ export default function GroupChannelDetail(props: IProps) {
 
 	return (
 		<S.Wrapper>
-			<S.MWrapper ref={mWrapperRef} onScroll={handleScroll}>{getChannelData()}</S.MWrapper>
+			<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>{getChannelData()}</S.MWrapper>
 			<S.CWrapper>
 				<MessageCreate
 					channelId={props.channelId}

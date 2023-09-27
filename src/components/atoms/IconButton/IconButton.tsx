@@ -11,9 +11,19 @@ export default function IconButton(props: IProps) {
 		let buttonObj: {
 			wrapper: any;
 		};
-		buttonObj = {
-			wrapper: S.Primary,
-		};
+
+		switch (props.type) {
+			case 'primary':
+				buttonObj = {
+					wrapper: S.Primary,
+				};
+				break;
+			case 'alt1':
+				buttonObj = {
+					wrapper: S.Alt1,
+				};
+				break;
+		}
 		return buttonObj;
 	}
 

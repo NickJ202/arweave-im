@@ -54,10 +54,8 @@ export const Primary = styled.button<{
 		border: 1px solid ${(props) => props.theme.colors.button.primary.active.border};
 	}
 	&:focus {
-		background: ${(props) =>
-			props.active
-				? props.theme.colors.button.primary.active.background
-				: props.theme.colors.button.primary.background};
+		background: ${(props) => props.theme.colors.button.primary.active.background};
+		border: 1px solid ${(props) => props.theme.colors.button.primary.active.border};
 	}
 	&:disabled {
 		background: ${(props) => props.theme.colors.button.primary.disabled.background};

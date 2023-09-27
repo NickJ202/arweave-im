@@ -31,10 +31,13 @@ export const language = {
 	channelTitle: `Channel Title`,
 	channelCreated: `Channel created`,
 	memberAdded: `Member Added`,
+	member: `Member`,
 	members: `Members`,
 	viewProfile: `View Profile`,
 	profile: `Profile`,
 	social: `Social`,
 	twitter: `Twitter`,
-	discord: `Discord`
+	discord: `Discord`,
+	groupId: `Group ID`,
+	groupMembers: `Group Members`,
 };

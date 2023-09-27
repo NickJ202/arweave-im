@@ -8,7 +8,7 @@ export const Wrapper = styled.div<{ top: number; noHeader: boolean }>`
 	height: 100%;
 	width: 100%;
 	position: fixed;
-	z-index: 11;
+	z-index: 12;
 	top: 0;
 	left: 0;
 	background: ${(props) => props.theme.colors.overlay.primary};

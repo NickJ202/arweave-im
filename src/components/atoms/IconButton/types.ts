@@ -4,7 +4,7 @@ export interface IProps {
 	src: string;
 	type: ButtonType;
 	handlePress: any;
-	active: boolean;
+	active?: boolean;
 	sm?: boolean;
 	warning?: boolean;
 	disabled?: boolean;

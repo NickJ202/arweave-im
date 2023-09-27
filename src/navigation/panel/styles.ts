@@ -110,24 +110,6 @@ export const Channels = styled.div`
 	padding: 15px 0;
 	overflow: auto;
 	animation: ${open} ${fadeIn1};
-	scrollbar-width: thin;
-	scrollbar-color: transparent transparent;
-	::-webkit-scrollbar {
-		width: 8px;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background-color: transparent;
-		border-radius: ${STYLING.dimensions.borderRadius};
-	}
-
-	&:hover {
-		scrollbar-color: ${(props) => props.theme.colors.scrollbar.thumb} transparent;
-
-		::-webkit-scrollbar-thumb {
-			background-color: ${(props) => props.theme.colors.scrollbar.thumb};
-		}
-	}
 
 	> * {
 		&:not(:last-child) {

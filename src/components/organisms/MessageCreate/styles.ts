@@ -20,12 +20,18 @@ export const Header = styled.div`
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 	> * {
 		&:not(:last-child) {
-			margin: 0 20px 0 0;
+			margin: 0 15px 0 0;
 		}
 		&:last-child {
 			margin: 0;
 		}
 	}
+`;
+
+export const IDivider = styled.div`
+	height: 19.5px;
+	width: 1.25px;
+	border-right: 1.25px solid ${(props) => props.theme.colors.border.alt1};
 `;
 
 export const Body = styled.div`

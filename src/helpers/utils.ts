@@ -1,12 +1,13 @@
 import { DateType, GroupReduxType, ProfileType } from './types';
 
 export function formatAddress(address: string | null, wrap: boolean) {
-	if (!address) {
-		return '';
-	}
+	if (!address) return '';
+	if (!checkAddress(address))return address;
 	const formattedAddress = address.substring(0, 5) + '...' + address.substring(36, address.length - 1);
 	return wrap ? `(${formattedAddress})` : formattedAddress;
 }
+
+export const checkAddress = (addr: string) => /[a-z0-9_-]{43}/i.test(addr);
 
 function formatTime(time: number): string {
 	return time < 10 ? `0${time.toString()}` : time.toString();
@@ -25,7 +26,7 @@ function getHourFormat(hours: number) {
 	}
 }
 
-export function formatDate(dateArg: string | number | null, dateType: DateType) {
+export function formatDate(dateArg: string | number | null, dateType: DateType, useShortDate: boolean) {
 	if (!dateArg) return null;
 
 	let date: Date | null = null;
@@ -42,11 +43,11 @@ export function formatDate(dateArg: string | number | null, dateType: DateType) 
 			break;
 	}
 
-	return `${date.toLocaleString('default', {
+	return `${useShortDate ? '' : `${date.toLocaleString('default', {
 		month: 'long',
-	})} ${date.getDate()}, ${date.getUTCFullYear()} · ${getHours(date.getHours())}:${formatTime(
+	})} ${date.getDate()}, ${date.getUTCFullYear()} · `}${getHours(date.getHours())}:${formatTime(
 		date.getMinutes()
-	)}:${formatTime(date.getSeconds())} ${getHourFormat(date.getHours())}`;
+	)} ${useShortDate ? '' : getHourFormat(date.getHours())}`;
 }
 
 export function formatChannelName(channelName: string) {

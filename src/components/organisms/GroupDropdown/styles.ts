@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
-	width: 300px;
+	width: 360px;
+	max-width: 90vw;
 	position: absolute;
 	top: 100px;
 	left: 15px;
@@ -21,6 +22,8 @@ export const Header = styled.div`
 `;
 
 export const Logo = styled.div`
+	min-height: 40px;
+	min-width: 40px;
 	height: 40px;
 	width: 40px;
 	position: relative;
@@ -38,17 +41,37 @@ export const Logo = styled.div`
 	}
 `;
 
-export const Title = styled.div`
+export const TAWrapper = styled.div`
+	max-width: 65%;
 	margin: 0 0 0 15px;
-	span {
+`;
+
+export const Title = styled.div`
+	p {
 		font-size: ${(props) => props.theme.typography.size.lg};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};
-		max-width: 75%;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+`;
+
+export const GroupId = styled.div`
+	margin: 5px 0 0 0;
+	display: flex;
+	align-items: center;
+
+	p,span{
+		font-size: ${(props) => props.theme.typography.size.xxSmall};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+	}
+	p {
+		color: ${(props) => props.theme.colors.font.alt1};
+	}
+	span {
+		color: ${(props) => props.theme.colors.font.alt2};
 	}
 `;
 
@@ -72,7 +95,7 @@ export const Action = styled.button`
 		background: ${(props) => props.theme.colors.button.primary.active.background};
 	}
 	span {
-		font-size: ${(props) => props.theme.typography.size.xSmall};
+		font-size: ${(props) => props.theme.typography.size.small};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};
@@ -87,3 +110,5 @@ export const SWrapper = styled.div`
 	width: fit-content;
 	margin: 0 0 0 auto;
 `;
+
+export const Form = styled.form``;

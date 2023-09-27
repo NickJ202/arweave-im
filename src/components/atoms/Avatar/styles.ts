@@ -2,13 +2,12 @@ import styled from 'styled-components';
 
 import { STYLING } from 'helpers/styling';
 
-export const Wrapper = styled.button<{ dimensions: { wrapper: number; icon: number }, hexCode: string, hasCallback: boolean }>`
+export const Wrapper = styled.div<{ dimensions: { wrapper: number; icon: number }, hexCode: string, hasCallback: boolean }>`
     min-height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
     min-width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
     height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
     width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
     background: ${(props) => props.hexCode ? props.hexCode : props.theme.colors.icon.alt2};
-    border: 1px solid ${(props) => props.hexCode ? props.hexCode : props.theme.colors.border.primary};
     border-radius: ${STYLING.dimensions.borderRadius};
     overflow: hidden;
     display: flex;

@@ -1,17 +1,24 @@
+import { DefaultTheme } from 'styled-components';
+
 import arLogo from 'assets/ar-logo.svg';
 import arconnectWallet from 'assets/arconnect-wallet-logo.png';
 import arrowDown from 'assets/arrow-down.svg';
 import bold from 'assets/bold.svg';
+import checkmark from 'assets/checkmark.svg';
 import close from 'assets/close.svg';
+import code from 'assets/code.svg';
+import copy from 'assets/copy.svg';
 import info from 'assets/info.svg';
 import italic from 'assets/italic.svg';
 import logo from 'assets/logo.svg';
 import menu from 'assets/menu.svg';
+import stamp from 'assets/stamp.svg';
 import strikethrough from 'assets/strikethrough.svg';
 import underline from 'assets/underline.svg';
 import user from 'assets/user.svg';
 import wallet from 'assets/wallet.svg';
 
+import { STYLING } from './styling';
 import { WalletEnum } from './types';
 export const APP = {
 	appKey: 'appVersion',
@@ -23,11 +30,15 @@ export const APP = {
 export const ASSETS = {
 	arrowDown: arrowDown,
 	bold: bold,
+	checkmark: checkmark,
 	close: close,
+	code: code,
+	copy: copy,
 	info: info,
 	italic: italic,
 	logo: logo,
 	menu: menu,
+	stamp: stamp,
 	strikethrough: strikethrough,
 	underline: underline,
 	user: user,
@@ -73,3 +84,19 @@ export const REDIRECTS = {
 		profile: (handle: string) => `https://twitter.com/${handle}`
 	}
 }
+
+export const EDITOR_STYLE_MAP = (theme: DefaultTheme) => {
+	return (
+		{
+			CODE: {
+				fontFamily: theme.typography.family.code,
+				fontSize: theme.typography.size.xxxSmall,
+				color: theme.colors.editor.codeLine.color,
+				backgroundColor: theme.colors.editor.codeLine.background,
+				padding: '1.5px 3.5px',
+				borderRadius: STYLING.dimensions.borderRadius,
+				border: `1px solid ${theme.colors.editor.codeLine.border}`,
+			},
+		}
+	)
+};

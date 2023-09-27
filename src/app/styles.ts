@@ -134,6 +134,29 @@ export const GlobalStyle = createGlobalStyle`
     background: ${(props) => props.theme.colors.overlay.primary};
     backdrop-filter: blur(2px);
   }
+
+  .scroll-wrapper {
+    overflow: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      border-radius: ${STYLING.dimensions.borderRadius};
+    }
+
+    &:hover {
+      scrollbar-color: ${(props) => props.theme.colors.scrollbar.thumb} transparent;
+
+      ::-webkit-scrollbar-thumb {
+        background-color: ${(props) => props.theme.colors.scrollbar.thumb};
+      }
+    }
+  }
 `;
 
 export const Panel = styled.aside`

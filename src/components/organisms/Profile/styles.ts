@@ -7,7 +7,7 @@ export const Wrapper = styled.div``;
 export const PWrapper = styled.div`
 	height: 100vh;
 	width: 400px;
-    max-width: 90vw;
+    max-width: 100vw;
 	position: fixed;
 	top: 0;
 	right: 0;

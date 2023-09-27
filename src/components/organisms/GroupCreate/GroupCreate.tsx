@@ -163,12 +163,13 @@ export default function GroupCreate(props: IProps) {
 							/>
 							<S.SWrapper>
 								<Button
-									type={'primary'}
+									type={'alt1'}
 									label={language.submit}
 									handlePress={async (e) => await handleSubmit(e)}
 									loading={loading}
 									disabled={getSubmitDisabled() || loading}
 									noMinWidth
+									formSubmit
 								/>
 							</S.SWrapper>
 						</S.Form>

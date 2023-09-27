@@ -62,9 +62,7 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.16',
-			// '0.1': 'Msg-Group-Version-v0.12',
-			// '0.1': 'Msg-Group-Version-v0.11'
+			'0.1': 'Msg-Group-Version-v0.17'
 		},
 		profileVersions: {
 			'0.2': 'Account-0.2',
@@ -87,14 +85,14 @@ export const BUNDLR_CONFIG = {
 };
 
 export const PROFILE_HEX_CODES = {
-	'1': '#9A4C95',
-	'2': '#EB9486',
-	'3': '#5B507A',
-	'4': '#BC69AA',
-	'5': '#4E598C',
-	'6': '#713E5A',
-	'7': '#E58F65',
-	'8': '#235789',
-	'9': '#538083',
-	'10': '#966B9D',
+	'1': '#FF665C',
+	'2': '#D73D5B',
+	'3': '#C44EC2',
+	'4': '#FF6666',
+	'5': '#FF8360',
+	'6': '#FD6998',
+	'7': '#E75A7C',
+	'8': '#DE2BC0',
+	'9': '#DA008F',
+	'10': '#FF4D50',
 }

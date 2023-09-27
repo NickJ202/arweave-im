@@ -1,23 +1,29 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
-import { getTxEndpoint } from 'lib';
+import { getTxEndpoint, logValue, ProfileType } from 'lib';
 
 import { Button } from 'components/atoms/Button';
 import { FormField } from 'components/atoms/FormField';
 import { IconButton } from 'components/atoms/IconButton';
+import { TxAddress } from 'components/atoms/TxAddress';
 import { Modal } from 'components/molecules/Modal';
 import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import { ResponseType, WalletEnum } from 'helpers/types';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
+import { RootState } from 'store';
+import * as groupActions from 'store/group/actions';
 
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: hot update member / channel update in reducer
 export default function GroupDropdown(props: IProps) {
+	const dispatch = useDispatch();
+	const groupReducer = useSelector((state: RootState) => state.groupReducer);
+
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
 
@@ -78,7 +84,34 @@ export default function GroupDropdown(props: IProps) {
 							break;
 					}
 
-					console.log(id);
+					logValue(`Deployed Transaction`, id, 0);
+
+					const updatedProfiles: ProfileType[] = groupReducer.data.profiles;
+					switch (modalType) {
+						case 'member':
+							const updatedProfile: ProfileType = (
+								await cliProvider.lib.api.getProfiles({ addresses: [walletAddress] })
+							)[0];
+							updatedProfiles.push(updatedProfile);
+							break;
+						case 'channel':
+							break;
+					}
+
+					const groupState = await cliProvider.lib.api.arClient.read(props.groupId);
+					const updatedGroupState = {
+						...groupState,
+						profiles: updatedProfiles,
+					};
+					dispatch(groupActions.updateGroupState(updatedGroupState));
+
+					switch (modalType) {
+						case 'member':
+							break;
+						case 'channel':
+							dispatch(groupActions.setActiveChannelId(id));
+							break;
+					}
 
 					setSubmitResponse({
 						status: true,
@@ -162,19 +195,20 @@ export default function GroupDropdown(props: IProps) {
 				{submitResponse ? (
 					<p>{submitResponse.message}</p>
 				) : (
-					<>
+					<S.Form>
 						{formField}
 						<S.SWrapper>
 							<Button
-								type={'primary'}
+								type={'alt1'}
 								label={language.submit}
 								handlePress={async (e) => await handleSubmit(e)}
 								loading={loading}
 								disabled={getSubmitDisabled() || loading}
 								noMinWidth
+								formSubmit
 							/>
 						</S.SWrapper>
-					</>
+					</S.Form>
 				)}
 			</Modal>
 		);
@@ -187,9 +221,16 @@ export default function GroupDropdown(props: IProps) {
 					<S.Logo>
 						<img src={getTxEndpoint(props.group.logo)} />
 					</S.Logo>
-					<S.Title>
-						<span>{props.group.title}</span>
-					</S.Title>
+					<S.TAWrapper>
+						<S.Title>
+							<p>{props.group.title}</p>
+						</S.Title>
+						<S.GroupId>
+							<p>{`${language.groupId}:`}</p>
+							&nbsp;
+							<TxAddress address={props.groupId} wrap={false} />
+						</S.GroupId>
+					</S.TAWrapper>
 					<S.Close>
 						<IconButton
 							type={'primary'}
