@@ -8,13 +8,13 @@ import { groupReducer } from './group/reducers';
 declare const window: any;
 
 const persistConfig = {
-    key: 'root',
-    storage,
-    blacklist: ['groupReducer'],
+	key: 'root',
+	storage,
+	blacklist: ['groupReducer'],
 };
 
 const rootReducer = combineReducers({
-    groupReducer
+	groupReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -22,12 +22,12 @@ const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
 
 let composedEnhancer: any;
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {
-    composedEnhancer = compose(
-        applyMiddleware(thunk),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
+	composedEnhancer = compose(
+		applyMiddleware(thunk),
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+	);
 } else {
-    composedEnhancer = compose(applyMiddleware(thunk));
+	composedEnhancer = compose(applyMiddleware(thunk));
 }
 
 export type AppDispatch = typeof store.dispatch;

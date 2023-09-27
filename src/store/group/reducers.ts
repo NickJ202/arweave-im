@@ -10,13 +10,13 @@ export function groupReducer(state: GroupReduxType | null = null, action: ReduxA
 			return Object.assign({}, state, {
 				data: state.data,
 				groupId: state.groupId,
-				activeChannelId: action.payload
+				activeChannelId: action.payload,
 			});
 		case UPDATE_GROUP_STATE:
 			return Object.assign({}, state, {
 				data: action.payload,
 				groupId: state.groupId,
-				activeChannelId: state.activeChannelId
+				activeChannelId: state.activeChannelId,
 			});
 		default:
 			return state;

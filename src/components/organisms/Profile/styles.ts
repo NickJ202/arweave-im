@@ -7,7 +7,7 @@ export const Wrapper = styled.div``;
 export const PWrapper = styled.div`
 	height: 100vh;
 	width: 400px;
-    max-width: 100vw;
+	max-width: 100vw;
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -28,7 +28,7 @@ export const TWrapper = styled.div`
 	padding: 0 20px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 	animation: ${open} ${fadeIn1};
-    span {
+	span {
 		font-size: ${(props) => props.theme.typography.size.lg};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
@@ -41,26 +41,26 @@ export const TWrapper = styled.div`
 `;
 
 export const BWrapper = styled.div`
-    height: calc(100% - 50px);
-    width: 100%;
-    padding: 20px 0;
+	height: calc(100% - 50px);
+	width: 100%;
+	padding: 20px 0;
 `;
 
 export const AWrapper = styled.div`
-    width: fit-content;
-    margin: 5px auto 0 auto;
+	width: fit-content;
+	margin: 5px auto 0 auto;
 `;
 
 export const IWrapper = styled.div`
-    width: 100%;
-    margin: 25px 0 0 0;
+	width: 100%;
+	margin: 25px 0 0 0;
 	padding: 0 20px 25px 20px;
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
 export const Name = styled.div`
-    p {
-        font-size: ${(props) => props.theme.typography.size.xLg};
+	p {
+		font-size: ${(props) => props.theme.typography.size.xLg};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};
@@ -68,21 +68,21 @@ export const Name = styled.div`
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-    }
+	}
 `;
 
 export const Address = styled.div`
-    width: 100%;
-    display: flex;
+	width: 100%;
+	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-    justify-content: space-between;
-    margin: 7.5px 0 0 0;
-    span {
-        color: ${(props) => props.theme.colors.font.alt2};
-        font-size: ${(props) => props.theme.typography.size.xSmall};
-        font-weight: ${(props) => props.theme.typography.weight.bold};
-    }
+	justify-content: space-between;
+	margin: 7.5px 0 0 0;
+	span {
+		color: ${(props) => props.theme.colors.font.alt2};
+		font-size: ${(props) => props.theme.typography.size.xSmall};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+	}
 `;
 
 export const SWrapper = styled(IWrapper)``;

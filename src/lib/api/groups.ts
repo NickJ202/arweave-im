@@ -61,7 +61,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 				groupId: groupContractId,
 				groupTitle: args.title,
 				walletAddress: args.owner,
-				wallet: args.wallet
+				wallet: args.wallet,
 			});
 
 			logValue(`Added Group Member`, memberTxId, 0);

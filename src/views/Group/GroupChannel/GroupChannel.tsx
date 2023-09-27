@@ -31,7 +31,7 @@ export default function GroupChannel() {
 				owners: null,
 				cursor: args.cursor,
 				reduxCursor: null,
-				walletAddress: null,
+				walletAddress: arProvider.walletAddress,
 			});
 
 			if (response && response.data) return response;
@@ -48,22 +48,22 @@ export default function GroupChannel() {
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
 
-	// TODO: poll data
-	React.useEffect(() => {
-		async function pollData() {
-			const updatedResponse = await fetchData({ cursor: null });
+	// // TODO: poll data
+	// React.useEffect(() => {
+	// 	async function pollData() {
+	// 		const updatedResponse = await fetchData({ cursor: null });
 
-			if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
-				if (updatedResponse.data.length > channelData.data.length) {
-					setChannelData(updatedResponse);
-					setScrollToRecent(!scrollToRecent);
-				}
-			}
-		}
+	// 		if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
+	// 			if (updatedResponse.data.length > channelData.data.length) {
+	// 				setChannelData(updatedResponse);
+	// 				setScrollToRecent(!scrollToRecent);
+	// 			}
+	// 		}
+	// 	}
 
-		const intervalId = setInterval(pollData, 1000);
-		return () => clearInterval(intervalId);
-	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
+	// 	const intervalId = setInterval(pollData, 1000);
+	// 	return () => clearInterval(intervalId);
+	// }, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
 	// // TODO: update previous messages
 	// React.useEffect(() => {

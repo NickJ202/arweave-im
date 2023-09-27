@@ -77,7 +77,9 @@ export default function GroupChannelHeader() {
 						>
 							<Button
 								type={'primary'}
-								label={`${groupReducer.data.members.length} ${ groupReducer.data.members.length > 1 ? language.members : language.member}`}
+								label={`${groupReducer.data.members.length} ${
+									groupReducer.data.members.length > 1 ? language.members : language.member
+								}`}
 								handlePress={() => setShowMembersDropdown(!showMembersDropdown)}
 								noMinWidth
 							/>

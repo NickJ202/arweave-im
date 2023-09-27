@@ -1,6 +1,5 @@
 import { StampType } from 'lib';
 
 export interface IProps {
-	id: string | null;
-	stamps: StampType | null;
+	stamps: StampType;
 }

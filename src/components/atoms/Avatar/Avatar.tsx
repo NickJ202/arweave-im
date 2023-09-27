@@ -27,7 +27,13 @@ export default function Avatar(props: IProps) {
 	}
 
 	function getAvatar() {
-		if (!props.owner) return <Loader placeholder />;
+		if (!props.owner) {
+			return (
+				<S.ALoader>
+					<Loader placeholder />
+				</S.ALoader>
+			);
+		}
 
 		const owner = getOwner(groupReducer, props.owner);
 		if (owner) {
@@ -38,10 +44,13 @@ export default function Avatar(props: IProps) {
 		return <ReactSVG src={ASSETS.user} />;
 	}
 
-	
-
 	return (
-		<S.Wrapper onClick={props.callback ? props.callback : () => {}} dimensions={props.dimensions} hexCode={getProfileHex()} hasCallback={props.callback !== null}>
+		<S.Wrapper
+			onClick={props.callback ? props.callback : () => {}}
+			dimensions={props.dimensions}
+			hexCode={getProfileHex()}
+			hasCallback={props.callback !== null}
+		>
 			{getAvatar()}
 		</S.Wrapper>
 	);

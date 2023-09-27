@@ -27,7 +27,9 @@ export default function Group() {
 				if (!groupReducer || groupReducer.groupId !== groupId) {
 					try {
 						const groupState = await cliProvider.lib.api.arClient.read(groupId);
-						const profiles = await cliProvider.lib.api.getProfiles({ addresses: groupState.members.map((member: MemberType) => member.address) });
+						const profiles = await cliProvider.lib.api.getProfiles({
+							addresses: groupState.members.map((member: MemberType) => member.address),
+						});
 
 						dispatch(
 							groupActions.setGroup({

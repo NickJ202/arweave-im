@@ -1,3 +1,8 @@
+import Stamps from '@permaweb/stampjs';
+import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
+
+import { API_CONFIG } from 'helpers/config';
+
 import { getGQLData } from '../gql';
 import {
 	AGQLResponseType,
@@ -14,7 +19,7 @@ import {
 	TagType,
 } from '../helpers';
 
-import { createContract, createTransaction, getProfiles } from '.';
+import { createContract, createTransaction } from '.';
 
 export async function getAssetsByChannel(args: AssetArgsClientType): Promise<ChannelResponseType> {
 	try {
@@ -29,15 +34,37 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			useArweaveNet: false,
 		});
 
-		const responseData: AssetType[] = gqlData.data.map((element: GQLNodeResponseType) => {
+		const stamps = Stamps.init({
+			warp: args.arClient.warp,
+			arweave: args.arClient.arweave,
+			wallet: args.walletAddress ? new InjectedArweaveSigner(args.walletAddress) : 'use_wallet',
+			graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
+		});
+		const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
+		const stampCounts = await stamps.counts(dataIds);
+
+		const responseDataPromises: Promise<AssetType>[] = gqlData.data.map(async (element: GQLNodeResponseType) => {
+			const connectedWalletStamped = await withTimeout(1000, stamps.hasStamped(element.node.id)).catch(_e => {
+				return false;
+			});
+			
 			return {
 				id: element.node.id,
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 				message: getTagValue(element.node.tags, TAGS.keys.messageData),
 				owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
-				stamps: { total: 0, vouched: 0 },
+				stamps: stampCounts[element.node.id]
+					? {
+						...stampCounts[element.node.id],
+						connectedWalletStamped: args.walletAddress
+							? connectedWalletStamped
+							: false
+					}
+					: { total: 0, vouched: 0, connectedWalletStamped: false },
 			};
 		});
+
+		const responseData: AssetType[] = await Promise.all(responseDataPromises);
 
 		return {
 			data: responseData,
@@ -73,7 +100,7 @@ export async function getAssetById(args: { assetId: string; arClient: any }): Pr
 			dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 			message: getTagValue(element.node.tags, TAGS.keys.messageData),
 			owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
-			stamps: { total: 0, vouched: 0 },
+			stamps: { total: 0, vouched: 0, connectedWalletStamped: false },
 		};
 		return null;
 	} else return null;
@@ -140,4 +167,20 @@ function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 		args.renderWith.forEach((renderWith: string) => tags.push({ name: TAGS.keys.renderWith, value: renderWith }));
 
 	return tags;
+}
+
+function withTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error("Promise timed out!"));
+        }, ms);
+
+        promise.then((value) => {
+            clearTimeout(timer);
+            resolve(value);
+        }).catch((error) => {
+            clearTimeout(timer);
+            reject(error);
+        });
+    });
 }

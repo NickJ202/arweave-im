@@ -159,10 +159,10 @@ export const IconWarning = styled(IconPrimary)`
 export const Alt2 = styled.button`
 	position: relative;
 	span {
-        color: ${(props) => props.theme.colors.button.alt2.color} !important;
-        font-size: ${(props) => props.theme.typography.size.xSmall} !important;
-        font-weight: ${(props) => props.theme.typography.weight.bold} !important;
-    }
+		color: ${(props) => props.theme.colors.button.alt2.color} !important;
+		font-size: ${(props) => props.theme.typography.size.xSmall} !important;
+		font-weight: ${(props) => props.theme.typography.weight.bold} !important;
+	}
 	&:hover {
 		span {
 			color: ${(props) => props.theme.colors.button.alt2.active.color} !important;

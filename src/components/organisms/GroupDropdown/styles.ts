@@ -63,7 +63,8 @@ export const GroupId = styled.div`
 	display: flex;
 	align-items: center;
 
-	p,span{
+	p,
+	span {
 		font-size: ${(props) => props.theme.typography.size.xxSmall};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 	}

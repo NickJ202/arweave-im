@@ -62,7 +62,7 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.17'
+			'0.1': 'Msg-Group-Version-v0.17',
 		},
 		profileVersions: {
 			'0.2': 'Account-0.2',
@@ -95,4 +95,4 @@ export const PROFILE_HEX_CODES = {
 	'8': '#DE2BC0',
 	'9': '#DA008F',
 	'10': '#FF4D50',
-}
+};

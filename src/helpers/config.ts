@@ -16,6 +16,7 @@ import stamp from 'assets/stamp.svg';
 import strikethrough from 'assets/strikethrough.svg';
 import underline from 'assets/underline.svg';
 import user from 'assets/user.svg';
+import viewblock from 'assets/viewblock.svg';
 import wallet from 'assets/wallet.svg';
 
 import { STYLING } from './styling';
@@ -42,6 +43,7 @@ export const ASSETS = {
 	strikethrough: strikethrough,
 	underline: underline,
 	user: user,
+	viewblock: viewblock,
 	wallet: wallet,
 	wallets: {
 		arconnect: arconnectWallet,
@@ -81,22 +83,21 @@ export const AR_PROFILE = {
 
 export const REDIRECTS = {
 	twitter: {
-		profile: (handle: string) => `https://twitter.com/${handle}`
-	}
-}
+		profile: (handle: string) => `https://twitter.com/${handle}`,
+	},
+	viewblock: (tx: string) => `https://viewblock.io/arweave/tx/${tx}`,
+};
 
 export const EDITOR_STYLE_MAP = (theme: DefaultTheme) => {
-	return (
-		{
-			CODE: {
-				fontFamily: theme.typography.family.code,
-				fontSize: theme.typography.size.xxxSmall,
-				color: theme.colors.editor.codeLine.color,
-				backgroundColor: theme.colors.editor.codeLine.background,
-				padding: '1.5px 3.5px',
-				borderRadius: STYLING.dimensions.borderRadius,
-				border: `1px solid ${theme.colors.editor.codeLine.border}`,
-			},
-		}
-	)
+	return {
+		CODE: {
+			fontFamily: theme.typography.family.code,
+			fontSize: theme.typography.size.xxxSmall,
+			color: theme.colors.editor.codeLine.color,
+			backgroundColor: theme.colors.editor.codeLine.background,
+			padding: '1.5px 3.5px',
+			borderRadius: STYLING.dimensions.borderRadius,
+			border: `1px solid ${theme.colors.editor.codeLine.border}`,
+		},
+	};
 };

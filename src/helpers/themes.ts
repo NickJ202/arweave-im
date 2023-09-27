@@ -19,7 +19,7 @@ const DEFAULT = {
 	primary2: '#E5EBF1',
 	accent: '#4EBC9B',
 	accent2: '#3EA384',
-	accent3: '#4774C2',
+	accent3: '#3F7CEA',
 	accent4: '#3D6AB8',
 	accent5: '#031926',
 	overlay1: '#F2F2F2C4',
@@ -29,7 +29,7 @@ const DEFAULT = {
 	negative: '#E83151',
 	negativeShadow: '#EF6C82',
 	positive: '#06BA63',
-	neutral: '#FFC43D'
+	neutral: '#FFC43D',
 };
 
 export const defaultTheme: DefaultTheme = {
@@ -39,6 +39,7 @@ export const defaultTheme: DefaultTheme = {
 		border: {
 			primary: DEFAULT.neutral5,
 			alt1: DEFAULT.neutral6,
+			alt2: DEFAULT.neutralA6,
 		},
 		button: {
 			primary: {
@@ -101,8 +102,8 @@ export const defaultTheme: DefaultTheme = {
 			codeLine: {
 				background: DEFAULT.neutral3,
 				border: DEFAULT.neutral6,
-				color: DEFAULT.accent5
-			}
+				color: DEFAULT.accent5,
+			},
 		},
 		font: {
 			primary: DEFAULT.neutralA1,
@@ -135,21 +136,6 @@ export const defaultTheme: DefaultTheme = {
 		loader: {
 			primary: DEFAULT.neutralA2,
 		},
-		notification: {
-			success: DEFAULT.positive,
-			warning: DEFAULT.negative,
-			neutral: DEFAULT.neutral,
-		},
-		overlay: {
-			primary: DEFAULT.overlay1,
-			alt1: DEFAULT.semiTransparent2
-		},
-		scrollbar: {
-			thumb: DEFAULT.neutral6,
-		},
-		view: {
-			background: DEFAULT.neutral1,
-		},
 		navigation: {
 			header: {
 				background: DEFAULT.neutral2,
@@ -157,6 +143,24 @@ export const defaultTheme: DefaultTheme = {
 			panel: {
 				background: DEFAULT.neutral3,
 			},
+			footer: {
+				background: DEFAULT.neutral2,
+			},
+		},
+		notification: {
+			success: DEFAULT.positive,
+			warning: DEFAULT.negative,
+			neutral: DEFAULT.neutral,
+		},
+		overlay: {
+			primary: DEFAULT.overlay1,
+			alt1: DEFAULT.semiTransparent2,
+		},
+		scrollbar: {
+			thumb: DEFAULT.neutral6,
+		},
+		view: {
+			background: DEFAULT.neutral1,
 		},
 		shadow: DEFAULT.neutral5,
 		tabs: {
@@ -199,6 +203,7 @@ export const defaultTheme: DefaultTheme = {
 		weight: {
 			regular: '400',
 			bold: '600',
+			xBold: '700'
 		},
 	},
 };

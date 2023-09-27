@@ -8,6 +8,7 @@ import { MessageEnum } from 'lib';
 import { Avatar } from 'components/atoms/Avatar';
 import { Loader } from 'components/atoms/Loader';
 import { MessageActions } from 'components/molecules/MessageActions';
+import { MessageStamps } from 'components/molecules/MessageStamps';
 import { EDITOR_STYLE_MAP } from 'helpers/config';
 import { formatAddress, formatDate, getOwner } from 'helpers/utils';
 import { RootState } from 'store';
@@ -24,7 +25,6 @@ export default function Message(props: IProps) {
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
-
 	const [showProfile, setShowProfile] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
@@ -44,9 +44,7 @@ export default function Message(props: IProps) {
 						const updatedEditorState = EditorState.createWithContent(contentState);
 						setEditorState(updatedEditorState);
 					}
-				} catch (e: any) {
-					console.error(e);
-				}
+				} catch (e: any) {}
 			}
 		}
 	}, [props.data]);
@@ -84,7 +82,7 @@ export default function Message(props: IProps) {
 		<>
 			<S.Wrapper textOnly={props.useSameOwner} disabled={!props.data}>
 				<S.AWrapper>
-					<MessageActions id={props.data ? props.data.id : null} />
+					<MessageActions id={props.data ? props.data.id : null} stamps={props.data ? props.data.stamps : null} />
 				</S.AWrapper>
 				{!props.useSameOwner && (
 					<Avatar
@@ -107,7 +105,13 @@ export default function Message(props: IProps) {
 					)}
 					<S.MText textOnly={props.useSameOwner}>
 						{props.data ? (
-							<Editor customStyleMap={EDITOR_STYLE_MAP(theme)} editorState={editorState} onChange={() => {}} readOnly={true} tabIndex={-1} />
+							<Editor
+								customStyleMap={EDITOR_STYLE_MAP(theme)}
+								editorState={editorState}
+								onChange={() => {}}
+								readOnly={true}
+								tabIndex={-1}
+							/>
 						) : (
 							<>
 								{Array.from({ length: 2 }, (_, i) => i + 1).map((index: number) => {
@@ -120,9 +124,11 @@ export default function Message(props: IProps) {
 							</>
 						)}
 					</S.MText>
-					{/* <S.MFooter>
-
-					</S.MFooter> */}
+					{props.data && props.data.stamps && props.data.stamps.total > 0 && (
+						<S.MFooter>
+							<MessageStamps stamps={props.data.stamps} />
+						</S.MFooter>
+					)}
 				</S.MMessage>
 			</S.Wrapper>
 			{showProfile && (

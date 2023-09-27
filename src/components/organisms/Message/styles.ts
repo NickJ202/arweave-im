@@ -25,13 +25,13 @@ export const AWrapper = styled.div`
 	display: none;
 `;
 
-export const Wrapper = styled.div<{ textOnly: boolean; disabled: boolean; }>`
+export const Wrapper = styled.div<{ textOnly: boolean; disabled: boolean }>`
 	width: 100%;
 	display: flex;
 	position: relative;
-	padding: ${(props) => props.textOnly ? '7.5px 0' : '12.5px 15px 7.5px 15px'};
+	padding: ${(props) => (props.textOnly ? '7.5px 0' : '12.5px 15px 7.5px 15px')};
 	&:hover {
-		background: ${(props) => props.disabled ? 'transparent' : props.theme.colors.container.alt2.background};
+		background: ${(props) => (props.disabled ? 'transparent' : props.theme.colors.container.alt2.background)};
 		${TWrapper} {
 			display: block;
 		}
@@ -43,7 +43,7 @@ export const Wrapper = styled.div<{ textOnly: boolean; disabled: boolean; }>`
 
 export const MMessage = styled.div<{ textOnly: boolean }>`
 	width: calc(100% - 45px);
-	padding: ${(props) => props.textOnly ? '0 0 0 62.5px' : '0 0 0 15px'};
+	padding: ${(props) => (props.textOnly ? '0 0 0 62.5px' : '0 0 0 15px')};
 `;
 
 export const MMessageHeader = styled.div`
@@ -78,7 +78,7 @@ export const MMessageHeader = styled.div`
 
 export const MText = styled.div<{ textOnly: boolean }>`
 	margin: 7.5px 0 0 0;
-	margin: ${(props) => props.textOnly ? '0' : '7.5px 0 0 0'};
+	margin: ${(props) => (props.textOnly ? '0' : '7.5px 0 0 0')};
 	position: relative;
 	z-index: 0;
 	span,
@@ -91,7 +91,9 @@ export const MText = styled.div<{ textOnly: boolean }>`
 	}
 `;
 
-export const MFooter = styled.div``;
+export const MFooter = styled.div`
+	margin: 5px 0 0 0;
+`;
 
 export const Loader = styled.div`
 	max-width: 100%;

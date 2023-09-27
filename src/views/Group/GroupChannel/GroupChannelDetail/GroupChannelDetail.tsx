@@ -45,21 +45,22 @@ export default function GroupChannelDetail(props: IProps) {
 					)}
 				</>
 			);
-		}
-		else {
+		} else {
 			return (
 				<>
 					{Array.from({ length: 10 }, (_, i) => i + 1).map((index: number) => {
 						return <Message key={index} data={null} useSameOwner={false} />;
 					})}
 				</>
-			)
+			);
 		}
 	}
 
 	return (
 		<S.Wrapper>
-			<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>{getChannelData()}</S.MWrapper>
+			<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>
+				{getChannelData()}
+			</S.MWrapper>
 			<S.CWrapper>
 				<MessageCreate
 					channelId={props.channelId}

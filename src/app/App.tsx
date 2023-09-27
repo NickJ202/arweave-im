@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DOM } from 'helpers/config';
+import { Footer } from 'navigation/footer';
 import { Header } from 'navigation/header';
 import { Panel } from 'navigation/panel';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -34,6 +35,7 @@ export default function App() {
 			</S.Panel>
 			<Header />
 			<Routes />
+			<Footer />
 		</>
 	);
 }

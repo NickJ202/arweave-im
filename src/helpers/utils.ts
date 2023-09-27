@@ -2,7 +2,7 @@ import { DateType, GroupReduxType, ProfileType } from './types';
 
 export function formatAddress(address: string | null, wrap: boolean) {
 	if (!address) return '';
-	if (!checkAddress(address))return address;
+	if (!checkAddress(address)) return address;
 	const formattedAddress = address.substring(0, 5) + '...' + address.substring(36, address.length - 1);
 	return wrap ? `(${formattedAddress})` : formattedAddress;
 }
@@ -43,11 +43,13 @@ export function formatDate(dateArg: string | number | null, dateType: DateType, 
 			break;
 	}
 
-	return `${useShortDate ? '' : `${date.toLocaleString('default', {
-		month: 'long',
-	})} ${date.getDate()}, ${date.getUTCFullYear()} · `}${getHours(date.getHours())}:${formatTime(
-		date.getMinutes()
-	)} ${useShortDate ? '' : getHourFormat(date.getHours())}`;
+	return `${
+		useShortDate
+			? ''
+			: `${date.toLocaleString('default', {
+					month: 'long',
+			  })} ${date.getDate()}, ${date.getUTCFullYear()} · `
+	}${getHours(date.getHours())}:${formatTime(date.getMinutes())} ${useShortDate ? '' : getHourFormat(date.getHours())}`;
 }
 
 export function formatChannelName(channelName: string) {
@@ -57,6 +59,5 @@ export function formatChannelName(channelName: string) {
 export function getOwner(groupReducer: GroupReduxType, owner: string | null) {
 	if (groupReducer && owner) {
 		return groupReducer.data.profiles.find((profile: ProfileType) => profile.walletAddress === owner);
-	}
-	else return null;
+	} else return null;
 }

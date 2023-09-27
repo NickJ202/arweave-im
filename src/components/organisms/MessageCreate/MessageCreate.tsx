@@ -7,7 +7,7 @@ const { hasCommandModifier } = KeyBindingUtil;
 
 import { Button } from 'components/atoms/Button';
 import { IconButton } from 'components/atoms/IconButton';
-import { ASSETS , EDITOR_STYLE_MAP } from 'helpers/config';
+import { ASSETS, EDITOR_STYLE_MAP } from 'helpers/config';
 import { language } from 'helpers/language';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
@@ -155,10 +155,24 @@ export default function MessageCreate(props: IProps) {
 		}
 	};
 
-	const getSubmitDisabled = (editorState: EditorState) => {
+	function checkEmptyEditor(editorState: EditorState) {
 		const plainText = editorState.getCurrentContent().getPlainText();
 		return !plainText.trim().length;
-	};
+	}
+
+	function getSubmitDisabled(editorState: EditorState) {
+		return checkEmptyEditor(editorState);
+	}
+
+	function handleEditorChange(newEditorState: EditorState) {
+		if (checkEmptyEditor(newEditorState)) {
+			setBoldActive(false);
+			setItalicActive(false);
+			setUnderlineActive(false);
+			setCodeActive(false);
+		}
+		setEditorState(newEditorState);
+	}
 
 	return (
 		<S.Wrapper>
@@ -216,7 +230,7 @@ export default function MessageCreate(props: IProps) {
 						customStyleMap={EDITOR_STYLE_MAP(theme)}
 						editorState={editorState}
 						handleKeyCommand={handleKeyCommand}
-						onChange={setEditorState}
+						onChange={handleEditorChange}
 						onFocus={() => setMessageActive(true)}
 						onBlur={() => setMessageActive(false)}
 						keyBindingFn={mapKeyToEditorCommand}

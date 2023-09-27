@@ -15,6 +15,7 @@ export type ChannelResponseType = {
 export type StampType = {
 	total: number;
 	vouched: number;
+	connectedWalletStamped: boolean;
 };
 
 export type EnvType = {
@@ -195,4 +196,4 @@ export enum MessageEnum {
 	Text = 'text',
 }
 
-export type MemberType = { address: string, profileHexCode: string };
+export type MemberType = { address: string; profileHexCode: string };

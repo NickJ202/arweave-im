@@ -85,7 +85,7 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 								</S.DHeader>
 							</S.DHeaderWrapper>
 							<S.DBodyWrapper>
-								<li onClick={copyAddress}>{copied ? `${language.copied}!`: language.copyWalletAddress}</li>
+								<li onClick={copyAddress}>{copied ? `${language.copied}!` : language.copyWalletAddress}</li>
 								<li onClick={() => setShowProfile(!showProfile)}>{language.viewProfile}</li>
 							</S.DBodyWrapper>
 							<S.DFooterWrapper>

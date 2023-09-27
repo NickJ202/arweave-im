@@ -27,9 +27,9 @@ export type ReduxActionType = {
 };
 
 export type GroupReduxType = {
-    data: GroupType & {
-        profiles: ProfileType[];
-    }
+	data: GroupType & {
+		profiles: ProfileType[];
+	};
 	groupId: string;
 	activeChannelId: string;
 };

@@ -5,14 +5,14 @@ import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
 	min-height: 100vh;
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    z-index: 11;
-    top: 0;
-    left: 0;
-    background: ${(props) => props.theme.colors.overlay.primary};
-    backdrop-filter: blur(2px);
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 11;
+	top: 0;
+	left: 0;
+	background: ${(props) => props.theme.colors.overlay.primary};
+	backdrop-filter: blur(2px);
 `;
 
 export const PWrapper = styled.div<{ overlay: boolean }>`
@@ -133,10 +133,7 @@ export const Channel = styled.div<{ active: boolean }>`
 		border: 1px solid ${(props) => (props.active ? props.theme.colors.button.primary.active.border : 'transparent')};
 		border-radius: ${STYLING.dimensions.borderRadius};
 		padding: 0 7.5px;
-		background: ${(props) =>
-			props.active
-				? props.theme.colors.button.primary.active.background
-				: 'transparent'};
+		background: ${(props) => (props.active ? props.theme.colors.button.primary.active.background : 'transparent')};
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;

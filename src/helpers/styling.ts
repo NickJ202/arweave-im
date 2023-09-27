@@ -14,5 +14,6 @@ export const STYLING = {
 		formWidthMin: '350px',
 		navHeaderHeight: '55px',
 		navPanelWidth: '260px',
+		navFooterHeight: '25px',
 	},
 };

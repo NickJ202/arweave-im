@@ -40,4 +40,7 @@ export const language = {
 	discord: `Discord`,
 	groupId: `Group ID`,
 	groupMembers: `Group Members`,
+	stamp: `Stamp`,
+	viewblock: `Viewblock`,
+	messageStamped: `Message Stamped`
 };

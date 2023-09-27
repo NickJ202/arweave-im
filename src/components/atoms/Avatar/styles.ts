@@ -2,41 +2,47 @@ import styled from 'styled-components';
 
 import { STYLING } from 'helpers/styling';
 
-export const Wrapper = styled.div<{ dimensions: { wrapper: number; icon: number }, hexCode: string, hasCallback: boolean }>`
-    min-height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
-    min-width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
-    height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
-    width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
-    background: ${(props) => props.hexCode ? props.hexCode : props.theme.colors.icon.alt2};
-    border-radius: ${STYLING.dimensions.borderRadius};
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    img {
-        height: 100%;
-        width: 100%;
-    }
-    svg {
-        min-height: ${(props) => `${props.dimensions.icon.toString()}px`};
-        min-width: ${(props) => `${props.dimensions.icon.toString()}px`};
-        height: ${(props) => `${props.dimensions.icon.toString()}px`};
-        width: ${(props) => `${props.dimensions.icon.toString()}px`};
-        padding: 3.5px 0 0 0px;
-        margin: 0 0 2.5px 0;
-        stroke: ${(props) => props.theme.colors.icon.alt1};
-    }
+export const Wrapper = styled.div<{
+	dimensions: { wrapper: number; icon: number };
+	hexCode: string;
+	hasCallback: boolean;
+}>`
+	min-height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
+	min-width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
+	height: ${(props) => `${props.dimensions.wrapper.toString()}px`};
+	width: ${(props) => `${props.dimensions.wrapper.toString()}px`};
+	background: ${(props) => (props.hexCode ? props.hexCode : props.theme.colors.icon.alt2)};
+	border-radius: ${STYLING.dimensions.borderRadius};
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	img {
+		height: 100%;
+		width: 100%;
+	}
+	svg {
+		min-height: ${(props) => `${props.dimensions.icon.toString()}px`};
+		min-width: ${(props) => `${props.dimensions.icon.toString()}px`};
+		height: ${(props) => `${props.dimensions.icon.toString()}px`};
+		width: ${(props) => `${props.dimensions.icon.toString()}px`};
+		padding: 3.5px 0 0 0px;
+		margin: 0 0 2.5px 0;
+		stroke: ${(props) => props.theme.colors.icon.alt1};
+	}
 
-    pointer-events: none;
-    &:hover {
-        cursor: default;
-    }
-    &:focus {
-        opacity: 1;
-    }
+	pointer-events: none;
+	&:hover {
+		cursor: default;
+	}
+	&:focus {
+		opacity: 1;
+	}
 
-    ${(props) => props.hasCallback ? `
+	${(props) =>
+		props.hasCallback
+			? `
         pointer-events: all;
         ::after {
             content: "";
@@ -62,5 +68,14 @@ export const Wrapper = styled.div<{ dimensions: { wrapper: number; icon: number 
             cursor: pointer;
             border: none;
         }
-    ` : ''}
+    `
+			: ''}
+`;
+
+export const ALoader = styled.div`
+	height: 100%;
+	width: 100%;
+	border: 1px solid ${(props) => props.theme.colors.border.primary};
+	border-radius: ${STYLING.dimensions.borderRadius};
+	overflow: hidden;
 `;
