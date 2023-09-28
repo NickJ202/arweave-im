@@ -5,6 +5,7 @@ import {
 	createGroup,
 	getAssetById,
 	getAssetsByChannel,
+	getChannelById,
 	getGroupsByUser,
 	getProfiles,
 } from '../../api';
@@ -14,6 +15,7 @@ import {
 	AssetArgsType,
 	AssetCreateArgsType,
 	AssetType,
+	ChannelHeaderResponseType,
 	ChannelResponseType,
 	CreateGroupArgs,
 	GQLResponseType,
@@ -43,6 +45,12 @@ const apiClient: ApiClientType = {
 		});
 	},
 
+	getChannelById: async function (args: { channelId: string }): Promise<ChannelHeaderResponseType | null> {
+		return await getChannelById({
+			channelId: args.channelId
+		})
+	},
+
 	getGroupsByUser: async function (args: { walletAddress: string }): Promise<GQLResponseType> {
 		return await getGroupsByUser({
 			walletAddress: args.walletAddress,
@@ -63,7 +71,7 @@ const apiClient: ApiClientType = {
 		return await addGroupMember({ ...args, arClient: this.arClient });
 	},
 
-	addGroupChannel: async function (args: { groupId: string; channelTitle: string; wallet: any }): Promise<string> {
+	addGroupChannel: async function (args: { groupId: string; channelTitle: string; wallet: any; owner: string }): Promise<string> {
 		return await addGroupChannel({ ...args, arClient: this.arClient });
 	},
 

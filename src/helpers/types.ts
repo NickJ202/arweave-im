@@ -26,10 +26,13 @@ export type ReduxActionType = {
 	payload: any;
 };
 
+export type GroupReduxDataType = GroupType & {
+	profiles: ProfileType[];
+}
+
+
 export type GroupReduxType = {
-	data: GroupType & {
-		profiles: ProfileType[];
-	};
+	data: GroupReduxDataType;
 	groupId: string;
 	activeChannelId: string;
 };

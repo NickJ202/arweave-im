@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { useTheme } from 'styled-components';
 
-import { MessageEnum } from 'lib';
+import { MessageEnum, StampType } from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Loader } from 'components/atoms/Loader';
@@ -18,7 +18,6 @@ import { Profile } from '../Profile';
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: first message hover issue actions
 export default function Message(props: IProps) {
 	const theme = useTheme();
 
@@ -26,6 +25,29 @@ export default function Message(props: IProps) {
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 	const [showProfile, setShowProfile] = React.useState<boolean>(false);
+
+	const [stamps, setStamps] = React.useState<StampType>({
+		total: 0,
+		vouched: 0,
+		connectedWalletStamped: false,
+	});
+	const [handleStampUpdate, setHandleStampUpdate] = React.useState<boolean>(false);
+
+	React.useEffect(() => {
+		if (props.data && props.data.stamps && props.data.stamps.total > 0) {
+			setStamps(props.data.stamps);
+		}
+	}, [props.data]);
+
+	React.useEffect(() => {
+		if (handleStampUpdate) {
+			setStamps({
+				total: stamps.total + 1,
+				vouched: stamps.vouched,
+				connectedWalletStamped: true,
+			});
+		}
+	}, [handleStampUpdate]);
 
 	React.useEffect(() => {
 		if (props.data) {
@@ -78,11 +100,25 @@ export default function Message(props: IProps) {
 		} else return null;
 	}
 
+	function getFooter() {
+		if (props.data && stamps && stamps.total > 0) {
+			return (
+				<S.MFooter>
+					<MessageStamps id={props.data.id} stamps={stamps} />
+				</S.MFooter>
+			);
+		}
+	}
+
 	return (
 		<>
 			<S.Wrapper textOnly={props.useSameOwner} disabled={!props.data}>
 				<S.AWrapper>
-					<MessageActions id={props.data ? props.data.id : null} stamps={props.data ? props.data.stamps : null} />
+					<MessageActions
+						id={props.data ? props.data.id : null}
+						stamps={props.data ? props.data.stamps : null}
+						handleStampUpdate={() => setHandleStampUpdate(true)}
+					/>
 				</S.AWrapper>
 				{!props.useSameOwner && (
 					<Avatar
@@ -124,11 +160,7 @@ export default function Message(props: IProps) {
 							</>
 						)}
 					</S.MText>
-					{props.data && props.data.stamps && props.data.stamps.total > 0 && (
-						<S.MFooter>
-							<MessageStamps stamps={props.data.stamps} />
-						</S.MFooter>
-					)}
+					{getFooter()}
 				</S.MMessage>
 			</S.Wrapper>
 			{showProfile && (

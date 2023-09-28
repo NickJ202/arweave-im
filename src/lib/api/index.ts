@@ -53,5 +53,6 @@ export async function createContract(args: { arClient: any; assetId: string }) {
 }
 
 export * from './assets';
+export * from './channels';
 export * from './groups';
 export * from './profile';

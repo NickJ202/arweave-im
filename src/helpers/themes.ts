@@ -15,13 +15,14 @@ const DEFAULT = {
 	neutralA6: '#C1CAD2',
 	neutralA7: '#9B9BA1',
 	neutralA8: '#4C4C53',
+	neutralA9: '#ACB8C3',
 	primary: '#F6F8FA',
 	primary2: '#E5EBF1',
 	accent: '#4EBC9B',
 	accent2: '#3EA384',
 	accent3: '#3F7CEA',
 	accent4: '#3D6AB8',
-	accent5: '#031926',
+	accent5: '#D73D5B',
 	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
@@ -40,6 +41,7 @@ export const defaultTheme: DefaultTheme = {
 			primary: DEFAULT.neutral5,
 			alt1: DEFAULT.neutral6,
 			alt2: DEFAULT.neutralA6,
+			alt3: DEFAULT.neutralA9,
 		},
 		button: {
 			primary: {
@@ -189,7 +191,7 @@ export const defaultTheme: DefaultTheme = {
 	typography: {
 		family: {
 			primary: `'Public Sans', sans-serif;`,
-			code: 'Monaco,Menlo,Consolas,Courier New,monospace',
+			code: 'Monaco, Menlo, Consolas, Courier New, monospace',
 		},
 		size: {
 			xxxSmall: '12px',

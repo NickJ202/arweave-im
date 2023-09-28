@@ -42,7 +42,7 @@ export const MembersDropdown = styled.div`
 	padding: 10px 0;
 	top: 40px;
 	right: 0;
-	z-index: 1;
+	z-index: 20;
 `;
 
 export const MDHeader = styled.div`

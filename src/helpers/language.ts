@@ -1,5 +1,5 @@
 export const language = {
-	appName: `Messenger`,
+	appName: `Ping`,
 	close: `Close`,
 	connect: `Connect`,
 	connectorNotFound: `Connector Not Found`,
@@ -42,5 +42,9 @@ export const language = {
 	groupMembers: `Group Members`,
 	stamp: `Stamp`,
 	viewblock: `Viewblock`,
-	messageStamped: `Message Stamped`
+	messageStamped: `Message Stamped`,
+	fetchingMessages: `Fetching Messages`,
+	stampingMessage: `Stamping Message`,
+	channelCreatedOn: `This channel was created on`,
+	by: `by`
 };

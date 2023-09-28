@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChannelResponseType, ChannelType } from 'lib';
+import { ChannelHeaderResponseType, ChannelResponseType, ChannelType } from 'lib';
 
+import { FooterNotification } from 'components/atoms/FooterNotification';
+import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
@@ -18,13 +20,15 @@ export default function GroupChannel() {
 
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
-	const [_loading, setLoading] = React.useState<boolean>(false);
+	const [loading, setLoading] = React.useState<boolean>(false);
+
+	const [channelHeaderData, setChannelHeaderData] = React.useState<ChannelHeaderResponseType | null>(null);
 	const [channelData, setChannelData] = React.useState<ChannelResponseType | null>(null);
 
 	const [scrollToRecent, setScrollToRecent] = React.useState<boolean>(false);
 	const [updateData, setUpdateData] = React.useState<boolean>(false);
 
-	async function fetchData(args: { cursor: string }) {
+	async function fetchChannelAssets(args: { cursor: string }) {
 		if (arProvider.walletAddress && cliProvider.lib && groupReducer) {
 			const response = await cliProvider.lib.api.getAssetsByChannel({
 				ids: [groupReducer.activeChannelId],
@@ -43,12 +47,20 @@ export default function GroupChannel() {
 		(async function () {
 			setChannelData(null);
 			setLoading(true);
-			setChannelData(await fetchData({ cursor: null }));
+			setChannelData(await fetchChannelAssets({ cursor: null }));
 			setLoading(false);
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
 
-	// // TODO: poll data
+	React.useEffect(() => {
+		(async function () {
+			if (cliProvider.lib && groupReducer) {
+				setChannelHeaderData(await cliProvider.lib.api.getChannelById({ channelId: groupReducer.activeChannelId }));
+			}
+		})();
+	}, [cliProvider.lib, groupReducer]);
+
+	// Poll data
 	// React.useEffect(() => {
 	// 	async function pollData() {
 	// 		const updatedResponse = await fetchData({ cursor: null });
@@ -92,9 +104,14 @@ export default function GroupChannel() {
 
 	function getChannelName() {
 		if (groupReducer) {
-			return formatChannelName(
-				groupReducer.data.channels.find((channel: ChannelType) => channel.id === groupReducer.activeChannelId).title
-			);
+			try {
+				return formatChannelName(
+					groupReducer.data.channels.find((channel: ChannelType) => channel.id === groupReducer.activeChannelId).title
+				);
+			}
+			catch (e: any) {
+				return '-'
+			}
 		} else return null;
 	}
 
@@ -102,16 +119,18 @@ export default function GroupChannel() {
 		if (groupReducer) {
 			return (
 				<>
-					<GroupChannelHeader />
+					<GroupChannelHeader channelName={getChannelName()} />
 					<GroupChannelDetail
 						channelId={groupReducer.activeChannelId}
 						channelName={getChannelName()}
 						groupId={groupReducer.groupId}
 						channelData={channelData}
+						channelHeaderData={channelHeaderData}
 						handleUpdate={handleUpdate}
 						scrollToRecent={scrollToRecent}
 						setUpdateData={() => setUpdateData(!updateData)}
 					/>
+					{loading && <FooterNotification message={`${language.fetchingMessages}...`} />}
 				</>
 			);
 		} else {

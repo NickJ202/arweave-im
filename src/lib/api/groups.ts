@@ -70,6 +70,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 				arClient: args.arClient,
 				groupId: groupContractId,
 				channelTitle: args.initialChannel,
+				owner: args.owner,
 				wallet: args.wallet,
 			});
 
@@ -123,6 +124,7 @@ export async function addGroupChannel(args: {
 	arClient: any;
 	groupId: string;
 	channelTitle: string;
+	owner: string;
 	wallet: any;
 }): Promise<string | null> {
 	try {
@@ -131,6 +133,7 @@ export async function addGroupChannel(args: {
 			tags: createGroupChannelTags({
 				groupId: args.groupId,
 				channelTitle: args.channelTitle,
+				initialOwner: args.owner,
 			}),
 			content: TAGS.keys.groupChannel,
 			contentType: CONTENT_TYPES.textPlain,
@@ -153,7 +156,7 @@ export async function addGroupChannel(args: {
 	}
 }
 
-function createGroupChannelTags(args: { groupId: string; channelTitle: string }): TagType[] {
+function createGroupChannelTags(args: { groupId: string; channelTitle: string; initialOwner: string }): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
 	const tags: TagType[] = [
@@ -161,6 +164,7 @@ function createGroupChannelTags(args: { groupId: string; channelTitle: string })
 		{ name: TAGS.keys.groupChannel, value: args.channelTitle },
 		{ name: TAGS.keys.messageGroupVersion, value: TAGS.values.messageGroupVersions['0.1'] },
 		{ name: TAGS.keys.dateCreated, value: dateTime },
+		{ name: TAGS.keys.initialOwner, value: args.initialOwner },
 	];
 
 	return tags;

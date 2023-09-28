@@ -175,6 +175,7 @@ module.exports = {
 			assets: path.resolve(__dirname, 'src/assets/'),
 			components: path.resolve(__dirname, 'src/components/'),
 			helpers: path.resolve(__dirname, 'src/helpers/'),
+			hooks: path.resolve(__dirname, 'src/hooks/'),
 			lib: path.resolve(__dirname, 'src/lib/'),
 			navigation: path.resolve(__dirname, 'src/navigation/'),
 			providers: path.resolve(__dirname, 'src/providers/'),

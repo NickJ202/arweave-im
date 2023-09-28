@@ -10,7 +10,6 @@ import { language } from 'helpers/language';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
-import { WalletConnect } from 'wallet/WalletConnect';
 
 import * as S from './styles';
 
@@ -57,15 +56,9 @@ export default function Landing() {
 		}
 	}
 
-	return (
+	return arProvider.walletAddress ? (
 		<Modal header={language.groupSelect} handleClose={null}>
-			{arProvider.walletAddress ? (
-				getGroups()
-			) : (
-				<S.WWrapper>
-					<WalletConnect />
-				</S.WWrapper>
-			)}
+			{getGroups()}
 		</Modal>
-	);
+	) : null;
 }

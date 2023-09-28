@@ -62,6 +62,7 @@ export const DOM = {
 	loader: 'loader',
 	modal: 'modal',
 	notification: 'notification',
+	footerNotification: 'footer-notification',
 	panel: 'panel',
 };
 
@@ -73,7 +74,7 @@ export const API_CONFIG = {
 	logging: false,
 };
 
-export const DRE_NODE = 'https://dre-1.warp.cc/contract';
+export const DRE_NODE = 'https://dre-2.warp.cc/contract';
 
 export const DEFAULT_LOGO = 'PH6Q_PJ2tkKfVWUFboMyYSj_UTYsAu8woxmJ8q8R1Fg';
 
@@ -95,7 +96,7 @@ export const EDITOR_STYLE_MAP = (theme: DefaultTheme) => {
 			fontSize: theme.typography.size.xxxSmall,
 			color: theme.colors.editor.codeLine.color,
 			backgroundColor: theme.colors.editor.codeLine.background,
-			padding: '1.5px 3.5px',
+			padding: '0.5px 3.5px',
 			borderRadius: STYLING.dimensions.borderRadius,
 			border: `1px solid ${theme.colors.editor.codeLine.border}`,
 		},

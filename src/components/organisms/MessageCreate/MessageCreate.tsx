@@ -92,10 +92,6 @@ export default function MessageCreate(props: IProps) {
 		return 'not-handled';
 	};
 
-	const handleContainerClick = () => {
-		editorRef.current?.focus();
-	};
-
 	const handleBold = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
 		setEditorState(newState);
@@ -175,7 +171,7 @@ export default function MessageCreate(props: IProps) {
 	}
 
 	return (
-		<S.Wrapper>
+		<S.Wrapper active={messageActive}>
 			<S.Header>
 				<IconButton
 					type={'alt1'}
@@ -224,7 +220,7 @@ export default function MessageCreate(props: IProps) {
 				/>
 			</S.Header>
 			<S.Body>
-				<S.Editor onClick={handleContainerClick}>
+				<S.Editor onClick={() => editorRef.current?.focus()}>
 					<Editor
 						ref={editorRef}
 						customStyleMap={EDITOR_STYLE_MAP(theme)}

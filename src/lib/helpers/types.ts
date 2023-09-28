@@ -6,6 +6,15 @@ export type AssetType = {
 	stamps: StampType;
 };
 
+export type ChannelHeaderResponseType = {
+	id: string,
+	groupId: string,
+	groupChannel: string,
+	messageGroupVersion: string,
+	dateCreated: number,
+	initialOwner: string
+}
+
 export type ChannelResponseType = {
 	data: AssetType[] | null;
 	nextCursor: string | null;
@@ -73,6 +82,7 @@ export type ApiClientType = {
 	createAsset: (args: AssetCreateArgsType) => Promise<string>;
 	getAssetsByChannel: (args: AssetArgsType) => Promise<ChannelResponseType>;
 	getAssetById: (args: { assetId: string }) => Promise<AssetType | null>;
+	getChannelById: (args: { channelId: string }) => Promise<ChannelHeaderResponseType | null>;
 	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;
 	createGroup: (args: CreateGroupArgs) => Promise<string>;
 	addGroupMember: (args: {
@@ -81,7 +91,7 @@ export type ApiClientType = {
 		walletAddress: string;
 		wallet: any;
 	}) => Promise<string>;
-	addGroupChannel: (args: { groupId: string; channelTitle: string; wallet: any }) => Promise<string>;
+	addGroupChannel: (args: { groupId: string; channelTitle: string; wallet: any; owner: string }) => Promise<string>;
 	getProfiles: (args: { addresses: string[] }) => Promise<ProfileType[]>;
 };
 
@@ -187,7 +197,7 @@ export type GroupType = {
 	channels: ChannelType[];
 	dateCreated: string;
 	logo: string;
-	members: string[];
+	members: MemberType[];
 	owner: string;
 	title: string;
 };

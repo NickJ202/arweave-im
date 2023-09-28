@@ -10,7 +10,7 @@ declare const window: any;
 const persistConfig = {
 	key: 'root',
 	storage,
-	blacklist: ['groupReducer'],
+	blacklist: [],
 };
 
 const rootReducer = combineReducers({

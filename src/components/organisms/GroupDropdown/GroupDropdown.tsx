@@ -20,6 +20,7 @@ import * as groupActions from 'store/group/actions';
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: "Only the owner can update the state of this contract"
 export default function GroupDropdown(props: IProps) {
 	const dispatch = useDispatch();
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
@@ -78,6 +79,7 @@ export default function GroupDropdown(props: IProps) {
 							id = await cliProvider.lib.api.addGroupChannel({
 								groupId: props.groupId,
 								channelTitle: channelTitle,
+								owner: arProvider.walletAddress,
 								wallet: signer,
 							});
 							responseMessage = `${language.channelCreated}!`;

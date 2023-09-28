@@ -1,33 +1,26 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChannelType, MemberType } from 'lib';
+import { MemberType } from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Button } from 'components/atoms/Button';
 import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
-import { formatAddress, formatChannelName, getOwner } from 'helpers/utils';
+import { formatAddress, getOwner } from 'helpers/utils';
 import { RootState } from 'store';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
+import { IProps } from './types';
 
-export default function GroupChannelHeader() {
+export default function GroupChannelHeader(props: IProps) {
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
 	const [showMembersDropdown, setShowMembersDropdown] = React.useState<boolean>(false);
 
 	const [activeAddress, setActiveAddress] = React.useState<string | null>(null);
 	const [showProfile, setShowProfile] = React.useState<boolean>(false);
-
-	function getChannelName() {
-		if (groupReducer) {
-			return formatChannelName(
-				groupReducer.data.channels.find((channel: ChannelType) => channel.id === groupReducer.activeChannelId).title
-			);
-		} else return null;
-	}
 
 	function getHandle(address: string) {
 		const owner = getOwner(groupReducer, address);
@@ -66,7 +59,7 @@ export default function GroupChannelHeader() {
 		<>
 			<S.Wrapper>
 				<S.Title>
-					<span>{getChannelName()}</span>
+					<span>{props.channelName}</span>
 				</S.Title>
 				<S.Members>
 					{groupReducer && (

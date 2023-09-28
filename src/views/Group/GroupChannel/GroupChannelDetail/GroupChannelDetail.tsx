@@ -1,16 +1,25 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { AssetType, CURSORS } from 'lib';
 
+import { Button } from 'components/atoms/Button';
 import { Message } from 'components/organisms/Message';
 import { MessageCreate } from 'components/organisms/MessageCreate';
+import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
+import { formatAddress, formatDate, getOwner } from 'helpers/utils';
+import { RootState } from 'store';
 
 import * as S from './styles';
 import { IProps } from './types';
 
 export default function GroupChannelDetail(props: IProps) {
+	const groupReducer = useSelector((state: RootState) => state.groupReducer);
+
 	const mWrapperRef = React.useRef<HTMLDivElement | null>(null);
+
+	const [showHeaderProfile, setShowHeaderProfile] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
 		if (mWrapperRef.current) {
@@ -25,6 +34,28 @@ export default function GroupChannelDetail(props: IProps) {
 			}
 		}
 	};
+
+	function getHeader() {
+		if (props.channelHeaderData && groupReducer) {
+			const owner = getOwner(groupReducer, props.channelHeaderData.initialOwner);
+			return (
+				<S.MHWrapper>
+					<S.MHData>
+						<p>
+							<span>{language.channelCreatedOn}</span>&nbsp;
+							{formatDate(props.channelHeaderData.dateCreated, 'epoch', false)}
+							&nbsp;<span>{language.by}</span>&nbsp;
+						</p>
+						<Button
+							type={'alt2'}
+							label={owner.handle ? owner.handle : formatAddress(owner.walletAddress, false)}
+							handlePress={() => setShowHeaderProfile(true)}
+						/>
+					</S.MHData>
+				</S.MHWrapper>
+			);
+		} else return null;
+	}
 
 	function getChannelData() {
 		if (props.channelData) {
@@ -57,18 +88,28 @@ export default function GroupChannelDetail(props: IProps) {
 	}
 
 	return (
-		<S.Wrapper>
-			<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>
-				{getChannelData()}
-			</S.MWrapper>
-			<S.CWrapper>
-				<MessageCreate
-					channelId={props.channelId}
-					groupId={props.groupId}
-					placeholder={props.channelName ? language.message(props.channelName) : null}
-					handleUpdate={props.handleUpdate}
+		<>
+			<S.Wrapper>
+				<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>
+					{getHeader()}
+					{getChannelData()}
+				</S.MWrapper>
+				<S.CWrapper>
+					<MessageCreate
+						channelId={props.channelId}
+						groupId={props.groupId}
+						placeholder={props.channelName ? language.message(props.channelName) : null}
+						handleUpdate={props.handleUpdate}
+					/>
+				</S.CWrapper>
+			</S.Wrapper>
+			{showHeaderProfile && (
+				<Profile
+					owner={props.channelHeaderData ? props.channelHeaderData.initialOwner : null}
+					active={showHeaderProfile}
+					handleClose={() => setShowHeaderProfile(false)}
 				/>
-			</S.CWrapper>
-		</S.Wrapper>
+			)}
+		</>
 	);
 }

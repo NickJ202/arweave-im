@@ -27,9 +27,4 @@ export const Title = styled.div`
 export const FNotification = styled.div`
     width: fit-content;
     margin: 0 0 0 auto;
-    span {
-        font-size: ${(props) => props.theme.typography.size.xxxSmall};
-        font-weight: ${(props) => props.theme.typography.weight.xBold};
-        color: ${(props) => props.theme.colors.font.alt2};
-    }
 `;

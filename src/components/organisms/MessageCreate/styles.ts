@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import { STYLING } from 'helpers/styling';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ active: boolean }>`
 	width: 100%;
-	border: 1px solid ${(props) => props.theme.colors.border.alt1};
+	border: 1px solid ${(props) => props.active ? props.theme.colors.border.alt2 : props.theme.colors.border.alt1};
 	border-radius: ${STYLING.dimensions.borderRadius};
 `;
 
@@ -63,6 +63,12 @@ export const Editor = styled.div`
 
 		::-webkit-scrollbar-thumb {
 			background-color: ${(props) => props.theme.colors.scrollbar.thumb};
+		}
+	}
+
+	&:focus {
+		${Wrapper} {
+			background: red;
 		}
 	}
 
