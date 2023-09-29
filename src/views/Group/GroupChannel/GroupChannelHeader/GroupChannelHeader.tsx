@@ -74,6 +74,7 @@ export default function GroupChannelHeader(props: IProps) {
 									groupReducer.data.members.length > 1 ? language.members : language.member
 								}`}
 								handlePress={() => setShowMembersDropdown(!showMembersDropdown)}
+								height={32.5}
 								noMinWidth
 							/>
 							{showMembersDropdown && (

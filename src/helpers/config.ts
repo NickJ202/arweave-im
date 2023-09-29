@@ -10,6 +10,7 @@ import code from 'assets/code.svg';
 import copy from 'assets/copy.svg';
 import info from 'assets/info.svg';
 import italic from 'assets/italic.svg';
+import link from 'assets/link.svg';
 import logo from 'assets/logo.svg';
 import menu from 'assets/menu.svg';
 import stamp from 'assets/stamp.svg';
@@ -37,6 +38,7 @@ export const ASSETS = {
 	copy: copy,
 	info: info,
 	italic: italic,
+	link: link,
 	logo: logo,
 	menu: menu,
 	stamp: stamp,
@@ -100,5 +102,8 @@ export const EDITOR_STYLE_MAP = (theme: DefaultTheme) => {
 			borderRadius: STYLING.dimensions.borderRadius,
 			border: `1px solid ${theme.colors.editor.codeLine.border}`,
 		},
+		LINK: {
+            color: theme.colors.link.color,
+        }
 	};
 };

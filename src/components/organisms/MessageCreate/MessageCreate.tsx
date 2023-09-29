@@ -1,5 +1,6 @@
 import React from 'react';
-import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
+import { convertToRaw, Editor, EditorState, getDefaultKeyBinding, KeyBindingUtil, Modifier, RichUtils } from 'draft-js';
+import { OrderedSet } from 'immutable';
 import { useTheme } from 'styled-components';
 
 import { CONTENT_TYPES, MessageEnum, TAGS } from 'lib';
@@ -7,6 +8,7 @@ const { hasCommandModifier } = KeyBindingUtil;
 
 import { Button } from 'components/atoms/Button';
 import { IconButton } from 'components/atoms/IconButton';
+import { MessageCreateLink } from 'components/atoms/MessageCreateLink';
 import { ASSETS, EDITOR_STYLE_MAP } from 'helpers/config';
 import { language } from 'helpers/language';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -17,6 +19,7 @@ import 'draft-js/dist/Draft.css';
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: type bold word, backspace full word and boldActive is still true
 export default function MessageCreate(props: IProps) {
 	const theme = useTheme();
 
@@ -33,6 +36,7 @@ export default function MessageCreate(props: IProps) {
 	const [italicActive, setItalicActive] = React.useState<boolean>(false);
 	const [underlineActive, setUnderlineActive] = React.useState<boolean>(false);
 	const [codeActive, setCodeActive] = React.useState<boolean>(false);
+	const [linkActive, setLinkActive] = React.useState<boolean>(false);
 
 	const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -49,6 +53,10 @@ export default function MessageCreate(props: IProps) {
 			return 'submit-message';
 		}
 
+		if (e.keyCode === 32) {
+			return 'insert-characters';
+		}
+
 		if (e.keyCode === 220 && hasCommandModifier(e)) {
 			return 'code';
 		}
@@ -63,8 +71,37 @@ export default function MessageCreate(props: IProps) {
 		}
 
 		if (command === 'insert-line-break') {
-			const newState = RichUtils.insertSoftNewline(editorState);
-			setEditorState(newState);
+			const selection = editorState.getSelection();
+			let contentState = editorState.getCurrentContent();
+			const currentBlock = contentState.getBlockForKey(selection.getStartKey());
+			const hasLinkStyle = currentBlock.getInlineStyleAt(selection.getStartOffset() - 1).has('LINK');
+
+			if (hasLinkStyle) {
+				contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
+				contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
+
+				contentState = Modifier.insertText(contentState, selection, ' ');
+
+				const newEditorState = EditorState.push(editorState, contentState, 'change-inline-style');
+				setEditorState(newEditorState);
+			} else {
+				contentState = Modifier.splitBlock(contentState, selection);
+				const newEditorState = EditorState.push(editorState, contentState, 'split-block');
+				setEditorState(newEditorState);
+			}
+			return 'handled';
+		}
+
+		if (command === 'insert-characters') {
+			const selection = editorState.getSelection();
+			let contentState = editorState.getCurrentContent();
+			contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
+			contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
+
+			contentState = Modifier.insertText(contentState, selection, ' ');
+
+			const newEditorState = EditorState.push(editorState, contentState, 'change-inline-style');
+			setEditorState(newEditorState);
 			return 'handled';
 		}
 
@@ -114,6 +151,35 @@ export default function MessageCreate(props: IProps) {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'CODE');
 		setEditorState(newState);
 		setCodeActive(!codeActive);
+	};
+
+	const handleAddLink = (link: string) => {
+		let contentState = editorState.getCurrentContent();
+		contentState = contentState.createEntity('LINK', 'MUTABLE', { url: link });
+		const entityKey = contentState.getLastCreatedEntityKey();
+
+		const linkText = link;
+
+		contentState = Modifier.insertText(
+			contentState,
+			contentState.getSelectionAfter(),
+			linkText,
+			OrderedSet.of('LINK'),
+			entityKey
+		);
+
+		contentState = Modifier.insertText(contentState, contentState.getSelectionAfter(), ' ');
+
+		const newEditorState = EditorState.push(editorState, contentState, 'insert-characters');
+
+		const newEditorStateWithSelection = EditorState.forceSelection(newEditorState, contentState.getSelectionAfter());
+
+		setEditorState(newEditorStateWithSelection);
+
+		setTimeout(() => {
+			editorRef.current?.focus();
+			setMessageActive(true);
+		}, 100);
 	};
 
 	const handleSubmit = async () => {
@@ -171,78 +237,98 @@ export default function MessageCreate(props: IProps) {
 	}
 
 	return (
-		<S.Wrapper active={messageActive}>
-			<S.Header>
-				<IconButton
-					type={'alt1'}
-					src={ASSETS.bold}
-					handlePress={handleBold}
-					active={boldActive}
-					disabled={!messageActive}
-					dimensions={{
-						wrapper: 22.5,
-						icon: 13.5,
-					}}
-				/>
-				<IconButton
-					type={'alt1'}
-					src={ASSETS.italic}
-					handlePress={handleItalic}
-					active={italicActive}
-					disabled={!messageActive}
-					dimensions={{
-						wrapper: 22.5,
-						icon: 13.5,
-					}}
-				/>
-				<IconButton
-					type={'alt1'}
-					src={ASSETS.underline}
-					handlePress={handleUnderline}
-					active={underlineActive}
-					disabled={!messageActive}
-					dimensions={{
-						wrapper: 22.5,
-						icon: 13.5,
-					}}
-				/>
-				<S.IDivider />
-				<IconButton
-					type={'alt1'}
-					src={ASSETS.code}
-					handlePress={handleCode}
-					active={codeActive}
-					disabled={!messageActive}
-					dimensions={{
-						wrapper: 22.5,
-						icon: 13.5,
-					}}
-				/>
-			</S.Header>
-			<S.Body>
-				<S.Editor onClick={() => editorRef.current?.focus()}>
-					<Editor
-						ref={editorRef}
-						customStyleMap={EDITOR_STYLE_MAP(theme)}
-						editorState={editorState}
-						handleKeyCommand={handleKeyCommand}
-						onChange={handleEditorChange}
-						onFocus={() => setMessageActive(true)}
-						onBlur={() => setMessageActive(false)}
-						keyBindingFn={mapKeyToEditorCommand}
-						placeholder={props.placeholder ? props.placeholder : language.sendMessage}
+		<>
+			<S.Wrapper active={messageActive}>
+				<S.Header>
+					<IconButton
+						type={'alt1'}
+						src={ASSETS.bold}
+						handlePress={handleBold}
+						active={boldActive}
+						disabled={!messageActive}
+						dimensions={{
+							wrapper: 22.5,
+							icon: 13.5,
+						}}
 					/>
-				</S.Editor>
-			</S.Body>
-			<S.Footer>
-				<Button
-					type={'alt1'}
-					label={loading ? `${language.sending}...` : language.send}
-					handlePress={handleSubmit}
-					disabled={loading || getSubmitDisabled(editorState)}
-					noMinWidth
+					<IconButton
+						type={'alt1'}
+						src={ASSETS.italic}
+						handlePress={handleItalic}
+						active={italicActive}
+						disabled={!messageActive}
+						dimensions={{
+							wrapper: 22.5,
+							icon: 13.5,
+						}}
+					/>
+					<IconButton
+						type={'alt1'}
+						src={ASSETS.underline}
+						handlePress={handleUnderline}
+						active={underlineActive}
+						disabled={!messageActive}
+						dimensions={{
+							wrapper: 22.5,
+							icon: 13.5,
+						}}
+					/>
+					<S.IDivider />
+					<IconButton
+						type={'alt1'}
+						src={ASSETS.code}
+						handlePress={handleCode}
+						active={codeActive}
+						disabled={!messageActive}
+						dimensions={{
+							wrapper: 22.5,
+							icon: 13.5,
+						}}
+					/>
+					<S.IDivider />
+					<IconButton
+						type={'alt1'}
+						src={ASSETS.link}
+						handlePress={() => setLinkActive(true)}
+						active={false}
+						disabled={!messageActive}
+						dimensions={{
+							wrapper: 22.5,
+							icon: 11.5,
+						}}
+					/>
+				</S.Header>
+				<S.Body>
+					<S.Editor onClick={() => editorRef.current?.focus()}>
+						<Editor
+							ref={editorRef}
+							customStyleMap={EDITOR_STYLE_MAP(theme)}
+							editorState={editorState}
+							handleKeyCommand={handleKeyCommand}
+							onChange={handleEditorChange}
+							onFocus={() => setMessageActive(true)}
+							onBlur={() => setMessageActive(false)}
+							keyBindingFn={mapKeyToEditorCommand}
+							placeholder={props.placeholder ? props.placeholder : language.sendMessage}
+						/>
+					</S.Editor>
+				</S.Body>
+				<S.Footer>
+					<Button
+						type={'alt1'}
+						label={loading ? `${language.sending}...` : language.send}
+						handlePress={handleSubmit}
+						disabled={loading || getSubmitDisabled(editorState)}
+						noMinWidth
+					/>
+				</S.Footer>
+			</S.Wrapper>
+			{linkActive && (
+				<MessageCreateLink
+					handleSubmit={(link: string) => handleAddLink(link)}
+					handleClose={() => setLinkActive(false)}
 				/>
-			</S.Footer>
-		</S.Wrapper>
+			)}
+		</>
 	);
 }

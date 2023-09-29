@@ -45,12 +45,12 @@ export default function GroupChannelDetail(props: IProps) {
 							<span>{language.channelCreatedOn}</span>&nbsp;
 							{formatDate(props.channelHeaderData.dateCreated, 'epoch', false)}
 							&nbsp;<span>{language.by}</span>&nbsp;
-						</p>
-						<Button
+							<Button
 							type={'alt2'}
 							label={owner.handle ? owner.handle : formatAddress(owner.walletAddress, false)}
 							handlePress={() => setShowHeaderProfile(true)}
 						/>
+						</p>
 					</S.MHData>
 				</S.MHWrapper>
 			);

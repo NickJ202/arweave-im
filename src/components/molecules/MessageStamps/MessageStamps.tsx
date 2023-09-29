@@ -24,7 +24,6 @@ export default function MessageStamps(props: IProps) {
 		<>
 			<S.Action
 				onClick={handleUpdate}
-				connectedWalletStamped={props.stamps.connectedWalletStamped}
 				disabled={props.stamps.connectedWalletStamped || stampDisabled}
 				title={props.stamps.connectedWalletStamped ? language.messageStamped : language.stamp}
 			>

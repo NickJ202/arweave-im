@@ -29,7 +29,7 @@ export default function Group() {
 				
 				let reducerData: GroupReduxDataType | null = null;
 				let activeChannelId: string | null = null;
-
+				
 				if (groupChange) {
 					const profiles: ProfileType[] = await cliProvider.lib.api.getProfiles({
 						addresses: groupState.members.map((member: MemberType) => member.address),

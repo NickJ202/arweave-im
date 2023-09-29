@@ -20,7 +20,6 @@ import * as groupActions from 'store/group/actions';
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: "Only the owner can update the state of this contract"
 export default function GroupDropdown(props: IProps) {
 	const dispatch = useDispatch();
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);

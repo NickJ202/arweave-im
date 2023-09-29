@@ -21,7 +21,6 @@ export const AWrapper = styled.div`
 	position: absolute;
 	top: -19.5px;
 	right: 10px;
-	z-index: 1;
 	display: none;
 `;
 
@@ -92,7 +91,7 @@ export const MText = styled.div<{ textOnly: boolean }>`
 `;
 
 export const MFooter = styled.div`
-	margin: 5px 0 0 0;
+	margin: 6.5px 0 0 0;
 `;
 
 export const Loader = styled.div`

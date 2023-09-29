@@ -46,5 +46,9 @@ export const language = {
 	fetchingMessages: `Fetching Messages`,
 	stampingMessage: `Stamping Message`,
 	channelCreatedOn: `This channel was created on`,
-	by: `by`
+	by: `by`,
+	addLink: `Add link`,
+	add: `Add`,
+	link: `Link`,
+	cancel: `Cancel`
 };

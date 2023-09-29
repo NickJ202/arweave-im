@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
+import { CompositeDecorator, convertFromRaw, Editor, EditorState } from 'draft-js';
 import { useTheme } from 'styled-components';
 
 import { MessageEnum, StampType } from 'lib';
@@ -17,6 +17,29 @@ import { Profile } from '../Profile';
 
 import * as S from './styles';
 import { IProps } from './types';
+
+const Link = ({ contentState, entityKey, children }) => {
+	const { url } = contentState.getEntity(entityKey).getData();
+	return (
+		<a href={url} target="_blank" rel="noopener noreferrer">
+			{children}
+		</a>
+	);
+};
+
+const findLinkEntities = (contentBlock: any, callback: any, contentState: any) => {
+	contentBlock.findEntityRanges((character: any) => {
+		const entityKey = character.getEntity();
+		return entityKey !== null && contentState.getEntity(entityKey).getType() === 'LINK';
+	}, callback);
+};
+
+const linkDecorator = new CompositeDecorator([
+	{
+		strategy: findLinkEntities,
+		component: Link,
+	},
+]);
 
 export default function Message(props: IProps) {
 	const theme = useTheme();
@@ -63,7 +86,7 @@ export default function Message(props: IProps) {
 					const parsedDataObject = JSON.parse(dataObject);
 					if (parsedDataObject.type === MessageEnum.Text && parsedDataObject.data) {
 						const contentState = convertFromRaw(parsedDataObject.data);
-						const updatedEditorState = EditorState.createWithContent(contentState);
+						const updatedEditorState = EditorState.createWithContent(contentState, linkDecorator);
 						setEditorState(updatedEditorState);
 					}
 				} catch (e: any) {}

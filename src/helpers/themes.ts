@@ -105,7 +105,7 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.neutral3,
 				border: DEFAULT.neutral6,
 				color: DEFAULT.accent5,
-			},
+			}
 		},
 		font: {
 			primary: DEFAULT.neutralA1,
@@ -134,6 +134,10 @@ export const defaultTheme: DefaultTheme = {
 			primary: DEFAULT.neutralA1,
 			alt1: DEFAULT.neutral1,
 			alt2: DEFAULT.neutralA6,
+		},
+		link: {
+			color: DEFAULT.accent3,
+			active: DEFAULT.accent4
 		},
 		loader: {
 			primary: DEFAULT.neutralA2,

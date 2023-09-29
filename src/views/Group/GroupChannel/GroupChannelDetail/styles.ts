@@ -35,7 +35,10 @@ export const MHHeader = styled.div`
 export const MHData = styled.div`
 	display: flex;
 	align-items: center;
-	padding: 0 0 15px 0;
+	padding: 0 0 13.5px 0;
+	p, span, button {
+		line-height: 1.65;
+	}
 	p, span {
 		font-size: ${(props) => props.theme.typography.size.base} !important;
 		font-family: ${(props) => props.theme.typography.family.primary};

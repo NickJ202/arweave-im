@@ -109,6 +109,17 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.25;
   }
 
+  a {
+    color: ${(props) => props.theme.colors.link.color};
+    text-decoration: none;
+
+    &:hover {
+      color: ${(props) => props.theme.colors.link.active};
+      text-decoration: underline;
+			text-decoration-thickness: 1.35px;
+    }
+  }
+
   * {
     &:focus {
       outline: none;
