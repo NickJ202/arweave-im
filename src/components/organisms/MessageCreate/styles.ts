@@ -4,8 +4,11 @@ import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div<{ active: boolean }>`
 	width: 100%;
-	border: 1px solid ${(props) => props.active ? props.theme.colors.border.alt2 : props.theme.colors.border.alt1};
+	border: 1.35px solid ${(props) => props.active ? props.theme.colors.border.alt2 : props.theme.colors.border.alt1};
 	border-radius: ${STYLING.dimensions.borderRadius};
+	&:hover {
+		cursor: text;
+	}
 `;
 
 export const Header = styled.div`
@@ -58,17 +61,10 @@ export const Editor = styled.div`
 	}
 
 	&:hover {
-		cursor: text;
 		scrollbar-color: ${(props) => props.theme.colors.scrollbar.thumb} transparent;
 
 		::-webkit-scrollbar-thumb {
 			background-color: ${(props) => props.theme.colors.scrollbar.thumb};
-		}
-	}
-
-	&:focus {
-		${Wrapper} {
-			background: red;
 		}
 	}
 
@@ -87,7 +83,7 @@ export const Footer = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	padding: 0 15px 12.5px 15px;
+	padding: 0 9.5px 9.5px 9.5px;
 	background: ${(props) => props.theme.colors.container.primary.background};
 	border-bottom-left-radius: ${STYLING.dimensions.borderRadius};
 	border-bottom-right-radius: ${STYLING.dimensions.borderRadius};

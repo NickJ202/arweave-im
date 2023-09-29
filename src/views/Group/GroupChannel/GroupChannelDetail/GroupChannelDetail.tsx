@@ -57,7 +57,6 @@ export default function GroupChannelDetail(props: IProps) {
 		} else return null;
 	}
 
-	// TODO: useSameOwner false after certain time interval
 	function getChannelData() {
 		if (props.channelData) {
 			return (
@@ -65,8 +64,12 @@ export default function GroupChannelDetail(props: IProps) {
 					{props.channelData.data.length > 0 ? (
 						props.channelData.data.map((asset: AssetType, index: number) => {
 							let useSameOwner: boolean = false;
+							const timeIntervalThreshold = 3600000;
 							if (index > 0) {
-								useSameOwner = asset.owner === props.channelData.data[index - 1].owner;
+								const currentData = props.channelData.data[index - 1];
+								const timeDifference = new Date(asset.dateCreated).getTime() - new Date(currentData.dateCreated).getTime();
+
+                            	useSameOwner = asset.owner === currentData.owner && timeDifference < timeIntervalThreshold;
 							}
 							return <Message key={index} data={asset} useSameOwner={useSameOwner} />;
 						})

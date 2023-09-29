@@ -122,8 +122,8 @@ export const defaultTheme: DefaultTheme = {
 				shadow: DEFAULT.negativeShadow,
 			},
 			valid: {
-				outline: DEFAULT.neutral5,
-				shadow: DEFAULT.neutral3,
+				outline: DEFAULT.neutral6,
+				shadow: DEFAULT.neutral5,
 			},
 			disabled: {
 				background: DEFAULT.neutral3,

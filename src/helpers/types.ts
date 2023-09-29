@@ -20,6 +20,7 @@ export type RefType = { current: HTMLElement };
 export type DateType = 'iso' | 'epoch';
 
 export type ResponseType = { status: boolean; message: string | null };
+export type ValidationType = { status: boolean; message: string | null };
 
 export type ReduxActionType = {
 	type: string;
@@ -30,9 +31,10 @@ export type GroupReduxDataType = GroupType & {
 	profiles: ProfileType[];
 }
 
-
 export type GroupReduxType = {
 	data: GroupReduxDataType;
 	groupId: string;
 	activeChannelId: string;
 };
+
+export type FormFieldType = 'number' | 'password';

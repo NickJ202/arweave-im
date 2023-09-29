@@ -13,7 +13,6 @@ import { RootState } from 'store';
 import { GroupChannelDetail } from './GroupChannelDetail';
 import { GroupChannelHeader } from './GroupChannelHeader';
 
-// TODO: paginate messages
 export default function GroupChannel() {
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
@@ -77,7 +76,7 @@ export default function GroupChannel() {
 	// 	return () => clearInterval(intervalId);
 	// }, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
-	// // TODO: update previous messages
+	// Update previous Messages
 	// React.useEffect(() => {
 	// 	(async function () {
 	// 		if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end) {

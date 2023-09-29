@@ -27,6 +27,7 @@ export default function MessageCreateLink(props: IProps) {
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLink(e.target.value)}
 					disabled={false}
 					invalid={{ status: false, message: null }}
+                    autoFocus
 				/>
                 <S.Actions>
                     <Button

@@ -50,6 +50,7 @@ export default function FormField(props: IProps) {
 					invalid={props.invalid.status}
 					placeholder={props.placeholder ? props.placeholder : ''}
 					sm={props.sm}
+					autoFocus={props.autoFocus ? props.autoFocus : false}
 					data-testid={props.testingCtx}
 				/>
 				<S.EndTextContainer disabled={props.disabled} sm={props.sm}>

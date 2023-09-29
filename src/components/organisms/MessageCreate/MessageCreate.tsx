@@ -19,7 +19,6 @@ import 'draft-js/dist/Draft.css';
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: type bold word, backspace full word and boldActive is still true
 export default function MessageCreate(props: IProps) {
 	const theme = useTheme();
 
@@ -56,7 +55,6 @@ export default function MessageCreate(props: IProps) {
 		setItalicActive(currentStyle.has('ITALIC'));
 		setUnderlineActive(currentStyle.has('UNDERLINE'));
 		setCodeActive(currentStyle.has('CODE'));
-	
 	}, [editorState]);
 
 	React.useEffect(() => {
@@ -64,8 +62,7 @@ export default function MessageCreate(props: IProps) {
 		setItalicModeActive(italicActive);
 		setUnderlineModeActive(underlineActive);
 		setCodeModeActive(codeActive);
-	}, [boldActive, italicActive, underlineActive, codeActive])
-	
+	}, [boldActive, italicActive, underlineActive, codeActive]);
 
 	const mapKeyToEditorCommand = (e: React.KeyboardEvent) => {
 		if (e.keyCode === 83 && hasCommandModifier(e)) {
@@ -134,13 +131,13 @@ export default function MessageCreate(props: IProps) {
 				setBoldModeActive(!boldModeActive);
 				break;
 			case 'italic':
-				setItalicModeActive(!italicModeActive)
+				setItalicModeActive(!italicModeActive);
 				break;
 			case 'underline':
-				setUnderlineModeActive(!underlineModeActive)
+				setUnderlineModeActive(!underlineModeActive);
 				break;
 			case 'code':
-				setCodeModeActive(!codeModeActive)
+				setCodeModeActive(!codeModeActive);
 				break;
 			default:
 				break;
@@ -252,18 +249,12 @@ export default function MessageCreate(props: IProps) {
 	}
 
 	function handleEditorChange(newEditorState: EditorState) {
-		// if (checkEmptyEditor(newEditorState)) {
-		// 	setBoldActive(false);
-		// 	setItalicActive(false);
-		// 	setUnderlineActive(false);
-		// 	setCodeActive(false);
-		// }
 		setEditorState(newEditorState);
 	}
 
 	return (
 		<>
-			<S.Wrapper active={messageActive}>
+			<S.Wrapper active={messageActive} onClick={() => editorRef.current?.focus()}>
 				<S.Header>
 					<IconButton
 						type={'alt1'}
@@ -314,7 +305,10 @@ export default function MessageCreate(props: IProps) {
 					<IconButton
 						type={'alt1'}
 						src={ASSETS.link}
-						handlePress={() => setLinkActive(true)}
+						handlePress={() => {
+							setLinkActive(true);
+							setMessageActive(false);
+						}}
 						active={false}
 						disabled={!messageActive}
 						dimensions={{
@@ -324,7 +318,7 @@ export default function MessageCreate(props: IProps) {
 					/>
 				</S.Header>
 				<S.Body>
-					<S.Editor onClick={() => editorRef.current?.focus()}>
+					<S.Editor>
 						<Editor
 							ref={editorRef}
 							customStyleMap={EDITOR_STYLE_MAP(theme)}

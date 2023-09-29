@@ -16,4 +16,5 @@ export interface IProps {
 	testingCtx?: string;
 	tooltip?: string;
 	tooltipLabel?: string;
+	autoFocus?: boolean;
 }

@@ -80,9 +80,14 @@ export const MText = styled.div<{ textOnly: boolean }>`
 	margin: ${(props) => (props.textOnly ? '0' : '7.5px 0 0 0')};
 	position: relative;
 	z-index: 0;
+
+	.DraftEditor-root {
+		// max-width: 95%;
+	}
+
 	span,
 	.public-DraftEditorPlaceholder-inner {
-		line-height: 1.5;
+		line-height: 1.55;
 	}
 
 	.public-DraftEditorPlaceholder-inner {
