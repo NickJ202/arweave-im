@@ -36,9 +36,36 @@ export default function MessageCreate(props: IProps) {
 	const [italicActive, setItalicActive] = React.useState<boolean>(false);
 	const [underlineActive, setUnderlineActive] = React.useState<boolean>(false);
 	const [codeActive, setCodeActive] = React.useState<boolean>(false);
+
 	const [linkActive, setLinkActive] = React.useState<boolean>(false);
 
+	const [boldModeActive, setBoldModeActive] = React.useState<boolean>(false);
+	const [italicModeActive, setItalicModeActive] = React.useState<boolean>(false);
+	const [underlineModeActive, setUnderlineModeActive] = React.useState<boolean>(false);
+	const [codeModeActive, setCodeModeActive] = React.useState<boolean>(false);
+
 	const [loading, setLoading] = React.useState<boolean>(false);
+
+	React.useEffect(() => {
+		const selection = editorState.getSelection();
+		const currentContent = editorState.getCurrentContent();
+		const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
+		const currentStyle = currentBlock.getInlineStyleAt(selection.getStartOffset() - 1);
+
+		setBoldActive(currentStyle.has('BOLD'));
+		setItalicActive(currentStyle.has('ITALIC'));
+		setUnderlineActive(currentStyle.has('UNDERLINE'));
+		setCodeActive(currentStyle.has('CODE'));
+	
+	}, [editorState]);
+
+	React.useEffect(() => {
+		setBoldModeActive(boldActive);
+		setItalicModeActive(italicActive);
+		setUnderlineModeActive(underlineActive);
+		setCodeModeActive(codeActive);
+	}, [boldActive, italicActive, underlineActive, codeActive])
+	
 
 	const mapKeyToEditorCommand = (e: React.KeyboardEvent) => {
 		if (e.keyCode === 83 && hasCommandModifier(e)) {
@@ -55,10 +82,6 @@ export default function MessageCreate(props: IProps) {
 
 		if (e.keyCode === 32) {
 			return 'insert-characters';
-		}
-
-		if (e.keyCode === 220 && hasCommandModifier(e)) {
-			return 'code';
 		}
 
 		return getDefaultKeyBinding(e);
@@ -108,16 +131,16 @@ export default function MessageCreate(props: IProps) {
 		const newState = RichUtils.handleKeyCommand(editorState, command);
 		switch (command) {
 			case 'bold':
-				setBoldActive(!boldActive);
+				setBoldModeActive(!boldModeActive);
 				break;
 			case 'italic':
-				setItalicActive(!italicActive);
+				setItalicModeActive(!italicModeActive)
 				break;
 			case 'underline':
-				setUnderlineActive(!underlineActive);
+				setUnderlineModeActive(!underlineModeActive)
 				break;
 			case 'code':
-				setCodeActive(!codeActive);
+				setCodeModeActive(!codeModeActive)
 				break;
 			default:
 				break;
@@ -131,26 +154,28 @@ export default function MessageCreate(props: IProps) {
 
 	const handleBold = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
+		setBoldModeActive(!boldModeActive);
 		setEditorState(newState);
-		setBoldActive(!boldActive);
+
+		// setBoldActive(!boldActive);
 	};
 
 	const handleItalic = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'ITALIC');
+		setItalicModeActive(!italicModeActive);
 		setEditorState(newState);
-		setItalicActive(!italicActive);
 	};
 
 	const handleUnderline = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'UNDERLINE');
+		setUnderlineModeActive(!underlineModeActive);
 		setEditorState(newState);
-		setUnderlineActive(!underlineActive);
 	};
 
 	const handleCode = () => {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'CODE');
+		setCodeModeActive(!codeModeActive);
 		setEditorState(newState);
-		setCodeActive(!codeActive);
 	};
 
 	const handleAddLink = (link: string) => {
@@ -227,12 +252,12 @@ export default function MessageCreate(props: IProps) {
 	}
 
 	function handleEditorChange(newEditorState: EditorState) {
-		if (checkEmptyEditor(newEditorState)) {
-			setBoldActive(false);
-			setItalicActive(false);
-			setUnderlineActive(false);
-			setCodeActive(false);
-		}
+		// if (checkEmptyEditor(newEditorState)) {
+		// 	setBoldActive(false);
+		// 	setItalicActive(false);
+		// 	setUnderlineActive(false);
+		// 	setCodeActive(false);
+		// }
 		setEditorState(newEditorState);
 	}
 
@@ -244,7 +269,7 @@ export default function MessageCreate(props: IProps) {
 						type={'alt1'}
 						src={ASSETS.bold}
 						handlePress={handleBold}
-						active={boldActive}
+						active={boldModeActive}
 						disabled={!messageActive}
 						dimensions={{
 							wrapper: 22.5,
@@ -255,7 +280,7 @@ export default function MessageCreate(props: IProps) {
 						type={'alt1'}
 						src={ASSETS.italic}
 						handlePress={handleItalic}
-						active={italicActive}
+						active={italicModeActive}
 						disabled={!messageActive}
 						dimensions={{
 							wrapper: 22.5,
@@ -266,7 +291,7 @@ export default function MessageCreate(props: IProps) {
 						type={'alt1'}
 						src={ASSETS.underline}
 						handlePress={handleUnderline}
-						active={underlineActive}
+						active={underlineModeActive}
 						disabled={!messageActive}
 						dimensions={{
 							wrapper: 22.5,
@@ -278,7 +303,7 @@ export default function MessageCreate(props: IProps) {
 						type={'alt1'}
 						src={ASSETS.code}
 						handlePress={handleCode}
-						active={codeActive}
+						active={codeModeActive}
 						disabled={!messageActive}
 						dimensions={{
 							wrapper: 22.5,

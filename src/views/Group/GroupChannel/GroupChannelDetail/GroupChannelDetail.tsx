@@ -34,7 +34,7 @@ export default function GroupChannelDetail(props: IProps) {
 			}
 		}
 	};
-
+	
 	function getHeader() {
 		if (props.channelHeaderData && groupReducer) {
 			const owner = getOwner(groupReducer, props.channelHeaderData.initialOwner);
@@ -57,6 +57,7 @@ export default function GroupChannelDetail(props: IProps) {
 		} else return null;
 	}
 
+	// TODO: useSameOwner false after certain time interval
 	function getChannelData() {
 		if (props.channelData) {
 			return (
