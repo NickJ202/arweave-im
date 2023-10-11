@@ -19,6 +19,10 @@ import 'draft-js/dist/Draft.css';
 import * as S from './styles';
 import { IProps } from './types';
 
+const MAX_EDITOR_LENGTH = 2500;
+
+// TODO: invalid warning on max limit reached
+// TODO: throw error footer notification on bad request
 export default function MessageCreate(props: IProps) {
 	const theme = useTheme();
 
@@ -153,8 +157,6 @@ export default function MessageCreate(props: IProps) {
 		const newState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
 		setBoldModeActive(!boldModeActive);
 		setEditorState(newState);
-
-		// setBoldActive(!boldActive);
 	};
 
 	const handleItalic = () => {
@@ -206,35 +208,40 @@ export default function MessageCreate(props: IProps) {
 
 	const handleSubmit = async () => {
 		if (cliProvider.lib && arProvider.walletAddress) {
-			const rawContentState = convertToRaw(editorState.getCurrentContent());
-			const serializedContent = JSON.stringify({ type: MessageEnum.Text, data: rawContentState });
-
-			editorRef.current?.blur();
-			setTimeout(() => {
-				setEditorState(EditorState.createEmpty());
-			}, 0);
-			setTimeout(() => {
-				editorRef.current?.focus();
-			}, 100);
-
-			setLoading(true);
-			const contractId = await cliProvider.lib.api.createAsset({
-				content: serializedContent,
-				contentType: CONTENT_TYPES.textPlain,
-				title: language.message(props.channelId),
-				description: language.message(props.channelId),
-				type: language.message(props.channelId),
-				topics: [language.message(props.channelId)],
-				owner: arProvider.walletAddress,
-				ticker: TAGS.values.ticker,
-				dataProtocol: null,
-				dataSource: null,
-				renderWith: null,
-				channelId: props.channelId,
-				groupId: props.groupId,
-			});
-
-			await props.handleUpdate(contractId);
+			try {
+				const rawContentState = convertToRaw(editorState.getCurrentContent());
+				const serializedContent = JSON.stringify({ type: MessageEnum.Text, data: rawContentState });
+	
+				editorRef.current?.blur();
+				setTimeout(() => {
+					setEditorState(EditorState.createEmpty());
+				}, 0);
+				setTimeout(() => {
+					editorRef.current?.focus();
+				}, 100);
+	
+				setLoading(true);
+				const contractId = await cliProvider.lib.api.createAsset({
+					content: serializedContent,
+					contentType: CONTENT_TYPES.textPlain,
+					title: language.message(props.channelId),
+					description: language.message(props.channelId),
+					type: language.message(props.channelId),
+					topics: [language.message(props.channelId)],
+					owner: arProvider.walletAddress,
+					ticker: TAGS.values.ticker,
+					dataProtocol: null,
+					dataSource: null,
+					renderWith: null,
+					channelId: props.channelId,
+					groupId: props.groupId,
+				});
+	
+				await props.handleUpdate(contractId);
+			}
+			catch (e: any) {
+				console.error(e);
+			}
 			setLoading(false);
 		}
 	};
@@ -244,8 +251,12 @@ export default function MessageCreate(props: IProps) {
 		return !plainText.trim().length;
 	}
 
+	function checkInvalidEditorLength(editorState: EditorState) {
+		return editorState.getCurrentContent().getPlainText().length >= MAX_EDITOR_LENGTH
+	}
+
 	function getSubmitDisabled(editorState: EditorState) {
-		return checkEmptyEditor(editorState);
+		return checkEmptyEditor(editorState) || checkInvalidEditorLength(editorState);
 	}
 
 	function handleEditorChange(newEditorState: EditorState) {
@@ -316,6 +327,11 @@ export default function MessageCreate(props: IProps) {
 							icon: 11.5,
 						}}
 					/>
+					{checkInvalidEditorLength(editorState) && (
+						<S.HWarning>
+							<span>{language.maxCharsReached}</span>
+						</S.HWarning>
+					)}
 				</S.Header>
 				<S.Body>
 					<S.Editor>

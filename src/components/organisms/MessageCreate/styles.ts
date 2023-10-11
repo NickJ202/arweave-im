@@ -37,6 +37,17 @@ export const IDivider = styled.div`
 	border-right: 1.25px solid ${(props) => props.theme.colors.border.alt1};
 `;
 
+export const HWarning = styled.div`
+	width: fit-content;
+	margin: 0 0 0 auto !important;
+	span {
+		font-size: ${(props) => props.theme.typography.size.xSmall};
+		font-family: ${(props) => props.theme.typography.family.primary};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+		color: ${(props) => props.theme.colors.notification.warning};
+	}
+`;
+
 export const Body = styled.div`
 	width: 100%;
 `;

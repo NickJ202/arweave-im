@@ -41,7 +41,6 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
 		});
 		const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
-
 		const stampCounts = await withTimeout(2000, stamps.counts(dataIds)).catch(e => {
 			console.error(e)
 		});

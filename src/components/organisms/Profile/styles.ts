@@ -14,6 +14,7 @@ export const PWrapper = styled.div`
 	z-index: 1;
 	padding: 0;
 	background: ${(props) => props.theme.colors.container.alt1.background};
+	border-top: 1px solid ${(props) => props.theme.colors.border.primary};
 	border-left: 1px solid ${(props) => props.theme.colors.border.primary};
 	will-change: transform;
 	animation: ${openRight} 0.15s ease-in-out forwards;

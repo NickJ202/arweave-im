@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChannelHeaderResponseType, ChannelResponseType, ChannelType } from 'lib';
+import { ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
 
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
@@ -43,20 +43,22 @@ export default function GroupChannel() {
 		}
 	}
 
+	// Initial message fetch
 	React.useEffect(() => {
 		(async function () {
 			setChannelData(null);
 			setLoading(true);
+			// await new Promise((resolve) => setTimeout(resolve, 250));
 			try {
 				setChannelData(await fetchChannelAssets({ cursor: null }));
-			}
-			catch (e: any) {
-				console.error(e)
+				await handleScrollToRecent();
+			} catch (e: any) {
+				console.error(e);
 				setChannelData({
 					data: [],
 					nextCursor: null,
-					previousCursor: null
-				})
+					previousCursor: null,
+				});
 			}
 			setLoading(false);
 		})();
@@ -72,9 +74,27 @@ export default function GroupChannel() {
 
 	React.useEffect(() => {
 		if (loading) queueFooterNotification(`${language.fetchingMessages}...`);
-	}, [loading])
+	}, [loading]);
 
-	// Poll data
+	// Update previous messages
+	React.useEffect(() => {
+		(async function () {
+			if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end) {
+				setLoading(true);
+				const currentData = [...channelData.data];
+				const updatedResponse = await fetchChannelAssets({ cursor: channelData.nextCursor });
+				setChannelData({
+					data: [...updatedResponse.data, ...currentData],
+					nextCursor: updatedResponse.nextCursor,
+					previousCursor: updatedResponse.previousCursor,
+				});
+				setScrollToRecent(false);
+				setLoading(false);
+			}
+		})();
+	}, [updateData]);
+
+	// Poll messages
 	// React.useEffect(() => {
 	// 	async function pollData() {
 	// 		const updatedResponse = await fetchData({ cursor: null });
@@ -91,16 +111,13 @@ export default function GroupChannel() {
 	// 	return () => clearInterval(intervalId);
 	// }, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
-	// Update previous Messages
-	// React.useEffect(() => {
-	// 	(async function () {
-	// 		if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end) {
-	// 			const updatedResponse = await fetchData({ cursor: channelData.nextCursor });
-	// 			console.log(updatedResponse);
-	// 		}
-	// 	})();
-	// }, [updateData]);
+	async function handleScrollToRecent() {
+		setScrollToRecent(true);
+		await new Promise((resolve) => setTimeout(resolve, 250));
+		setScrollToRecent(false);
+	}
 
+	// Fetch new message
 	async function handleUpdate(contractId: string) {
 		if (cliProvider.lib && contractId) {
 			const asset = await cliProvider.lib.api.getAssetById({
@@ -112,7 +129,7 @@ export default function GroupChannel() {
 					nextCursor: channelData.nextCursor,
 					previousCursor: channelData.previousCursor,
 				});
-			setScrollToRecent(!scrollToRecent);
+				await handleScrollToRecent();
 		}
 	}
 
@@ -122,9 +139,8 @@ export default function GroupChannel() {
 				return formatChannelName(
 					groupReducer.data.channels.find((channel: ChannelType) => channel.id === groupReducer.activeChannelId).title
 				);
-			}
-			catch (e: any) {
-				return '-'
+			} catch (e: any) {
+				return '-';
 			}
 		} else return null;
 	}
@@ -143,6 +159,7 @@ export default function GroupChannel() {
 						handleUpdate={handleUpdate}
 						scrollToRecent={scrollToRecent}
 						setUpdateData={() => setUpdateData(!updateData)}
+						loading={loading}
 					/>
 				</>
 			);

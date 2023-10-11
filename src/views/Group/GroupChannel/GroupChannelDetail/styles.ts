@@ -16,6 +16,7 @@ export const MWrapper = styled.div`
 `;
 
 export const MHWrapper = styled.div`
+	min-height: 40.5px;
 	width: 100%;
 	padding: 0 15px;
 	margin: 0 0 15px 0;

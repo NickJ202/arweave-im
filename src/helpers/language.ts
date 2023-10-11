@@ -53,5 +53,6 @@ export const language = {
 	link: `Link`,
 	cancel: `Cancel`,
 	welcomeTo: `Welcome to`,
-	walletConnectGroupView: `Connect your wallet to view your groups`
+	walletConnectGroupView: `Connect your wallet to view your groups`,
+	maxCharsReached: `Max Character Limit Reached`
 };

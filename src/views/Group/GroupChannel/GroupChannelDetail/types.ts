@@ -9,4 +9,5 @@ export interface IProps {
 	handleUpdate: (contractId: string) => Promise<void>;
 	scrollToRecent: boolean;
 	setUpdateData: () => void;
+	loading: boolean;
 }

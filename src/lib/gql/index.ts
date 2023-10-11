@@ -59,7 +59,8 @@ export async function getGQLData(args: {
 				if (responseData.length < PAGINATOR) {
 					nextCursor = CURSORS.end;
 				} else {
-					nextCursor = responseData[responseData.length - 1].cursor;
+					const responseIndex = args.useBundlrGateway ? 0 : responseData.length - 1;
+					nextCursor = responseData[responseIndex].cursor;
 				}
 			}
 		}

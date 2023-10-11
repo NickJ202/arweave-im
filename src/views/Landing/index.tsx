@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 
@@ -11,10 +12,12 @@ import { language } from 'helpers/language';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
+import * as groupActions from 'store/group/actions';
 
 import * as S from './styles';
 
 export default function Landing() {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const arProvider = useArweaveProvider();
@@ -22,6 +25,10 @@ export default function Landing() {
 
 	const [groups, setGroups] = React.useState<GQLNodeResponseType[] | null>(null);
 	const [handleUpdate, setHandleUpdate] = React.useState<boolean>(false);
+
+	React.useEffect(() => {
+		dispatch(groupActions.setGroup(null));
+	}, [])
 
 	React.useEffect(() => {
 		(async function () {
