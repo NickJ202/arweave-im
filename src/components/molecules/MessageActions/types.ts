@@ -4,4 +4,5 @@ export interface IProps {
 	id: string | null;
 	stamps: StampType | null;
 	handleStampUpdate: () => void;
+	setHandleScrollUpdate: () => void;
 }

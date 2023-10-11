@@ -45,7 +45,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		button: {
 			primary: {
-				background: DEFAULT.primary,
+				background: DEFAULT.neutral1,
 				border: DEFAULT.neutralA6,
 				color: DEFAULT.neutralA1,
 				active: {
@@ -54,8 +54,8 @@ export const defaultTheme: DefaultTheme = {
 					color: DEFAULT.neutralA1,
 				},
 				disabled: {
-					background: DEFAULT.primary,
-					border: DEFAULT.neutral5,
+					background: DEFAULT.primary2,
+					border: DEFAULT.neutral6,
 					color: DEFAULT.neutralA7,
 				},
 			},
@@ -69,8 +69,8 @@ export const defaultTheme: DefaultTheme = {
 					color: DEFAULT.neutral1,
 				},
 				disabled: {
-					background: DEFAULT.primary,
-					border: DEFAULT.neutral5,
+					background: DEFAULT.primary2,
+					border: DEFAULT.neutral6,
 					color: DEFAULT.neutralA7,
 				},
 			},
@@ -163,7 +163,7 @@ export const defaultTheme: DefaultTheme = {
 			alt1: DEFAULT.semiTransparent2,
 		},
 		scrollbar: {
-			thumb: DEFAULT.neutral6,
+			thumb: DEFAULT.neutral5,
 		},
 		view: {
 			background: DEFAULT.neutral1,
@@ -205,6 +205,7 @@ export const defaultTheme: DefaultTheme = {
 			base: '16px',
 			lg: '18px',
 			xLg: '24px',
+			header: 'clamp(36px, 2.75vw, 48px)'
 		},
 		weight: {
 			regular: '400',

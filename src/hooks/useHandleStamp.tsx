@@ -2,7 +2,6 @@ import React from 'react';
 import Stamps from '@permaweb/stampjs';
 import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
-import { FooterNotification } from 'components/atoms/FooterNotification';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -18,7 +17,6 @@ export default function useHandleStamp({ id }: UseHandleStampProps) {
 
 	const [stamps, setStamps] = React.useState<any>(null);
 
-	const [stampLoading, setStampLoading] = React.useState<boolean>(false);
 	const [stampDisabled, setStampDisabled] = React.useState<boolean>(false);
 	const [stampNotification, setStampNotification] = React.useState<ResponseType | null>(null);
 
@@ -49,7 +47,6 @@ export default function useHandleStamp({ id }: UseHandleStampProps) {
 	const handleStamp: any = React.useCallback(
 		async (amount?: number) => {
 			try {
-				setStampLoading(true);
 				if (id) {
 					setStampDisabled(true);
 
@@ -61,35 +58,20 @@ export default function useHandleStamp({ id }: UseHandleStampProps) {
 
 					if (!stampSuccess) {
 						setStampDisabled(false);
+						return language.errorOccurred;
 					}
 
-					setStampNotification({
-						status: stampSuccess,
-						message: stampSuccess ? `${language.messageStamped}!` : language.errorOccurred,
-					});
+					return stampSuccess ? `${language.messageStamped}!` : language.errorOccurred;
 				}
-				setStampLoading(false);
 			} catch (e: any) {
-				setStampLoading(false);
-				setStampNotification({
-					status: false,
-					message: e.toString(),
-				});
+				return e.toString();
 			}
 		},
 		[stamps, id, language]
 	);
 
-	const renderStampNotifications = () => (
-		<>
-			{stampLoading && <FooterNotification message={`${language.stampingMessage}...`} />}
-			{stampNotification && <FooterNotification message={stampNotification.message} />}
-		</>
-	);
-
 	return {
 		handleStamp,
 		stampDisabled,
-		renderStampNotifications,
 	};
 }

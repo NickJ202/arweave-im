@@ -10,6 +10,7 @@ import { Loader } from 'components/atoms/Loader';
 import { defaultTheme } from 'helpers/themes';
 import { ArweaveProvider } from 'providers/ArweaveProvider';
 import { ClientProvider } from 'providers/ClientProvider';
+import { FooterNotificationProvider } from 'providers/FooterNotificationProvider';
 import { persistor, store } from 'store';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -18,10 +19,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 			<ThemeProvider theme={defaultTheme}>
 				<ArweaveProvider>
 					<ClientProvider>
-						<HashRouter>
-							<GlobalStyle />
-							<App />
-						</HashRouter>
+						<FooterNotificationProvider>
+							<HashRouter>
+								<GlobalStyle />
+								<App />
+							</HashRouter>
+						</FooterNotificationProvider>
 					</ClientProvider>
 				</ArweaveProvider>
 			</ThemeProvider>

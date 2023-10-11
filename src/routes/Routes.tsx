@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import * as urls from 'helpers/urls';
+import { ConnectedView } from 'wrappers/ConnectedView';
 import { View } from 'wrappers/View';
 
 const Group = getLazyImport('Group');
@@ -22,9 +23,9 @@ export default function _Routes() {
 				<Route
 					path={`${urls.base}:groupId/*`}
 					element={
-						<View>
+						<ConnectedView>
 							<Group />
-						</View>
+						</ConnectedView>
 					}
 				/>
 			</Routes>

@@ -5,6 +5,7 @@ import { MemberType } from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Button } from 'components/atoms/Button';
+import { GroupAction } from 'components/organisms/GroupAction';
 import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
 import { formatAddress, getOwner } from 'helpers/utils';
@@ -18,6 +19,7 @@ export default function GroupChannelHeader(props: IProps) {
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
 
 	const [showMembersDropdown, setShowMembersDropdown] = React.useState<boolean>(false);
+	const [showAction, setShowAction] = React.useState(false);
 
 	const [activeAddress, setActiveAddress] = React.useState<string | null>(null);
 	const [showProfile, setShowProfile] = React.useState<boolean>(false);
@@ -25,8 +27,8 @@ export default function GroupChannelHeader(props: IProps) {
 	function getHandle(address: string) {
 		const owner = getOwner(groupReducer, address);
 		if (owner) {
-			if (owner.handle) return <p>{owner.handle}</p>;
-			else return <p>{formatAddress(owner.walletAddress, false)}</p>;
+			if (owner.handle) return owner.handle;
+			else return formatAddress(owner.walletAddress, false);
 		} else return null;
 	}
 
@@ -34,20 +36,22 @@ export default function GroupChannelHeader(props: IProps) {
 		if (groupReducer && groupReducer.data) {
 			return (
 				<>
+					<S.MemberLine onClick={() => setShowAction(true)}>
+						<S.MemberAdd>{`${language.addGroupMember} +`}</S.MemberAdd>
+					</S.MemberLine>
 					{groupReducer.data.members.map((member: MemberType, index: number) => {
 						return (
-							<React.Fragment key={index}>
-								<S.MemberLine
-									onClick={() => {
-										setActiveAddress(member.address);
-										setShowMembersDropdown(false);
-										setShowProfile(!showProfile);
-									}}
-								>
-									<Avatar owner={member.address} dimensions={{ wrapper: 27.5, icon: 17.5 }} callback={null} />
-									{getHandle(member.address)}
-								</S.MemberLine>
-							</React.Fragment>
+							<S.MemberLine
+								key={index}
+								onClick={() => {
+									setActiveAddress(member.address);
+									setShowMembersDropdown(false);
+									setShowProfile(!showProfile);
+								}}
+							>
+								<Avatar owner={member.address} dimensions={{ wrapper: 27.5, icon: 17.5 }} callback={null} />
+								<p>{getHandle(member.address)}</p>
+							</S.MemberLine>
 						);
 					})}
 				</>
@@ -78,11 +82,11 @@ export default function GroupChannelHeader(props: IProps) {
 								noMinWidth
 							/>
 							{showMembersDropdown && (
-								<S.MembersDropdown className={'border-wrapper-primary scroll-wrapper'}>
+								<S.MembersDropdown className={'border-wrapper-primary'}>
 									<S.MDHeader>
 										<p>{language.groupMembers}</p>
 									</S.MDHeader>
-									{getMembers()}
+									<S.MDBody className={'scroll-wrapper'}>{getMembers()}</S.MDBody>
 								</S.MembersDropdown>
 							)}
 						</CloseHandler>
@@ -97,6 +101,16 @@ export default function GroupChannelHeader(props: IProps) {
 						setActiveAddress(null);
 						setShowMembersDropdown(false);
 						setShowProfile(false);
+					}}
+				/>
+			)}
+			{groupReducer && showAction && (
+				<GroupAction
+					groupId={groupReducer.groupId}
+					group={groupReducer.data}
+					type={'addMember'}
+					handleClose={() => {
+						setShowAction(false);
 					}}
 				/>
 			)}

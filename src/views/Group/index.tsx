@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { GroupType, MemberType, ProfileType } from 'lib';
 
-import { GroupReduxDataType } from 'helpers/types';
+import { GroupReduxDataType, WalletEnum } from 'helpers/types';
+import * as urls from 'helpers/urls';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
 import { RootState } from 'store';
@@ -13,6 +14,7 @@ import * as groupActions from 'store/group/actions';
 import { GroupChannel } from './GroupChannel';
 
 export default function Group() {
+	const navigate = useNavigate();
 	const { groupId } = useParams();
 
 	const dispatch = useDispatch();
@@ -21,16 +23,23 @@ export default function Group() {
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
 
+	const [authMember, setAuthMember] = React.useState<boolean>(true);
+
 	React.useEffect(() => {
 		(async function () {
 			if (arProvider.walletAddress && cliProvider.lib && groupId) {
 				const groupChange = !groupReducer || groupReducer.groupId !== groupId;
 				const groupState: GroupType = await cliProvider.lib.api.arClient.read(groupId);
-				
+
+				const memberCheck = groupState.members.find(
+					(member: MemberType) => member.address === arProvider.walletAddress
+				);
+				setAuthMember(memberCheck !== undefined);
+
 				let reducerData: GroupReduxDataType | null = null;
 				let activeChannelId: string | null = null;
-				
-				if (groupChange) {
+
+				if (groupChange && memberCheck) {
 					const profiles: ProfileType[] = await cliProvider.lib.api.getProfiles({
 						addresses: groupState.members.map((member: MemberType) => member.address),
 					});
@@ -42,9 +51,9 @@ export default function Group() {
 				} else {
 					reducerData = {
 						...groupState,
-						profiles: groupReducer.data.profiles,
+						profiles: groupReducer ? groupReducer.data.profiles : [],
 					};
-					activeChannelId = groupReducer.activeChannelId;
+					activeChannelId = groupReducer ? groupReducer.activeChannelId : null;
 				}
 
 				try {
@@ -63,5 +72,18 @@ export default function Group() {
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupId]);
 
-	return <GroupChannel />;
+	React.useEffect(() => {
+		if (!authMember || !arProvider.walletAddress) {
+			if (!localStorage.getItem(WalletEnum.arweaveApp)) navigate(urls.base);
+			dispatch(groupActions.setGroup(null));
+		}
+	}, [authMember]);
+
+
+	function getGroup() {
+		if (authMember) return <GroupChannel />;
+		else return null;
+	}
+
+	return getGroup();
 }

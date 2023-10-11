@@ -22,11 +22,10 @@ import wallet from 'assets/wallet.svg';
 
 import { STYLING } from './styling';
 import { WalletEnum } from './types';
+
 export const APP = {
 	appKey: 'appVersion',
-	appVersion: '1.0.0',
-	providerKey: 'providerVersion',
-	providerVersion: '1.0.0',
+	appVersion: '1.0.0'
 };
 
 export const ASSETS = {
@@ -64,7 +63,6 @@ export const DOM = {
 	loader: 'loader',
 	modal: 'modal',
 	notification: 'notification',
-	footerNotification: 'footer-notification',
 	panel: 'panel',
 };
 

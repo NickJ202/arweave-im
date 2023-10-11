@@ -77,9 +77,9 @@ export default function MessageCreate(props: IProps) {
 			return 'submit-message';
 		}
 
-		if (e.keyCode === 32) {
-			return 'insert-characters';
-		}
+		// if (e.keyCode === 32) {
+		// 	return 'insert-characters';
+		// }
 
 		return getDefaultKeyBinding(e);
 	};
@@ -112,18 +112,18 @@ export default function MessageCreate(props: IProps) {
 			return 'handled';
 		}
 
-		if (command === 'insert-characters') {
-			const selection = editorState.getSelection();
-			let contentState = editorState.getCurrentContent();
-			contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
-			contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
+		// if (command === 'insert-characters') {
+		// 	const selection = editorState.getSelection();
+		// 	let contentState = editorState.getCurrentContent();
+		// 	contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
+		// 	contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
 
-			contentState = Modifier.insertText(contentState, selection, ' ');
+		// 	contentState = Modifier.insertText(contentState, selection, ' ');
 
-			const newEditorState = EditorState.push(editorState, contentState, 'change-inline-style');
-			setEditorState(newEditorState);
-			return 'handled';
-		}
+		// 	const newEditorState = EditorState.push(editorState, contentState, 'change-inline-style');
+		// 	setEditorState(newEditorState);
+		// 	return 'handled';
+		// }
 
 		const newState = RichUtils.handleKeyCommand(editorState, command);
 		switch (command) {

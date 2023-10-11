@@ -4,20 +4,28 @@ import { ReactSVG } from 'react-svg';
 import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import useHandleStamp from 'hooks/useHandleStamp';
+import { useFooterNotification } from 'providers/FooterNotificationProvider';
 
 import * as S from './styles';
 import { IProps } from './types';
 
 export default function MessageStamps(props: IProps) {
-	const { handleStamp, stampDisabled, renderStampNotifications } = useHandleStamp({
+	const { queueFooterNotification } = useFooterNotification();
+
+	const { handleStamp, stampDisabled } = useHandleStamp({
 		id: props.id,
 	});
 
 	const [count, setCount] = React.useState<number>(props.stamps ? props.stamps.total : 0);
 
 	async function handleUpdate() {
-		await handleStamp();
-		setCount(count + 1);
+		queueFooterNotification(`${language.stampingMessage}...`);
+		const resultMessage = await handleStamp();
+		if (resultMessage) {
+			props.handleStampUpdate();
+			queueFooterNotification(resultMessage);
+			setCount(count + 1);
+		}
 	}
 
 	return (
@@ -30,7 +38,6 @@ export default function MessageStamps(props: IProps) {
 				<ReactSVG src={ASSETS.stamp} />
 				<span>{count}</span>
 			</S.Action>
-			{renderStampNotifications()}
 		</>
 	);
 }

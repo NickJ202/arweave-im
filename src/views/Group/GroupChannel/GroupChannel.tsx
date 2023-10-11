@@ -3,17 +3,18 @@ import { useSelector } from 'react-redux';
 
 import { ChannelHeaderResponseType, ChannelResponseType, ChannelType } from 'lib';
 
-import { FooterNotification } from 'components/atoms/FooterNotification';
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
+import { useFooterNotification } from 'providers/FooterNotificationProvider';
 import { RootState } from 'store';
 
 import { GroupChannelDetail } from './GroupChannelDetail';
 import { GroupChannelHeader } from './GroupChannelHeader';
 
 export default function GroupChannel() {
+	const { queueFooterNotification } = useFooterNotification();
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
 
@@ -46,7 +47,17 @@ export default function GroupChannel() {
 		(async function () {
 			setChannelData(null);
 			setLoading(true);
-			setChannelData(await fetchChannelAssets({ cursor: null }));
+			try {
+				setChannelData(await fetchChannelAssets({ cursor: null }));
+			}
+			catch (e: any) {
+				console.error(e)
+				setChannelData({
+					data: [],
+					nextCursor: null,
+					previousCursor: null
+				})
+			}
 			setLoading(false);
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
@@ -58,6 +69,10 @@ export default function GroupChannel() {
 			}
 		})();
 	}, [cliProvider.lib, groupReducer]);
+
+	React.useEffect(() => {
+		if (loading) queueFooterNotification(`${language.fetchingMessages}...`);
+	}, [loading])
 
 	// Poll data
 	// React.useEffect(() => {
@@ -129,7 +144,6 @@ export default function GroupChannel() {
 						scrollToRecent={scrollToRecent}
 						setUpdateData={() => setUpdateData(!updateData)}
 					/>
-					{loading && <FooterNotification message={`${language.fetchingMessages}...`} />}
 				</>
 			);
 		} else {

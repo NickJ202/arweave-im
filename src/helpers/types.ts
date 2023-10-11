@@ -38,3 +38,5 @@ export type GroupReduxType = {
 };
 
 export type FormFieldType = 'number' | 'password';
+
+export type GroupActionType = 'addMember' | 'addChannel';

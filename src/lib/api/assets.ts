@@ -41,19 +41,25 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
 		});
 		const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
-		const stampCounts = await stamps.counts(dataIds);
 
+		const stampCounts = await withTimeout(2000, stamps.counts(dataIds)).catch(e => {
+			console.error(e)
+		});
+
+		// TODO: connectedWalletStamped 429
 		const responseDataPromises: Promise<AssetType>[] = gqlData.data.map(async (element: GQLNodeResponseType) => {
-			const connectedWalletStamped = await withTimeout(1000, stamps.hasStamped(element.node.id)).catch(_e => {
-				return false;
-			});
+			// const connectedWalletStamped = await withTimeout(1000, stamps.hasStamped(element.node.id)).catch(_e => {
+			// 	return false;
+			// });
+
+			const connectedWalletStamped = false;
 			
 			return {
 				id: element.node.id,
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 				message: getTagValue(element.node.tags, TAGS.keys.messageData),
 				owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
-				stamps: stampCounts[element.node.id]
+				stamps: stampCounts && stampCounts[element.node.id]
 					? {
 						...stampCounts[element.node.id],
 						connectedWalletStamped: args.walletAddress
@@ -74,7 +80,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 	} catch (error: any) {
 		console.error(error);
 		return {
-			data: null,
+			data: [],
 			nextCursor: null,
 			previousCursor: null,
 		};
@@ -172,7 +178,7 @@ function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 function withTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
-            reject(new Error("Promise timed out!"));
+            reject(new Error('Promise timed out'));
         }, ms);
 
         promise.then((value) => {

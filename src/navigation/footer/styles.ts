@@ -27,4 +27,6 @@ export const Title = styled.div`
 export const FNotification = styled.div`
     width: fit-content;
     margin: 0 0 0 auto;
+	display: flex;
+	gap: 10px;
 `;

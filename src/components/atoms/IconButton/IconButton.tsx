@@ -23,6 +23,11 @@ export default function IconButton(props: IProps) {
 					wrapper: S.Alt1,
 				};
 				break;
+			case 'alt2':
+				buttonObj = {
+					wrapper: S.Alt2,
+				};
+				break;
 		}
 		return buttonObj;
 	}

@@ -1,5 +1,6 @@
 export const language = {
 	appName: `Ping`,
+	appDescription: `Ping is a decentralized messaging application built on top of Arweave.`,
 	close: `Close`,
 	connect: `Connect`,
 	connectorNotFound: `Connector Not Found`,
@@ -13,9 +14,9 @@ export const language = {
 	send: `Send`,
 	sending: `Sending`,
 	sendMessage: `Send Message`,
-	groupSelect: `Group Select`,
+	groupSelect: `Select your group`,
 	noGroups: `No Groups`,
-	createGroup: `Create Group`,
+	createGroup: `Create a new group`,
 	title: `Title`,
 	submit: `Submit`,
 	logo: `Logo`,
@@ -50,5 +51,7 @@ export const language = {
 	addLink: `Add link`,
 	add: `Add`,
 	link: `Link`,
-	cancel: `Cancel`
+	cancel: `Cancel`,
+	welcomeTo: `Welcome to`,
+	walletConnectGroupView: `Connect your wallet to view your groups`
 };

@@ -5,7 +5,7 @@ import { SET_ACTIVE_CHANNEL_ID, SET_GROUP, UPDATE_GROUP_STATE } from './constant
 export function groupReducer(state: GroupReduxType | null = null, action: ReduxActionType) {
 	switch (action.type) {
 		case SET_GROUP:
-			return Object.assign({}, state, action.payload);
+			return action.payload ? Object.assign({}, state, action.payload) : null;
 		case SET_ACTIVE_CHANNEL_ID:
 			return Object.assign({}, state, {
 				data: state.data,

@@ -127,7 +127,7 @@ export default function Message(props: IProps) {
 		if (props.data && stamps && stamps.total > 0) {
 			return (
 				<S.MFooter>
-					<MessageStamps id={props.data.id} stamps={stamps} />
+					<MessageStamps id={props.data.id} stamps={stamps} handleStampUpdate={() => setHandleStampUpdate(true)} />
 				</S.MFooter>
 			);
 		}
@@ -137,11 +137,14 @@ export default function Message(props: IProps) {
 		<>
 			<S.Wrapper textOnly={props.useSameOwner} disabled={!props.data}>
 				<S.AWrapper>
-					<MessageActions
-						id={props.data ? props.data.id : null}
-						stamps={props.data ? props.data.stamps : null}
-						handleStampUpdate={() => setHandleStampUpdate(true)}
-					/>
+					{props.data && stamps && (
+						<MessageActions
+							id={props.data.id}
+							stamps={stamps}
+							handleStampUpdate={() => setHandleStampUpdate(true)}
+							setHandleScrollUpdate={props.setHandleScrollUpdate}
+						/>
+					)}
 				</S.AWrapper>
 				{!props.useSameOwner && (
 					<Avatar

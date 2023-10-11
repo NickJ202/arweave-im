@@ -22,17 +22,14 @@ export const Header = styled.div`
 `;
 
 export const Logo = styled.div`
-	min-height: 40px;
-	min-width: 40px;
-	height: 40px;
-	width: 40px;
+	min-height: 30px;
+	min-width: 30px;
+	height: 30px;
+	width: 30px;
 	position: relative;
-	border: 1px solid ${(props) => props.theme.colors.border.primary};
-	background: ${(props) => props.theme.colors.container.primary.background};
-	border-radius: ${STYLING.dimensions.borderRadius};
 	img {
-		height: 65%;
-		width: 65%;
+		height: 100%;
+		width: 100%;
 		object-fit: contain;
 		position: absolute;
 		top: 50%;

@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { STORAGE } from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
+import * as urls from 'helpers/urls';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { CloseHandler } from 'wrappers/CloseHandler';
@@ -10,6 +14,8 @@ import { CloseHandler } from 'wrappers/CloseHandler';
 import * as S from './styles';
 
 export default function WalletConnect(_props: { callback?: () => void }) {
+	const navigate = useNavigate();
+
 	const arProvider = useArweaveProvider();
 
 	const [showWallet, setShowWallet] = React.useState<boolean>(false);
@@ -62,6 +68,9 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 	function handleDisconnect() {
 		arProvider.handleDisconnect();
 		setShowWalletDropdown(false);
+		setTimeout(() => {
+			navigate(urls.base);
+		}, 500);
 	}
 
 	return (
@@ -74,7 +83,7 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 				disabled={false}
 			>
 				<S.Wrapper>
-					<Avatar owner={arProvider.walletAddress} dimensions={{ wrapper: 32.5, icon: 22.5 }} callback={handlePress} />
+					<Avatar owner={arProvider.walletAddress ? arProvider.walletAddress : STORAGE.none} dimensions={{ wrapper: 32.5, icon: 22.5 }} callback={handlePress} />
 					{showWalletDropdown && (
 						<S.Dropdown className={'border-wrapper-primary'}>
 							<S.DHeaderWrapper>

@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
 import { STYLING } from 'helpers/styling';
 
@@ -168,10 +168,4 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-`;
-
-export const Panel = styled.aside`
-	@media (max-width: ${STYLING.cutoffs.initial}) {
-		display: none;
-	}
 `;

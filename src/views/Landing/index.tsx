@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ReactSVG } from 'react-svg';
 
-import { getTagValue, GQLNodeResponseType, STORAGE, TAGS } from 'lib';
+import { getTagValue, getTxEndpoint, GQLNodeResponseType, STORAGE, TAGS } from 'lib';
 
 import { Button } from 'components/atoms/Button';
-import { Modal } from 'components/molecules/Modal';
 import { GroupCreate } from 'components/organisms/GroupCreate';
+import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
@@ -34,31 +35,67 @@ export default function Landing() {
 	}, [arProvider.walletAddress, cliProvider.lib, handleUpdate]);
 
 	function getGroups() {
-		if (groups === null) return <p>{`${language.loading}...`}</p>;
-		if (groups.length <= 0) {
-			return <GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />;
+		if (arProvider.walletAddress) {
+			if (groups === null) return <span>{`${language.loading}...`}</span>;
+			if (groups.length <= 0) {
+				return <span>{language.noGroups}</span>;
+			} else {
+				return (
+					<>
+						<p>{language.groupSelect}</p>
+						<S.GDetailWrapper className={'scroll-wrapper'}>
+							{groups.map((group: any, index: number) => {
+								const groupId = group.node.id;
+								const groupTitle = getTagValue(group.node.tags, TAGS.keys.ans110.title);								
+								const groupLogo = getTagValue(group.node.tags, TAGS.keys.logo);
+
+								const label = groupTitle === STORAGE.none ? formatAddress(groupId, false) : groupTitle;
+
+								return (
+									<S.GDetailLine key={index} onClick={() => navigate(groupId)}>
+										{groupLogo && groupLogo !== STORAGE.none && (
+											<S.GDetailLogo>
+												<img src={getTxEndpoint(groupLogo)} />
+											</S.GDetailLogo>
+										)}
+										<span>{label}</span>
+									</S.GDetailLine>
+								);
+							})}
+						</S.GDetailWrapper>
+					</>
+				);
+			}
 		} else {
-			return (
-				<>
-					<S.GWrapper>
-						{groups.map((group: any, index: number) => {
-							const groupId = getTagValue(group.node.tags, TAGS.keys.groupId);
-							const groupTitle = getTagValue(group.node.tags, TAGS.keys.groupTitle);
-
-							const label = groupTitle === STORAGE.none ? formatAddress(groupId, false) : groupTitle;
-
-							return <Button key={index} type={'primary'} label={label} handlePress={() => navigate(groupId)} />;
-						})}
-					</S.GWrapper>
-					<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />
-				</>
-			);
+			return <span>{language.walletConnectGroupView}</span>;
 		}
 	}
 
-	return arProvider.walletAddress ? (
-		<Modal header={language.groupSelect} handleClose={null}>
-			{getGroups()}
-		</Modal>
-	) : null;
+	return (
+		<S.Wrapper>
+			<S.IWrapper>
+				<ReactSVG src={ASSETS.logo} />
+			</S.IWrapper>
+			<S.AWrapper>
+				<S.AHeader>
+					<h1>{`${language.welcomeTo} ${language.appName}`}</h1>
+					<span>{language.appDescription}</span>
+				</S.AHeader>
+				<S.GWrapper className={'border-wrapper-primary'}>{getGroups()}</S.GWrapper>
+				<S.GCWrapper>
+					{arProvider.wallet ? (
+						<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />
+					) : (
+						<Button
+							type={'primary'}
+							label={language.connect.toUpperCase()}
+							handlePress={() => arProvider.setWalletModalVisible(true)}
+							height={47.5}
+							width={275}
+						/>
+					)}
+				</S.GCWrapper>
+			</S.AWrapper>
+		</S.Wrapper>
+	);
 }

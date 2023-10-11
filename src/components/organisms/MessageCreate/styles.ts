@@ -23,7 +23,7 @@ export const Header = styled.div`
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 	> * {
 		&:not(:last-child) {
-			margin: 0 15px 0 0;
+			margin: 0 16.5px 0 0;
 		}
 		&:last-child {
 			margin: 0;
@@ -42,7 +42,6 @@ export const Body = styled.div`
 `;
 
 export const Editor = styled.div`
-	min-height: 100px;
 	max-height: 500px;
 	overflow: auto;
 	position: relative;

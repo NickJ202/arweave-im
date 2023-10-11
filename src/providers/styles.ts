@@ -7,6 +7,14 @@ export const WalletListContainer = styled.div`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	> * {
+		&:not(:last-child) {
+			margin: 0 0 20px 0;
+		}
+		&:last-child {
+			margin: 0;
+		}
+	}
 `;
 
 export const WalletListItem = styled.button`
@@ -14,7 +22,6 @@ export const WalletListItem = styled.button`
 	width: 100%;
 	text-align: left;
 	padding: 0 20px;
-	margin: 20px 0 0 0;
 	display: flex;
 	align-items: center;
 	border: 1px solid ${(props) => props.theme.colors.border.primary};
@@ -27,7 +34,8 @@ export const WalletListItem = styled.button`
 		margin: 0 15px 0 0;
 	}
 	span {
-		font-size: ${(props) => props.theme.typography.size.small};
+		font-size: ${(props) => props.theme.typography.size.base};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
 		margin-top: 2.5px;
 	}
 `;

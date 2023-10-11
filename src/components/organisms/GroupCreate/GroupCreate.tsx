@@ -74,7 +74,6 @@ export default function GroupCreate(props: IProps) {
 					};
 
 					const id = await cliProvider.lib.api.createGroup(group);
-					console.log(id);
 					setSubmitResponse({
 						status: true,
 						message: `${language.groupCreated}!`,
@@ -116,7 +115,13 @@ export default function GroupCreate(props: IProps) {
 
 	return (
 		<>
-			<Button type={'primary'} label={language.createGroup} handlePress={() => setShowModal(true)} />
+				<Button
+					type={'primary'}
+					label={language.createGroup.toUpperCase()}
+					handlePress={() => setShowModal(true)}
+					height={47.5}
+					width={275}
+				/>
 			{showModal && (
 				<Modal header={language.createGroup} handleClose={() => setShowModal(false)}>
 					{submitResponse ? (
@@ -129,6 +134,7 @@ export default function GroupCreate(props: IProps) {
 								onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
 								disabled={loading}
 								invalid={{ status: false, message: null }}
+								autoFocus
 							/>
 							<S.ImageWrapper>
 								<S.ImageHeader>

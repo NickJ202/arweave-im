@@ -19,13 +19,14 @@ export default function GroupChannelDetail(props: IProps) {
 
 	const mWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
+	const [handleScrollUpdate, setHandleScrollUpdate] = React.useState<boolean>(false);
 	const [showHeaderProfile, setShowHeaderProfile] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
 		if (mWrapperRef.current) {
 			mWrapperRef.current.scrollTop = mWrapperRef.current.scrollHeight - mWrapperRef.current.clientHeight;
 		}
-	}, [props.scrollToRecent, props.channelData]);
+	}, [handleScrollUpdate, props.scrollToRecent, props.channelData]);
 
 	const handleScroll = () => {
 		if (mWrapperRef.current && mWrapperRef.current.scrollTop === 0) {
@@ -71,7 +72,7 @@ export default function GroupChannelDetail(props: IProps) {
 
                             	useSameOwner = asset.owner === currentData.owner && timeDifference < timeIntervalThreshold;
 							}
-							return <Message key={index} data={asset} useSameOwner={useSameOwner} />;
+							return <Message key={index} data={asset} useSameOwner={useSameOwner} setHandleScrollUpdate={() => setHandleScrollUpdate(!handleScrollUpdate)} />;
 						})
 					) : (
 						<S.EWrapper>
@@ -84,7 +85,7 @@ export default function GroupChannelDetail(props: IProps) {
 			return (
 				<>
 					{Array.from({ length: 10 }, (_, i) => i + 1).map((index: number) => {
-						return <Message key={index} data={null} useSameOwner={false} />;
+						return <Message key={index} data={null} useSameOwner={false} setHandleScrollUpdate={() => {}} />;
 					})}
 				</>
 			);

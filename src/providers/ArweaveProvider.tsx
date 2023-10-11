@@ -8,7 +8,7 @@ import { ClientType } from 'lib';
 import { Client } from 'lib/clients';
 
 import { Modal } from 'components/molecules/Modal';
-import { API_CONFIG, APP, AR_WALLETS, ASSETS, DRE_NODE, WALLET_PERMISSIONS } from 'helpers/config';
+import { API_CONFIG, AR_WALLETS, ASSETS, DRE_NODE, WALLET_PERMISSIONS } from 'helpers/config';
 import { getArweaveBalanceEndpoint } from 'helpers/endpoints';
 import { language } from 'helpers/language';
 import { ProfileType, WalletEnum } from 'helpers/types';
@@ -84,10 +84,6 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 	const [availableBalance, setAvailableBalance] = React.useState<number | null>(null);
 	const [arProfile, setArProfile] = React.useState<ProfileType | null>(null);
 
-	const [newVersion, setNewVersion] = React.useState<boolean>(
-		!localStorage.getItem(APP.providerKey) || localStorage.getItem(APP.providerKey) !== APP.providerVersion
-	);
-
 	const [lib, setLib] = React.useState<ClientType | null>(null);
 
 	React.useEffect(() => {
@@ -144,6 +140,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 		});
 		setWallet(wallet);
 		setWalletType(WalletEnum.arweaveApp);
+		localStorage.setItem(WalletEnum.arweaveApp, 'true');
 	}
 
 	async function handleConnect(walletType: WalletEnum.arConnect | WalletEnum.arweaveApp) {
@@ -173,6 +170,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 		setWallet(null);
 		setWalletType(null);
 		setWalletAddress(null);
+		if (localStorage.getItem(WalletEnum.arweaveApp)) localStorage.removeItem(WalletEnum.arweaveApp);
 	}
 
 	const getUserBalance = async (wallet: string) => {
@@ -183,24 +181,18 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
 	React.useEffect(() => {
 		async function handleWallet() {
-			if (!newVersion) {
-				let walletAddress: string | null = null;
-				try {
-					walletAddress = await global.window.arweaveWallet.getActiveAddress();
+			let walletAddress: string | null = null;
+			try {
+				walletAddress = await global.window.arweaveWallet.getActiveAddress();
 
-					if (walletType !== WalletEnum.arweaveApp) {
-						setWalletType(WalletEnum.arConnect);
-						setWallet(window.arweaveWallet);
-					}
-				} catch {}
-				if (walletAddress) {
-					setWalletAddress(walletAddress as any);
-					setAvailableBalance(await getUserBalance(walletAddress));
+				if (walletType !== WalletEnum.arweaveApp) {
+					setWalletType(WalletEnum.arConnect);
+					setWallet(window.arweaveWallet);
 				}
-			} else {
-				setNewVersion(false);
-				localStorage.setItem(APP.providerKey, APP.providerVersion);
-				await handleDisconnect();
+			} catch {}
+			if (walletAddress) {
+				setWalletAddress(walletAddress as any);
+				setAvailableBalance(await getUserBalance(walletAddress));
 			}
 		}
 
@@ -212,6 +204,15 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 			window.removeEventListener('arweaveWalletLoaded', handleWallet);
 		};
 	}, [walletType]);
+
+	React.useEffect(() => {
+		(async function () {
+			if (localStorage.getItem(WalletEnum.arweaveApp)) {
+				await new Promise((resolve) => setTimeout(resolve, 250));
+				await handleArweaveApp();
+			}
+		})();
+	}, []);
 
 	React.useEffect(() => {
 		(async function () {

@@ -1,14 +1,14 @@
-import { CONTENT_TYPES, GROUP_CONTRACT, logValue, PROFILE_HEX_CODES, TAGS } from 'lib/helpers';
+import { CONTENT_TYPES, getTagValue, GROUP_CONTRACT, logValue, PROFILE_HEX_CODES, TAGS } from 'lib/helpers';
 
 import { DEFAULT_LOGO } from 'helpers/config';
 
 import { getGQLData, getGQLResponseObject } from '../gql';
-import { AGQLResponseType, CreateGroupClientArgs, CursorEnum, GQLResponseType, TagType } from '../helpers/types';
+import { AGQLResponseType, CreateGroupClientArgs, CursorEnum, GQLNodeResponseType, GQLResponseType, TagType } from '../helpers/types';
 
 import { createContract, createTransaction } from '.';
 
 export async function getGroupsByUser(args: { walletAddress: string; arClient: any }): Promise<GQLResponseType> {
-	const gqlData: AGQLResponseType = await getGQLData({
+	const memberGqlData: AGQLResponseType = await getGQLData({
 		ids: null,
 		tagFilters: [
 			{ name: TAGS.keys.groupMember, values: [args.walletAddress] },
@@ -26,7 +26,19 @@ export async function getGroupsByUser(args: { walletAddress: string; arClient: a
 		useArweaveNet: true,
 	});
 
-	return getGQLResponseObject(gqlData);
+	const groupIds = memberGqlData.data.map((element: GQLNodeResponseType) => getTagValue(element.node.tags, TAGS.keys.groupId));
+	
+	const groupGqlData: AGQLResponseType = await getGQLData({
+		ids: groupIds,
+		tagFilters: null,
+		owners: null,
+		cursor: null,
+		reduxCursor: null,
+		cursorObject: CursorEnum.GQL,
+		useArweaveNet: true,
+	});
+
+	return getGQLResponseObject(groupGqlData);
 }
 
 export async function createGroup(args: CreateGroupClientArgs): Promise<string | null> {

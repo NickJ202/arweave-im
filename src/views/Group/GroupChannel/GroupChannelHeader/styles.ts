@@ -34,12 +34,9 @@ export const Members = styled.div`
 `;
 
 export const MembersDropdown = styled.div`
-	height: fit-content;
-	max-height: 50vh;
-	width: 300px;
+	width: 350px;
 	max-width: 90vw;
 	position: absolute;
-	padding: 10px 0;
 	top: 40px;
 	right: 0;
 	z-index: 1;
@@ -49,14 +46,20 @@ export const MDHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 15px;
-	margin: 10px 0;
+	padding: 15px;
+	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 	p {
 		font-size: ${(props) => props.theme.typography.size.base};
 		font-family: ${(props) => props.theme.typography.family.primary};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) => props.theme.colors.font.primary};
 	}
+`;
+
+export const MDBody = styled.div`
+	height: fit-content;
+	max-height: 50vh;
+	margin: 10px 0;
 `;
 
 export const MemberLine = styled.button`
@@ -77,4 +80,8 @@ export const MemberLine = styled.button`
 	&:hover {
 		background: ${(props) => props.theme.colors.container.alt3.background};
 	}
+`;
+
+export const MemberAdd = styled.p`
+	margin: 0 !important;
 `;

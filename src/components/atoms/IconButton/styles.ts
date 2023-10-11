@@ -24,11 +24,11 @@ export const Primary = styled.div<{
 		props.disabled
 			? props.theme.colors.button.primary.disabled.background
 			: props.active
-			? props.theme.colors.button.primary.active.background
-			: props.theme.colors.button.primary.background};
+				? props.theme.colors.button.primary.active.background
+				: props.theme.colors.button.primary.background};
 	border: 1px solid
 		${(props) =>
-			props.active ? props.theme.colors.button.primary.active.border : props.theme.colors.button.primary.border};
+		props.active ? props.theme.colors.button.primary.active.border : props.theme.colors.button.primary.border};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	position: relative;
 	transition: all 100ms;
@@ -38,9 +38,9 @@ export const Primary = styled.div<{
 		height: ${(props) => (props.dimensions ? `${props.dimensions.icon.toString()}px` : `10px`)};
 		width: ${(props) => (props.dimensions ? `${props.dimensions.icon.toString()}px` : `10px`)};
 		fill: ${(props) =>
-			props.disabled
-				? props.theme.colors.button.primary.disabled.color
-				: props.active
+		props.disabled
+			? props.theme.colors.button.primary.disabled.color
+			: props.active
 				? props.theme.colors.button.primary.color
 				: props.theme.colors.font.alt1};
 		position: absolute;
@@ -52,15 +52,15 @@ export const Primary = styled.div<{
 	&:hover {
 		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
 		background: ${(props) =>
-			props.disabled
-				? props.theme.colors.button.primary.disabled.background
-				: props.theme.colors.button.primary.active.background};
+		props.disabled
+			? props.theme.colors.button.primary.disabled.background
+			: props.theme.colors.button.primary.active.background};
 		border: 1px solid
 			${(props) =>
-				props.disabled ? props.theme.colors.button.primary.border : props.theme.colors.button.primary.active.border};
+		props.disabled ? props.theme.colors.button.primary.border : props.theme.colors.button.primary.active.border};
 		svg {
 			fill: ${(props) =>
-				props.disabled ? props.theme.colors.button.primary.disabled.color : props.theme.colors.button.primary.color};
+		props.disabled ? props.theme.colors.button.primary.disabled.color : props.theme.colors.button.primary.color};
 		}
 	}
 `;
@@ -70,9 +70,24 @@ export const Alt1 = styled(Primary)`
 		props.disabled
 			? 'transparent'
 			: props.active
-			? props.theme.colors.button.primary.active.background
-			: 'transparent'};
+				? props.theme.colors.button.primary.active.background
+				: 'transparent'};
 	border: 1px solid ${(props) => (props.active ? props.theme.colors.button.primary.active.border : 'transparent')};
+	&:hover {
+		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+		background: ${(props) => (props.disabled ? 'transparent' : props.theme.colors.button.primary.active.background)};
+		border: 1px solid ${(props) => (props.active ? props.theme.colors.button.primary.active.border : props.disabled ? 'transparent' : props.theme.colors.button.primary.active.border)};
+	}
+`;
+
+export const Alt2 = styled(Primary)`
+	background: ${(props) =>
+		props.disabled
+			? props.theme.colors.button.primary.disabled.background
+			: props.active
+				? props.theme.colors.button.primary.active.background
+				: 'transparent'};
+	border: 1px solid ${(props) => props.disabled ? props.theme.colors.button.primary.disabled.border : (props.active ? props.theme.colors.button.primary.active.border : 'transparent')};
 	&:hover {
 		cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
 		background: ${(props) => (props.disabled ? 'transparent' : props.theme.colors.button.primary.active.background)};
