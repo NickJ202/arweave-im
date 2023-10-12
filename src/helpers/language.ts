@@ -48,11 +48,15 @@ export const language = {
 	stampingMessage: `Stamping Message`,
 	channelCreatedOn: `This channel was created on`,
 	by: `by`,
-	addLink: `Add link`,
+	addLink: `Add Link`,
 	add: `Add`,
 	link: `Link`,
 	cancel: `Cancel`,
 	welcomeTo: `Welcome to`,
 	walletConnectGroupView: `Connect your wallet to view your groups`,
-	maxCharsReached: `Max Character Limit Reached`
+	maxCharsReached: `Max Character Limit Reached`,
+	handleBold: `Bold (Ctrl / Cmd + B)`,
+	handleItalic: `Italic (Ctrl / Cmd + I)`,
+	handleUnderline: `Underline (Ctrl / Cmd + U)`,
+	handleCode: `Code (Ctrl / Cmd + C)`,
 };

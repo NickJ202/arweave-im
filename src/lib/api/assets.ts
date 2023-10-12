@@ -15,6 +15,7 @@ import {
 	getTagValue,
 	GQLNodeResponseType,
 	logValue,
+	StampType,
 	TAGS,
 	TagType,
 } from '../helpers';
@@ -34,6 +35,8 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			useArweaveNet: false,
 		});
 
+		let stampCounts: any = {}
+		let stampChecks: any = {}
 		const stamps = Stamps.init({
 			warp: args.arClient.warp,
 			arweave: args.arClient.arweave,
@@ -41,35 +44,23 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
 		});
 		const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
-		const stampCounts = await withTimeout(2000, stamps.counts(dataIds)).catch(e => {
+		try {
+			stampCounts = await stamps.counts(dataIds);
+			stampChecks = await stamps.hasStamped(dataIds);
+		}
+		catch (e: any) {
 			console.error(e)
-		});
+		}
 
-		// TODO: connectedWalletStamped 429
-		const responseDataPromises: Promise<AssetType>[] = gqlData.data.map(async (element: GQLNodeResponseType) => {
-			// const connectedWalletStamped = await withTimeout(1000, stamps.hasStamped(element.node.id)).catch(_e => {
-			// 	return false;
-			// });
-
-			const connectedWalletStamped = false;
-			
+		const responseData: AssetType[] = gqlData.data.map((element: GQLNodeResponseType) => {
 			return {
 				id: element.node.id,
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 				message: getTagValue(element.node.tags, TAGS.keys.messageData),
 				owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
-				stamps: stampCounts && stampCounts[element.node.id]
-					? {
-						...stampCounts[element.node.id],
-						connectedWalletStamped: args.walletAddress
-							? connectedWalletStamped
-							: false
-					}
-					: { total: 0, vouched: 0, connectedWalletStamped: false },
+				stamps: getStamps(element.node.id, { ...stampCounts }, { ...stampChecks })
 			};
 		});
-
-		const responseData: AssetType[] = await Promise.all(responseDataPromises);
 
 		return {
 			data: responseData,
@@ -84,6 +75,19 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			previousCursor: null,
 		};
 	}
+}
+
+function getStamps(assetId: string, stampCounts: any, stampChecks: any) {
+	let stamps: StampType = { total: 0, vouched: 0, connectedWalletStamped: false };
+
+	if (stampCounts && stampCounts[assetId]) {
+		stamps.total = stampCounts[assetId].total
+		stamps.vouched = stampCounts[assetId].vouched
+	}
+	if (stampChecks && stampChecks[assetId]) {
+		stamps.connectedWalletStamped = stampChecks[assetId]
+	}
+	return stamps;
 }
 
 export async function getAssetById(args: { assetId: string; arClient: any }): Promise<AssetType | null> {
@@ -172,20 +176,4 @@ function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 		args.renderWith.forEach((renderWith: string) => tags.push({ name: TAGS.keys.renderWith, value: renderWith }));
 
 	return tags;
-}
-
-function withTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
-    return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-            reject(new Error('Promise timed out'));
-        }, ms);
-
-        promise.then((value) => {
-            clearTimeout(timer);
-            resolve(value);
-        }).catch((error) => {
-            clearTimeout(timer);
-            reject(error);
-        });
-    });
 }

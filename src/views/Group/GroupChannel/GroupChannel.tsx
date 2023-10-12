@@ -97,7 +97,7 @@ export default function GroupChannel() {
 	// Poll messages
 	// React.useEffect(() => {
 	// 	async function pollData() {
-	// 		const updatedResponse = await fetchData({ cursor: null });
+	// 		const updatedResponse = await fetchChannelAssets({ cursor: null });
 
 	// 		if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
 	// 			if (updatedResponse.data.length > channelData.data.length) {
@@ -107,7 +107,7 @@ export default function GroupChannel() {
 	// 		}
 	// 	}
 
-	// 	const intervalId = setInterval(pollData, 1000);
+	// 	const intervalId = setInterval(pollData, 3000);
 	// 	return () => clearInterval(intervalId);
 	// }, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 

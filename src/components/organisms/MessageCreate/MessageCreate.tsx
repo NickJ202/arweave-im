@@ -53,7 +53,25 @@ export default function MessageCreate(props: IProps) {
 		const selection = editorState.getSelection();
 		const currentContent = editorState.getCurrentContent();
 		const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
-		const currentStyle = currentBlock.getInlineStyleAt(selection.getStartOffset() - 1);
+		
+		let offset = selection.getStartOffset() - 1;
+		if (offset < 0) {
+			const blockBefore = currentContent.getBlockBefore(selection.getStartKey());
+			
+			if (blockBefore) {
+				offset = blockBefore.getLength() - 1;
+				const blockBeforeStyle = blockBefore.getInlineStyleAt(offset);
+				
+				setBoldActive(blockBeforeStyle.has('BOLD'));
+				setItalicActive(blockBeforeStyle.has('ITALIC'));
+				setUnderlineActive(blockBeforeStyle.has('UNDERLINE'));
+				setCodeActive(blockBeforeStyle.has('CODE'));
+	
+				return;
+			}
+		}
+
+		const currentStyle = currentBlock.getInlineStyleAt(offset);
 
 		setBoldActive(currentStyle.has('BOLD'));
 		setItalicActive(currentStyle.has('ITALIC'));
@@ -81,9 +99,9 @@ export default function MessageCreate(props: IProps) {
 			return 'submit-message';
 		}
 
-		// if (e.keyCode === 32) {
-		// 	return 'insert-characters';
-		// }
+		if (e.keyCode === 67 && hasCommandModifier(e)) {
+			return 'code';
+		}
 
 		return getDefaultKeyBinding(e);
 	};
@@ -102,7 +120,6 @@ export default function MessageCreate(props: IProps) {
 
 			if (hasLinkStyle) {
 				contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
-				contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
 
 				contentState = Modifier.insertText(contentState, selection, ' ');
 
@@ -116,19 +133,6 @@ export default function MessageCreate(props: IProps) {
 			return 'handled';
 		}
 
-		// if (command === 'insert-characters') {
-		// 	const selection = editorState.getSelection();
-		// 	let contentState = editorState.getCurrentContent();
-		// 	contentState = Modifier.removeInlineStyle(contentState, selection, 'CODE');
-		// 	contentState = Modifier.removeInlineStyle(contentState, selection, 'LINK');
-
-		// 	contentState = Modifier.insertText(contentState, selection, ' ');
-
-		// 	const newEditorState = EditorState.push(editorState, contentState, 'change-inline-style');
-		// 	setEditorState(newEditorState);
-		// 	return 'handled';
-		// }
-
 		const newState = RichUtils.handleKeyCommand(editorState, command);
 		switch (command) {
 			case 'bold':
@@ -141,8 +145,10 @@ export default function MessageCreate(props: IProps) {
 				setUnderlineModeActive(!underlineModeActive);
 				break;
 			case 'code':
-				setCodeModeActive(!codeModeActive);
-				break;
+				// setCodeModeActive(!codeModeActive);
+				handleCode();
+				return;
+				// break;
 			default:
 				break;
 		}
@@ -211,7 +217,7 @@ export default function MessageCreate(props: IProps) {
 			try {
 				const rawContentState = convertToRaw(editorState.getCurrentContent());
 				const serializedContent = JSON.stringify({ type: MessageEnum.Text, data: rawContentState });
-	
+
 				editorRef.current?.blur();
 				setTimeout(() => {
 					setEditorState(EditorState.createEmpty());
@@ -219,7 +225,7 @@ export default function MessageCreate(props: IProps) {
 				setTimeout(() => {
 					editorRef.current?.focus();
 				}, 100);
-	
+
 				setLoading(true);
 				const contractId = await cliProvider.lib.api.createAsset({
 					content: serializedContent,
@@ -236,10 +242,9 @@ export default function MessageCreate(props: IProps) {
 					channelId: props.channelId,
 					groupId: props.groupId,
 				});
-	
+
 				await props.handleUpdate(contractId);
-			}
-			catch (e: any) {
+			} catch (e: any) {
 				console.error(e);
 			}
 			setLoading(false);
@@ -252,7 +257,7 @@ export default function MessageCreate(props: IProps) {
 	}
 
 	function checkInvalidEditorLength(editorState: EditorState) {
-		return editorState.getCurrentContent().getPlainText().length >= MAX_EDITOR_LENGTH
+		return editorState.getCurrentContent().getPlainText().length >= MAX_EDITOR_LENGTH;
 	}
 
 	function getSubmitDisabled(editorState: EditorState) {
@@ -277,6 +282,7 @@ export default function MessageCreate(props: IProps) {
 							wrapper: 22.5,
 							icon: 13.5,
 						}}
+						tooltip={language.handleBold}
 					/>
 					<IconButton
 						type={'alt1'}
@@ -288,6 +294,7 @@ export default function MessageCreate(props: IProps) {
 							wrapper: 22.5,
 							icon: 13.5,
 						}}
+						tooltip={language.handleItalic}
 					/>
 					<IconButton
 						type={'alt1'}
@@ -299,6 +306,7 @@ export default function MessageCreate(props: IProps) {
 							wrapper: 22.5,
 							icon: 13.5,
 						}}
+						tooltip={language.handleUnderline}
 					/>
 					<S.IDivider />
 					<IconButton
@@ -311,6 +319,7 @@ export default function MessageCreate(props: IProps) {
 							wrapper: 22.5,
 							icon: 13.5,
 						}}
+						tooltip={language.handleCode}
 					/>
 					<S.IDivider />
 					<IconButton
@@ -326,12 +335,8 @@ export default function MessageCreate(props: IProps) {
 							wrapper: 22.5,
 							icon: 11.5,
 						}}
+						tooltip={language.addLink}
 					/>
-					{checkInvalidEditorLength(editorState) && (
-						<S.HWarning>
-							<span>{language.maxCharsReached}</span>
-						</S.HWarning>
-					)}
 				</S.Header>
 				<S.Body>
 					<S.Editor>
@@ -349,11 +354,17 @@ export default function MessageCreate(props: IProps) {
 					</S.Editor>
 				</S.Body>
 				<S.Footer>
+					{checkInvalidEditorLength(editorState) && (
+						<S.FWarning>
+							<span>{language.maxCharsReached}</span>
+						</S.FWarning>
+					)}
 					<Button
 						type={'alt1'}
 						label={loading ? `${language.sending}...` : language.send}
 						handlePress={handleSubmit}
 						disabled={loading || getSubmitDisabled(editorState)}
+						height={33.5}
 						noMinWidth
 					/>
 				</S.Footer>
