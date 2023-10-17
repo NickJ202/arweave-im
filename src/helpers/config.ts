@@ -25,7 +25,7 @@ import { WalletEnum } from './types';
 
 export const APP = {
 	appKey: 'appVersion',
-	appVersion: '1.0.0'
+	appVersion: '1.0.0',
 };
 
 export const ASSETS = {
@@ -105,7 +105,7 @@ export const EDITOR_STYLE_MAP = (theme: DefaultTheme) => {
 			border: `1px solid ${theme.colors.editor.codeLine.border}`,
 		},
 		LINK: {
-            color: theme.colors.link.color,
-        }
+			color: theme.colors.link.color,
+		},
 	};
 };

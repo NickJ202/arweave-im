@@ -1,1 +1,1 @@
-export {default as FooterNotification} from './FooterNotification';
+export { default as FooterNotification } from './FooterNotification';

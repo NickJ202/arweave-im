@@ -1,3 +1,3 @@
 export interface IProps {
-    channelName: string | null;
+	channelName: string | null;
 }

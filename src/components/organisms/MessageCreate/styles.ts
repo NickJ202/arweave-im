@@ -4,7 +4,7 @@ import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div<{ active: boolean }>`
 	width: 100%;
-	border: 1.35px solid ${(props) => props.active ? props.theme.colors.border.alt2 : props.theme.colors.border.alt1};
+	border: 1.35px solid ${(props) => (props.active ? props.theme.colors.border.alt2 : props.theme.colors.border.alt1)};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	&:hover {
 		cursor: text;

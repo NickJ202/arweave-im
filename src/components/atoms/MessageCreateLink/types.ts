@@ -1,4 +1,4 @@
 export interface IProps {
-    handleSubmit: (link: string) => void;
-    handleClose: () => void;
+	handleSubmit: (link: string) => void;
+	handleClose: () => void;
 }

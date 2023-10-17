@@ -105,7 +105,7 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.neutral3,
 				border: DEFAULT.neutral6,
 				color: DEFAULT.accent5,
-			}
+			},
 		},
 		font: {
 			primary: DEFAULT.neutralA1,
@@ -137,7 +137,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		link: {
 			color: DEFAULT.accent3,
-			active: DEFAULT.accent4
+			active: DEFAULT.accent4,
 		},
 		loader: {
 			primary: DEFAULT.neutralA2,
@@ -205,12 +205,12 @@ export const defaultTheme: DefaultTheme = {
 			base: '16px',
 			lg: '18px',
 			xLg: '24px',
-			header: 'clamp(36px, 2.75vw, 48px)'
+			header: 'clamp(36px, 2.75vw, 48px)',
 		},
 		weight: {
 			regular: '400',
 			bold: '600',
-			xBold: '700'
+			xBold: '700',
 		},
 	},
 };

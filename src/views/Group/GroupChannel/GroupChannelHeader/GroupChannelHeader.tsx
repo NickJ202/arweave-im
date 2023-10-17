@@ -29,7 +29,8 @@ export default function GroupChannelHeader(props: IProps) {
 		if (owner) {
 			if (owner.handle) return owner.handle;
 			else return formatAddress(owner.walletAddress, false);
-		} else return null;
+		} 
+		else return formatAddress(address, false);
 	}
 
 	function getMembers() {

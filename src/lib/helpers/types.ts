@@ -7,13 +7,13 @@ export type AssetType = {
 };
 
 export type ChannelHeaderResponseType = {
-	id: string,
-	groupId: string,
-	groupChannel: string,
-	messageGroupVersion: string,
-	dateCreated: number,
-	initialOwner: string
-}
+	id: string;
+	groupId: string;
+	groupChannel: string;
+	messageGroupVersion: string;
+	dateCreated: number;
+	initialOwner: string;
+};
 
 export type ChannelResponseType = {
 	data: AssetType[] | null;
@@ -53,8 +53,13 @@ export type AssetArgsType = {
 
 export type AssetArgsClientType = AssetArgsType & {
 	arClient: any;
+	getStamps: boolean;
 	useBundlrGateway?: boolean;
 };
+
+export type AssetArgsFetchType = AssetArgsType & {
+	getStamps: boolean;
+}
 
 export type AssetCreateArgsType = {
 	content: any;
@@ -80,7 +85,7 @@ export type ApiClientType = {
 	arClient: ArweaveClientType;
 	init: (args: ApiClientInitArgs) => ApiClientType;
 	createAsset: (args: AssetCreateArgsType) => Promise<string>;
-	getAssetsByChannel: (args: AssetArgsType) => Promise<ChannelResponseType>;
+	getAssetsByChannel: (args: AssetArgsFetchType) => Promise<ChannelResponseType>;
 	getAssetById: (args: { assetId: string }) => Promise<AssetType | null>;
 	getChannelById: (args: { channelId: string }) => Promise<ChannelHeaderResponseType | null>;
 	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;

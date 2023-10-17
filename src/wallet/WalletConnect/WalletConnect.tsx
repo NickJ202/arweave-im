@@ -83,7 +83,11 @@ export default function WalletConnect(_props: { callback?: () => void }) {
 				disabled={false}
 			>
 				<S.Wrapper>
-					<Avatar owner={arProvider.walletAddress ? arProvider.walletAddress : STORAGE.none} dimensions={{ wrapper: 32.5, icon: 22.5 }} callback={handlePress} />
+					<Avatar
+						owner={arProvider.walletAddress ? arProvider.walletAddress : STORAGE.none}
+						dimensions={{ wrapper: 32.5, icon: 22.5 }}
+						callback={handlePress}
+					/>
 					{showWalletDropdown && (
 						<S.Dropdown className={'border-wrapper-primary'}>
 							<S.DHeaderWrapper>

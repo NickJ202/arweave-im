@@ -68,7 +68,8 @@ export const AHeader = styled.div`
 export const GWrapper = styled.div`
 	margin: 25px 0 0 0;
 	animation: ${open} ${fadeIn2};
-	p, span {
+	p,
+	span {
 		display: block;
 		padding: 20px;
 	}

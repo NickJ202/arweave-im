@@ -115,13 +115,13 @@ export default function GroupCreate(props: IProps) {
 
 	return (
 		<>
-				<Button
-					type={'primary'}
-					label={language.createGroup.toUpperCase()}
-					handlePress={() => setShowModal(true)}
-					height={47.5}
-					width={275}
-				/>
+			<Button
+				type={'primary'}
+				label={language.createGroup.toUpperCase()}
+				handlePress={() => setShowModal(true)}
+				height={47.5}
+				width={275}
+			/>
 			{showModal && (
 				<Modal header={language.createGroup} handleClose={() => setShowModal(false)}>
 					{submitResponse ? (

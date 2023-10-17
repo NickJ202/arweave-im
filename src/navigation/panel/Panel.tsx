@@ -28,6 +28,7 @@ export default function Panel(props: IProps) {
 
 	function handleChannelChange(channelId: string) {
 		dispatch(groupActions.setActiveChannelId(channelId));
+		if (props.overlay) props.handleClose();
 	}
 
 	function getChannels() {

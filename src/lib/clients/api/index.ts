@@ -47,8 +47,8 @@ const apiClient: ApiClientType = {
 
 	getChannelById: async function (args: { channelId: string }): Promise<ChannelHeaderResponseType | null> {
 		return await getChannelById({
-			channelId: args.channelId
-		})
+			channelId: args.channelId,
+		});
 	},
 
 	getGroupsByUser: async function (args: { walletAddress: string }): Promise<GQLResponseType> {
@@ -71,7 +71,12 @@ const apiClient: ApiClientType = {
 		return await addGroupMember({ ...args, arClient: this.arClient });
 	},
 
-	addGroupChannel: async function (args: { groupId: string; channelTitle: string; wallet: any; owner: string }): Promise<string> {
+	addGroupChannel: async function (args: {
+		groupId: string;
+		channelTitle: string;
+		wallet: any;
+		owner: string;
+	}): Promise<string> {
 		return await addGroupChannel({ ...args, arClient: this.arClient });
 	},
 

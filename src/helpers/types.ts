@@ -29,7 +29,7 @@ export type ReduxActionType = {
 
 export type GroupReduxDataType = GroupType & {
 	profiles: ProfileType[];
-}
+};
 
 export type GroupReduxType = {
 	data: GroupReduxDataType;

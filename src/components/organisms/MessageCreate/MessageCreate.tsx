@@ -53,20 +53,20 @@ export default function MessageCreate(props: IProps) {
 		const selection = editorState.getSelection();
 		const currentContent = editorState.getCurrentContent();
 		const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
-		
+
 		let offset = selection.getStartOffset() - 1;
 		if (offset < 0) {
 			const blockBefore = currentContent.getBlockBefore(selection.getStartKey());
-			
+
 			if (blockBefore) {
 				offset = blockBefore.getLength() - 1;
 				const blockBeforeStyle = blockBefore.getInlineStyleAt(offset);
-				
+
 				setBoldActive(blockBeforeStyle.has('BOLD'));
 				setItalicActive(blockBeforeStyle.has('ITALIC'));
 				setUnderlineActive(blockBeforeStyle.has('UNDERLINE'));
 				setCodeActive(blockBeforeStyle.has('CODE'));
-	
+
 				return;
 			}
 		}
@@ -148,7 +148,7 @@ export default function MessageCreate(props: IProps) {
 				// setCodeModeActive(!codeModeActive);
 				handleCode();
 				return;
-				// break;
+			// break;
 			default:
 				break;
 		}

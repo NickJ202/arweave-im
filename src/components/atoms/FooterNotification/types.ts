@@ -1,3 +1,3 @@
 export interface IProps {
-    message: string;
+	message: string;
 }

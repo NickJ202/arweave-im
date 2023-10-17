@@ -11,12 +11,12 @@ import { IProps } from './types';
 export default function MessageCreateLink(props: IProps) {
 	const [link, setLink] = React.useState<string>('');
 
-    function handleSubmit(e: any) {
-        e.preventDefault();
-        e.stopPropagation();
-        props.handleSubmit(link);
-        props.handleClose();
-    }
+	function handleSubmit(e: any) {
+		e.preventDefault();
+		e.stopPropagation();
+		props.handleSubmit(link);
+		props.handleClose();
+	}
 
 	return (
 		<Modal header={language.addLink} handleClose={props.handleClose}>
@@ -27,40 +27,39 @@ export default function MessageCreateLink(props: IProps) {
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLink(e.target.value)}
 					disabled={false}
 					invalid={{ status: false, message: null }}
-                    autoFocus
+					autoFocus
 				/>
-                <S.Actions>
-                    <Button
-                        type={'primary'}
-                        label={language.cancel}
-                        handlePress={props.handleClose}
-                        disabled={false}
-                        noMinWidth
-                    />
-                    <Button
-                        type={'alt1'}
-                        label={language.add}
-                        handlePress={(e: any) => handleSubmit(e)}
-                        disabled={!link || !checkValidLink(link)}
-                        noMinWidth
-                        formSubmit
-                    />
-                </S.Actions>
+				<S.Actions>
+					<Button
+						type={'primary'}
+						label={language.cancel}
+						handlePress={props.handleClose}
+						disabled={false}
+						noMinWidth
+					/>
+					<Button
+						type={'alt1'}
+						label={language.add}
+						handlePress={(e: any) => handleSubmit(e)}
+						disabled={!link || !checkValidLink(link)}
+						noMinWidth
+						formSubmit
+					/>
+				</S.Actions>
 			</S.Form>
 		</Modal>
 	);
 }
 
 function checkValidLink(link: string): boolean {
-    if (!link.startsWith('http://') && !link.startsWith('https://')) {
-        return false;
-    }
-    
-    let protocolEnd = link.indexOf('//') + 2;
-    if (protocolEnd >= link.length) {
-        return false;
-    }
+	if (!link.startsWith('http://') && !link.startsWith('https://')) {
+		return false;
+	}
 
-    return true;
+	let protocolEnd = link.indexOf('//') + 2;
+	if (protocolEnd >= link.length) {
+		return false;
+	}
+
+	return true;
 }
-

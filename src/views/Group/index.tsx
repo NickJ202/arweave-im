@@ -28,7 +28,6 @@ export default function Group() {
 	React.useEffect(() => {
 		(async function () {
 			if (arProvider.walletAddress && cliProvider.lib && groupId) {
-				const groupChange = !groupReducer || groupReducer.groupId !== groupId;
 				const groupState: GroupType = await cliProvider.lib.api.arClient.read(groupId);
 
 				const memberCheck = groupState.members.find(
@@ -39,7 +38,7 @@ export default function Group() {
 				let reducerData: GroupReduxDataType | null = null;
 				let activeChannelId: string | null = null;
 
-				if (groupChange && memberCheck) {
+				if (memberCheck) {
 					const profiles: ProfileType[] = await cliProvider.lib.api.getProfiles({
 						addresses: groupState.members.map((member: MemberType) => member.address),
 					});
@@ -78,7 +77,6 @@ export default function Group() {
 			dispatch(groupActions.setGroup(null));
 		}
 	}, [authMember]);
-
 
 	function getGroup() {
 		if (authMember) return <GroupChannel />;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
+import { AssetType, ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
 
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
@@ -28,7 +28,7 @@ export default function GroupChannel() {
 	const [scrollToRecent, setScrollToRecent] = React.useState<boolean>(false);
 	const [updateData, setUpdateData] = React.useState<boolean>(false);
 
-	async function fetchChannelAssets(args: { cursor: string }) {
+	async function fetchChannelAssets(args: { cursor: string; getStamps: boolean }) {
 		if (arProvider.walletAddress && cliProvider.lib && groupReducer) {
 			const response = await cliProvider.lib.api.getAssetsByChannel({
 				ids: [groupReducer.activeChannelId],
@@ -36,6 +36,7 @@ export default function GroupChannel() {
 				cursor: args.cursor,
 				reduxCursor: null,
 				walletAddress: arProvider.walletAddress,
+				getStamps: args.getStamps,
 			});
 
 			if (response && response.data) return response;
@@ -48,9 +49,8 @@ export default function GroupChannel() {
 		(async function () {
 			setChannelData(null);
 			setLoading(true);
-			// await new Promise((resolve) => setTimeout(resolve, 250));
 			try {
-				setChannelData(await fetchChannelAssets({ cursor: null }));
+				setChannelData(await fetchChannelAssets({ cursor: null, getStamps: true }));
 				await handleScrollToRecent();
 			} catch (e: any) {
 				console.error(e);
@@ -62,7 +62,7 @@ export default function GroupChannel() {
 			}
 			setLoading(false);
 		})();
-	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
+	}, [arProvider.walletAddress, cliProvider.lib, groupReducer.activeChannelId]);
 
 	React.useEffect(() => {
 		(async function () {
@@ -82,7 +82,7 @@ export default function GroupChannel() {
 			if (channelData && channelData.nextCursor && channelData.nextCursor !== CURSORS.end) {
 				setLoading(true);
 				const currentData = [...channelData.data];
-				const updatedResponse = await fetchChannelAssets({ cursor: channelData.nextCursor });
+				const updatedResponse = await fetchChannelAssets({ cursor: channelData.nextCursor, getStamps: true });
 				setChannelData({
 					data: [...updatedResponse.data, ...currentData],
 					nextCursor: updatedResponse.nextCursor,
@@ -95,21 +95,26 @@ export default function GroupChannel() {
 	}, [updateData]);
 
 	// Poll messages
-	// React.useEffect(() => {
-	// 	async function pollData() {
-	// 		const updatedResponse = await fetchChannelAssets({ cursor: null });
+	React.useEffect(() => {
+		async function pollData() {
+			const updatedResponse = await fetchChannelAssets({ cursor: null, getStamps: false });
+			if (updatedResponse && updatedResponse.nextCursor) {
+				const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
+				if (updatedMessages.length) {
+					const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
+					setChannelData({
+						data: [...channelData.data, ...updatedMessages],
+						nextCursor: updatedResponse.nextCursor,
+						previousCursor: null,
+					});
+					setScrollToRecent(!scrollToRecent);
+				}
+			}
+		}
 
-	// 		if (updatedResponse && updatedResponse.data && channelData && channelData.data) {
-	// 			if (updatedResponse.data.length > channelData.data.length) {
-	// 				setChannelData(updatedResponse);
-	// 				setScrollToRecent(!scrollToRecent);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	const intervalId = setInterval(pollData, 3000);
-	// 	return () => clearInterval(intervalId);
-	// }, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
+		const intervalId = setInterval(pollData, 3000);
+		return () => clearInterval(intervalId);
+	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
 	async function handleScrollToRecent() {
 		setScrollToRecent(true);
@@ -129,7 +134,7 @@ export default function GroupChannel() {
 					nextCursor: channelData.nextCursor,
 					previousCursor: channelData.previousCursor,
 				});
-				await handleScrollToRecent();
+			await handleScrollToRecent();
 		}
 	}
 
@@ -169,4 +174,20 @@ export default function GroupChannel() {
 	}
 
 	return getData();
+}
+
+function getUniqueMessages(existingAssets: AssetType[], updatedAssets: AssetType[]) {
+	function existsInList(obj: AssetType, list: AssetType[]) {
+		return list.some((item) => item.id === obj.id);
+	}
+
+	let uniqueObjects = [];
+
+	for (let obj of updatedAssets) {
+		if (!existsInList(obj, existingAssets)) {
+			uniqueObjects.push(obj);
+		}
+	}
+
+	return uniqueObjects;
 }

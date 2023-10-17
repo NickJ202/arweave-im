@@ -28,7 +28,7 @@ export default function Landing() {
 
 	React.useEffect(() => {
 		dispatch(groupActions.setGroup(null));
-	}, [])
+	}, []);
 
 	React.useEffect(() => {
 		(async function () {
@@ -53,7 +53,7 @@ export default function Landing() {
 						<S.GDetailWrapper className={'scroll-wrapper'}>
 							{groups.map((group: any, index: number) => {
 								const groupId = group.node.id;
-								const groupTitle = getTagValue(group.node.tags, TAGS.keys.ans110.title);								
+								const groupTitle = getTagValue(group.node.tags, TAGS.keys.ans110.title);
 								const groupLogo = getTagValue(group.node.tags, TAGS.keys.logo);
 
 								const label = groupTitle === STORAGE.none ? formatAddress(groupId, false) : groupTitle;

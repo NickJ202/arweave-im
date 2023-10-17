@@ -3,7 +3,14 @@ import { CONTENT_TYPES, getTagValue, GROUP_CONTRACT, logValue, PROFILE_HEX_CODES
 import { DEFAULT_LOGO } from 'helpers/config';
 
 import { getGQLData, getGQLResponseObject } from '../gql';
-import { AGQLResponseType, CreateGroupClientArgs, CursorEnum, GQLNodeResponseType, GQLResponseType, TagType } from '../helpers/types';
+import {
+	AGQLResponseType,
+	CreateGroupClientArgs,
+	CursorEnum,
+	GQLNodeResponseType,
+	GQLResponseType,
+	TagType,
+} from '../helpers/types';
 
 import { createContract, createTransaction } from '.';
 
@@ -26,8 +33,10 @@ export async function getGroupsByUser(args: { walletAddress: string; arClient: a
 		useArweaveNet: true,
 	});
 
-	const groupIds = memberGqlData.data.map((element: GQLNodeResponseType) => getTagValue(element.node.tags, TAGS.keys.groupId));
-	
+	const groupIds = memberGqlData.data.map((element: GQLNodeResponseType) =>
+		getTagValue(element.node.tags, TAGS.keys.groupId)
+	);
+
 	const groupGqlData: AGQLResponseType = await getGQLData({
 		ids: groupIds,
 		tagFilters: null,

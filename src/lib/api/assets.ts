@@ -34,22 +34,25 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			useBundlrGateway: true,
 			useArweaveNet: false,
 		});
-
-		let stampCounts: any = {}
-		let stampChecks: any = {}
-		const stamps = Stamps.init({
-			warp: args.arClient.warp,
-			arweave: args.arClient.arweave,
-			wallet: args.walletAddress ? new InjectedArweaveSigner(args.walletAddress) : 'use_wallet',
-			graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
-		});
-		const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
-		try {
-			stampCounts = await stamps.counts(dataIds);
-			stampChecks = await stamps.hasStamped(dataIds);
-		}
-		catch (e: any) {
-			console.error(e)
+		
+		let stampCounts: any = {};
+		let stampChecks: any = {};
+		if (args.getStamps) {
+			const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
+	
+			const stamps = Stamps.init({
+				warp: args.arClient.warp,
+				arweave: args.arClient.arweave,
+				wallet: args.walletAddress ? new InjectedArweaveSigner(args.walletAddress) : 'use_wallet',
+				graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
+			});
+	
+			try {
+				stampCounts = await stamps.counts(dataIds);
+				stampChecks = await stamps.hasStamped(dataIds);
+			} catch (e: any) {
+				console.error(e);
+			}
 		}
 
 		const responseData: AssetType[] = gqlData.data.map((element: GQLNodeResponseType) => {
@@ -58,7 +61,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
 				message: getTagValue(element.node.tags, TAGS.keys.messageData),
 				owner: getTagValue(element.node.tags, TAGS.keys.initialOwner),
-				stamps: getStamps(element.node.id, { ...stampCounts }, { ...stampChecks })
+				stamps: getStamps(element.node.id, { ...stampCounts }, { ...stampChecks }),
 			};
 		});
 
@@ -81,11 +84,11 @@ function getStamps(assetId: string, stampCounts: any, stampChecks: any) {
 	let stamps: StampType = { total: 0, vouched: 0, connectedWalletStamped: false };
 
 	if (stampCounts && stampCounts[assetId]) {
-		stamps.total = stampCounts[assetId].total
-		stamps.vouched = stampCounts[assetId].vouched
+		stamps.total = stampCounts[assetId].total;
+		stamps.vouched = stampCounts[assetId].vouched;
 	}
 	if (stampChecks && stampChecks[assetId]) {
-		stamps.connectedWalletStamped = stampChecks[assetId]
+		stamps.connectedWalletStamped = stampChecks[assetId];
 	}
 	return stamps;
 }

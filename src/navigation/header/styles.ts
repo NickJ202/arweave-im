@@ -13,7 +13,6 @@ export const Wrapper = styled.header`
 	align-items: center;
 	padding: 0 15px;
 	background: ${(props) => props.theme.colors.navigation.header.background};
-	border-top: 1px solid ${(props) => props.theme.colors.border.primary};
 	border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
