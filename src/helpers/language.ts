@@ -59,4 +59,5 @@ export const language = {
 	handleItalic: `Italic (Ctrl / Cmd + I)`,
 	handleUnderline: `Underline (Ctrl / Cmd + U)`,
 	handleCode: `Code (Ctrl / Cmd + C)`,
+	messageSent: `Message Sent`
 };

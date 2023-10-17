@@ -13,6 +13,7 @@ import { ASSETS, EDITOR_STYLE_MAP } from 'helpers/config';
 import { language } from 'helpers/language';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
+import { useFooterNotification } from 'providers/FooterNotificationProvider';
 
 import 'draft-js/dist/Draft.css';
 
@@ -25,6 +26,7 @@ const MAX_EDITOR_LENGTH = 2500;
 // TODO: throw error footer notification on bad request
 export default function MessageCreate(props: IProps) {
 	const theme = useTheme();
+	const { queueFooterNotification } = useFooterNotification();
 
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
@@ -145,7 +147,6 @@ export default function MessageCreate(props: IProps) {
 				setUnderlineModeActive(!underlineModeActive);
 				break;
 			case 'code':
-				// setCodeModeActive(!codeModeActive);
 				handleCode();
 				return;
 			// break;
@@ -244,6 +245,7 @@ export default function MessageCreate(props: IProps) {
 				});
 
 				await props.handleUpdate(contractId);
+				queueFooterNotification(`${language.messageSent}!`);
 			} catch (e: any) {
 				console.error(e);
 			}

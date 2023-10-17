@@ -4,7 +4,6 @@ export type AssetType = {
 	message: string;
 	owner: string;
 	stamps: StampType;
-	isRecent?: boolean;
 };
 
 export type ChannelHeaderResponseType = {

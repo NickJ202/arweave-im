@@ -138,7 +138,6 @@ export default function Message(props: IProps) {
 			<S.Wrapper
 				textOnly={props.useSameOwner}
 				disabled={!props.data}
-				isRecent={props.data && props.data.isRecent ? props.data.isRecent : false}
 			>
 				<S.AWrapper>
 					{props.data && stamps && (

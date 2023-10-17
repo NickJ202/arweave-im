@@ -1,13 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-	AssetType,
-	ChannelHeaderResponseType,
-	ChannelResponseType,
-	ChannelType,
-	CURSORS
-} from 'lib';
+import { AssetType, ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
 
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
@@ -112,7 +106,7 @@ export default function GroupChannel() {
 				const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
 				if (updatedMessages.length) {
 					const updatedMessages: AssetType[] = getUniqueMessages(channelData.data, updatedResponse.data).map(
-						(message: AssetType) => ({ ...message, isRecent: true })
+						(message: AssetType) => ({ ...message })
 					);
 					setChannelData({
 						data: [...channelData.data, ...updatedMessages],
