@@ -46,7 +46,7 @@ export default function Group() {
 						...groupState,
 						profiles: profiles,
 					};
-					activeChannelId = groupState.channels[0].id;
+					activeChannelId = groupReducer ? groupReducer.activeChannelId : groupState.channels[0].id;
 				} else {
 					reducerData = {
 						...groupState,

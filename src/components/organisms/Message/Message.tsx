@@ -109,7 +109,7 @@ export default function Message(props: IProps) {
 					{owner.handle ? owner.handle : formatAddress(owner.walletAddress, false)}
 				</button>
 			);
-		} else return null;
+		} else return '-';
 	}
 
 	function getDate() {

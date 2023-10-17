@@ -72,7 +72,7 @@ export default function GroupChannelDetail(props: IProps) {
 					</p>
 				</S.MHData>
 			);
-		} else return null;
+		} else return <p>{`${language.fetching}...`}</p>;
 	}
 
 	function getChannelData() {
@@ -134,7 +134,7 @@ export default function GroupChannelDetail(props: IProps) {
 					<MessageCreate
 						channelId={props.channelId}
 						groupId={props.groupId}
-						placeholder={props.channelName ? language.message(props.channelName) : null}
+						placeholder={language.message(props.channelName ? props.channelName : '-')}
 						handleUpdate={props.handleUpdate}
 					/>
 				</S.CWrapper>

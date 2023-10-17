@@ -47,7 +47,6 @@ export default function GroupChannel() {
 		}
 	}
 
-	// TODO: don't refetch messages on group action (member / channel add)
 	// Initial message fetch
 	React.useEffect(() => {
 		(async function () {
@@ -102,7 +101,7 @@ export default function GroupChannel() {
 	React.useEffect(() => {
 		async function pollData() {
 			const updatedResponse = await fetchChannelAssets({ cursor: null, getStamps: false });
-			if (updatedResponse && updatedResponse.nextCursor) {
+			if (channelData && channelData.data && updatedResponse && updatedResponse.nextCursor) {
 				const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
 				if (updatedMessages.length) {
 					const updatedMessages: AssetType[] = getUniqueMessages(channelData.data, updatedResponse.data).map(
@@ -128,6 +127,7 @@ export default function GroupChannel() {
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 
 	async function handleScrollToRecent() {
+		await new Promise((resolve) => setTimeout(resolve, 250));
 		setScrollToRecent(true);
 		await new Promise((resolve) => setTimeout(resolve, 250));
 		setScrollToRecent(false);
@@ -156,32 +156,28 @@ export default function GroupChannel() {
 					groupReducer.data.channels.find((channel: ChannelType) => channel.id === groupReducer.activeChannelId).title
 				);
 			} catch (e: any) {
-				return '-';
+				return null;
 			}
 		} else return null;
 	}
 
 	function getData() {
-		if (groupReducer) {
-			return (
-				<>
-					<GroupChannelHeader channelName={getChannelName()} />
-					<GroupChannelDetail
-						channelId={groupReducer.activeChannelId}
-						channelName={getChannelName()}
-						groupId={groupReducer.groupId}
-						channelData={channelData}
-						channelHeaderData={channelHeaderData}
-						handleUpdate={handleUpdate}
-						scrollToRecent={scrollToRecent}
-						setUpdateData={() => setUpdateData(!updateData)}
-						loading={loading}
-					/>
-				</>
-			);
-		} else {
-			return null;
-		}
+		return (
+			<>
+				<GroupChannelHeader channelName={getChannelName()} />
+				<GroupChannelDetail
+					groupId={groupReducer ? groupReducer.groupId : null}
+					channelId={groupReducer ? groupReducer.activeChannelId : null}
+					channelName={getChannelName()}
+					channelData={channelData}
+					channelHeaderData={channelHeaderData}
+					handleUpdate={handleUpdate}
+					scrollToRecent={scrollToRecent}
+					setUpdateData={() => setUpdateData(!updateData)}
+					loading={loading}
+				/>
+			</>
+		);
 	}
 
 	return getData();

@@ -68,6 +68,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 			tags: createGroupTags({
 				owner: args.owner,
 				title: args.title,
+				privateGroup: args.privateGroup,
 				logo: logoId,
 			}),
 			content: TAGS.values.messageGroupVersions['0.1'],
@@ -107,7 +108,7 @@ export async function createGroup(args: CreateGroupClientArgs): Promise<string |
 	}
 }
 
-function createGroupTags(args: { owner: string; title: string; logo: string }): TagType[] {
+function createGroupTags(args: { owner: string; title: string; privateGroup: boolean; logo: string }): TagType[] {
 	const dateTime = new Date().getTime().toString();
 
 	let initStateJson: any = {
@@ -118,6 +119,7 @@ function createGroupTags(args: { owner: string; title: string; logo: string }): 
 		members: [],
 		owner: args.owner,
 		channels: [],
+		privateGroup: args.privateGroup,
 		dateCreated: dateTime,
 		logo: args.logo,
 	};
@@ -202,6 +204,16 @@ export async function addGroupMember(args: {
 		const hexCodes = Object.values(PROFILE_HEX_CODES);
 		const hexIndex = Math.floor(Math.random() * hexCodes.length);
 
+		await args.arClient.writeContract({
+			contract: args.groupId,
+			wallet: args.wallet,
+			input: {
+				function: 'addMembers',
+				members: [{ address: args.walletAddress, profileHexCode: hexCodes[hexIndex] }],
+			},
+			options: { strict: true },
+		});
+
 		const txId = await createTransaction({
 			arClient: args.arClient,
 			tags: createGroupMemberTags({
@@ -213,17 +225,53 @@ export async function addGroupMember(args: {
 			contentType: CONTENT_TYPES.textPlain,
 		});
 
-		await args.arClient.writeContract({
-			contract: args.groupId,
-			wallet: args.wallet,
-			input: {
-				function: 'addMembers',
-				members: [{ address: args.walletAddress, profileHexCode: hexCodes[hexIndex] }],
-			},
-			options: { strict: true },
-		});
-
 		return txId;
+	} catch (e: any) {
+		console.error(e);
+		return null;
+	}
+}
+
+export async function joinGroup(args: {
+	arClient: any;
+	groupId: string;
+	groupTitle: string;
+	walletAddress: string;
+	wallet: any;
+}): Promise<string | null> {
+	try {
+		const hexCodes = Object.values(PROFILE_HEX_CODES);
+		const hexIndex = Math.floor(Math.random() * hexCodes.length);
+
+		try {
+			const r = await args.arClient.writeContract({
+				contract: args.groupId,
+				wallet: args.wallet,
+				input: {
+					function: 'joinGroup',
+					member: { address: args.walletAddress, profileHexCode: hexCodes[hexIndex] },
+				},
+				options: { strict: true },
+			});
+
+			console.log(r)
+	
+			const txId = await createTransaction({
+				arClient: args.arClient,
+				tags: createGroupMemberTags({
+					groupId: args.groupId,
+					groupTitle: args.groupTitle,
+					walletAddress: args.walletAddress,
+				}),
+				content: TAGS.keys.groupMember,
+				contentType: CONTENT_TYPES.textPlain,
+			});
+	
+			return txId;
+		}
+		catch (e: any) {
+			console.log(e);
+		}
 	} catch (e: any) {
 		console.error(e);
 		return null;

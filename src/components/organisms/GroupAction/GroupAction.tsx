@@ -17,7 +17,6 @@ import * as groupActions from 'store/group/actions';
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: notification
 export default function GroupAction(props: IProps) {
 	const dispatch = useDispatch();
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
@@ -181,24 +180,21 @@ export default function GroupAction(props: IProps) {
 		}
 		return (
 			<Modal header={header} handleClose={props.handleClose}>
-				{submitResponse ? (
-					<p>{submitResponse.message}</p>
-				) : (
-					<S.Form>
-						{formField}
-						<S.SWrapper>
-							<Button
-								type={'alt1'}
-								label={language.submit}
-								handlePress={async (e) => await handleSubmit(e)}
-								loading={loading}
-								disabled={getSubmitDisabled() || loading}
-								noMinWidth
-								formSubmit
-							/>
-						</S.SWrapper>
-					</S.Form>
-				)}
+				<S.Form>
+					{formField}
+					<S.SWrapper>
+						<S.RWrapper>{submitResponse && <span>{submitResponse.message}</span>}</S.RWrapper>
+						<Button
+							type={'alt1'}
+							label={language.submit}
+							handlePress={async (e) => await handleSubmit(e)}
+							loading={loading}
+							disabled={getSubmitDisabled() || loading || submitResponse !== null}
+							noMinWidth
+							formSubmit
+						/>
+					</S.SWrapper>
+				</S.Form>
 			</Modal>
 		);
 	}

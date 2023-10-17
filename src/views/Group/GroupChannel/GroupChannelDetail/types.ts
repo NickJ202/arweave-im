@@ -1,8 +1,8 @@
 import { ChannelHeaderResponseType, ChannelResponseType } from 'lib';
 
 export interface IProps {
-	groupId: string;
-	channelId: string;
+	groupId: string | null;
+	channelId: string | null;
 	channelName: string | null;
 	channelHeaderData: ChannelHeaderResponseType | null;
 	channelData: ChannelResponseType | null;

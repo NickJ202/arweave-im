@@ -8,11 +8,12 @@ import {
 	getChannelById,
 	getGroupsByUser,
 	getProfiles,
+	joinGroup,
 } from '../../api';
 import {
 	ApiClientInitArgs,
 	ApiClientType,
-	AssetArgsType,
+	AssetArgsFetchType,
 	AssetCreateArgsType,
 	AssetType,
 	ChannelHeaderResponseType,
@@ -34,7 +35,7 @@ const apiClient: ApiClientType = {
 		return await createAsset({ ...args, arClient: this.arClient });
 	},
 
-	getAssetsByChannel: async function (args: AssetArgsType): Promise<ChannelResponseType> {
+	getAssetsByChannel: async function (args: AssetArgsFetchType): Promise<ChannelResponseType> {
 		return await getAssetsByChannel({ ...args, arClient: this.arClient });
 	},
 
@@ -78,6 +79,15 @@ const apiClient: ApiClientType = {
 		owner: string;
 	}): Promise<string> {
 		return await addGroupChannel({ ...args, arClient: this.arClient });
+	},
+
+	joinGroup: async function (args: {
+		groupId: string;
+		groupTitle: string;
+		walletAddress: string;
+		wallet: any;
+	}): Promise<string> {
+		return await joinGroup({ ...args, arClient: this.arClient });
 	},
 
 	getProfiles: async function (args: { addresses: string[] }): Promise<ProfileType[]> {

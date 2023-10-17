@@ -7,10 +7,15 @@ export function notificationsReducer(state: NotificationReduxType[] | null = [],
         case SET_NOTIFICATIONS:
             return getUpdatedNotifications(state, action.payload);
         case CLEAR_NOTIFICATIONS:
-            return state ? state.filter((notificationObject: NotificationReduxType) => notificationObject.channelId !== action.payload) : state;
+            return getClearedNotifications(state, action.payload);
         default:
             return state;
     }
+}
+
+function getClearedNotifications(state: NotificationReduxType[] | null, payload: string | null) {
+    if (!payload || !state) return null;
+    return state.filter((notificationObject: NotificationReduxType) => notificationObject.channelId !== payload);
 }
 
 function getUpdatedNotifications(state: NotificationReduxType[] | null, payload: NotificationReduxType[] | null) {

@@ -96,6 +96,12 @@ export type ApiClientType = {
 		walletAddress: string;
 		wallet: any;
 	}) => Promise<string>;
+	joinGroup: (args: {
+		groupId: string;
+		groupTitle: string;
+		walletAddress: string;
+		wallet: any;
+	}) => Promise<string>;
 	addGroupChannel: (args: { groupId: string; channelTitle: string; wallet: any; owner: string }) => Promise<string>;
 	getProfiles: (args: { addresses: string[] }) => Promise<ProfileType[]>;
 };
@@ -188,6 +194,7 @@ export type CreateGroupArgs = {
 		buffer: any;
 	};
 	owner: string;
+	privateGroup: boolean;
 	wallet: any;
 };
 

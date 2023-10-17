@@ -104,8 +104,8 @@ export const ErrorContainer = styled.div`
 `;
 
 export const Error = styled.span`
-	font-size: ${(props) => props.theme.typography.size.xxSmall};
+	font-size: ${(props) => props.theme.typography.size.xSmall};
 	font-weight: ${(props) => props.theme.typography.weight.regular};
-	border-left: 3.5px solid ${(props) => props.theme.colors.font.primary.invalid};
+	border-left: 2.75px solid ${(props) => props.theme.colors.notification.warning};
 	padding-left: 5px;
 `;

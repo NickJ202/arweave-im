@@ -2,6 +2,7 @@ import React from 'react';
 import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
 import { Button } from 'components/atoms/Button';
+import { Checkbox } from 'components/atoms/Checkbox';
 import { FormField } from 'components/atoms/FormField';
 import { Modal } from 'components/molecules/Modal';
 import { language } from 'helpers/language';
@@ -25,6 +26,7 @@ export default function GroupCreate(props: IProps) {
 	const [logo, setLogo] = React.useState<any>(null);
 	const [logoBuffer, setLogoBuffer] = React.useState<any>(null);
 	const [showLogoUpload, setShowLogoUpload] = React.useState(true);
+	const [privateGroupSelected, setPrivateGroupSelected] = React.useState<boolean>(false);
 
 	const logoInputRef = React.useRef<any>(null);
 
@@ -70,10 +72,11 @@ export default function GroupCreate(props: IProps) {
 							buffer: logoBuffer,
 						},
 						owner: arProvider.walletAddress,
+						privateGroup: privateGroupSelected,
 						wallet: signer,
 					};
 
-					const id = await cliProvider.lib.api.createGroup(group);
+					await cliProvider.lib.api.createGroup(group);
 					setSubmitResponse({
 						status: true,
 						message: `${language.groupCreated}!`,
@@ -124,62 +127,69 @@ export default function GroupCreate(props: IProps) {
 			/>
 			{showModal && (
 				<Modal header={language.createGroup} handleClose={() => setShowModal(false)}>
-					{submitResponse ? (
-						<p>{submitResponse.message}</p>
-					) : (
-						<S.Form onSubmit={async (e) => await handleSubmit(e)}>
-							<FormField
-								label={language.title}
-								value={title}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-								disabled={loading}
-								invalid={{ status: false, message: null }}
-								autoFocus
-							/>
-							<S.ImageWrapper>
-								<S.ImageHeader>
-									<p>{language.logo}</p>
-									<Button
-										type={'primary'}
-										label={language.upload}
-										handlePress={() => logoInputRef.current.click()}
-										disabled={loading}
-										noMinWidth
-									/>
-								</S.ImageHeader>
-								<S.Image disabled={loading}>
-									{showLogoUpload && <label htmlFor={'file-input-banner'}>{language.uploadImage}</label>}
-									<input
-										ref={logoInputRef}
-										id={'file-input-banner'}
-										type={'file'}
-										accept={'image/*'}
-										onChange={(e: any) => handleImageUpload(e)}
-										disabled={loading}
-									/>
-									{logo && <img src={logo} alt={'Preview'} />}
-								</S.Image>
-							</S.ImageWrapper>
-							<FormField
-								label={language.initialChannel}
-								value={initialChannel}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitialChannel(e.target.value)}
-								disabled={loading}
-								invalid={{ status: false, message: null }}
-							/>
-							<S.SWrapper>
+					<S.Form onSubmit={async (e) => await handleSubmit(e)}>
+						<FormField
+							label={language.title}
+							value={title}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+							disabled={loading || submitResponse !== null}
+							invalid={{ status: false, message: null }}
+							autoFocus
+						/>
+						<S.ImageWrapper>
+							<S.ImageHeader>
+								<p>{language.logo}</p>
 								<Button
-									type={'alt1'}
-									label={language.submit}
-									handlePress={async (e) => await handleSubmit(e)}
-									loading={loading}
-									disabled={getSubmitDisabled() || loading}
+									type={'primary'}
+									label={language.upload}
+									handlePress={() => logoInputRef.current.click()}
+									disabled={loading || submitResponse !== null}
 									noMinWidth
-									formSubmit
 								/>
-							</S.SWrapper>
-						</S.Form>
-					)}
+							</S.ImageHeader>
+							<S.Image disabled={loading || submitResponse !== null}>
+								{showLogoUpload && <label htmlFor={'file-input-banner'}>{language.uploadImage}</label>}
+								<input
+									ref={logoInputRef}
+									id={'file-input-banner'}
+									type={'file'}
+									accept={'image/*'}
+									onChange={(e: any) => handleImageUpload(e)}
+									disabled={loading || submitResponse !== null}
+								/>
+								{logo && <img src={logo} alt={'Preview'} />}
+							</S.Image>
+						</S.ImageWrapper>
+						<FormField
+							label={language.initialChannel}
+							value={initialChannel}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitialChannel(e.target.value)}
+							disabled={loading || submitResponse !== null}
+							invalid={{ status: false, message: null }}
+						/>
+						<S.VWrapper>
+							<span>
+								<Checkbox
+									checked={privateGroupSelected}
+									disabled={loading || submitResponse !== null}
+									handleSelect={() => setPrivateGroupSelected(!privateGroupSelected)}
+								/>
+								{language.setPrivateGroup}{' '}
+							</span>
+						</S.VWrapper>
+						<S.SWrapper>
+							<S.RWrapper>{submitResponse && <span>{submitResponse.message}</span>}</S.RWrapper>
+							<Button
+								type={'alt1'}
+								label={language.submit}
+								handlePress={async (e) => await handleSubmit(e)}
+								loading={loading}
+								disabled={getSubmitDisabled() || loading || submitResponse !== null}
+								noMinWidth
+								formSubmit
+							/>
+						</S.SWrapper>
+					</S.Form>
 				</Modal>
 			)}
 		</>

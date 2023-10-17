@@ -23,7 +23,7 @@ export const ImageHeader = styled.div`
 export const Image = styled.div<{ disabled: boolean }>`
 	height: 150px;
 	width: 100%;
-	border: 1px solid ${(props) => props.theme.colors.border.primary};
+	border: 1px dashed ${(props) => props.theme.colors.border.primary};
 	border-radius: ${STYLING.dimensions.borderRadius};
 	display: flex;
 	justify-content: center;
@@ -46,7 +46,7 @@ export const Image = styled.div<{ disabled: boolean }>`
 		font-weight: ${(props) => props.theme.typography.weight.medium};
 		border-radius: ${STYLING.dimensions.borderRadius};
 		background: ${(props) =>
-			props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.background};
+			props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.alt1.background};
 		&:hover {
 			background: ${(props) =>
 				props.disabled ? props.theme.colors.container.primary.disabled : props.theme.colors.container.primary.hover};
@@ -57,7 +57,35 @@ export const Image = styled.div<{ disabled: boolean }>`
 	}
 `;
 
+export const VWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	span {
+		font-size: ${(props) => props.theme.typography.size.small};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+		color: ${(props) => props.theme.colors.font.primary};
+		display: block;
+		line-height: 1.5;
+	}
+	input {
+		margin: 0 7.5px -1.75px 0;
+	}
+`;
+
 export const SWrapper = styled.div`
-	width: fit-content;
-	margin: 0 0 0 auto;
+	width: 100%;
+	margin: 25px 0 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	button {
+		margin: 0 0 0 auto;
+	}
+`;
+
+export const RWrapper = styled.div`
+	span {
+		font-size: ${(props) => props.theme.typography.size.small};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+	}
 `;

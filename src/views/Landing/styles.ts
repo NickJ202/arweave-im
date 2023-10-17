@@ -44,6 +44,7 @@ export const IWrapper = styled.div`
 export const AWrapper = styled.div`
 	height: fit-content;
 	width: 47.5%;
+	margin: 0 auto;
 	@media (max-width: ${STYLING.cutoffs.initial}) {
 		width: 100%;
 		margin: 40px 0 0 0;
@@ -65,6 +66,17 @@ export const AHeader = styled.div`
 	}
 `;
 
+export const WWrapper = styled.div`
+	margin: 25px 0 0 0;
+	animation: ${open} ${fadeIn2};
+	span {
+		font-size: ${(props) => props.theme.typography.size.lg};
+		font-family: ${(props) => props.theme.typography.family.primary};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+		color: ${(props) => props.theme.colors.font.primary};
+	}
+`;
+
 export const GWrapper = styled.div`
 	margin: 25px 0 0 0;
 	animation: ${open} ${fadeIn2};
@@ -72,6 +84,7 @@ export const GWrapper = styled.div`
 	span {
 		display: block;
 		padding: 20px;
+		line-height: 1.5;
 	}
 	p {
 		font-size: ${(props) => props.theme.typography.size.xLg};
@@ -82,7 +95,7 @@ export const GWrapper = styled.div`
 `;
 
 export const GDetailWrapper = styled.div`
-	max-height: 310px;
+	max-height: 315px;
 	margin: 0 0 20px 0;
 	p {
 		font-size: ${(props) => props.theme.typography.size.header};
@@ -139,7 +152,32 @@ export const GDetailLogo = styled.div`
 `;
 
 export const GCWrapper = styled.div`
-	width: fit-content;
-	margin: 25px 0 0 auto;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin: 25px 0;
 	animation: ${open} ${fadeIn2};
 `;
+
+export const SWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	button {
+		margin: 0 0 0 auto;
+	}
+`;
+
+export const RWrapper = styled.div<{ status: 'success' | 'failure' }>`
+	span {
+		font-size: ${(props) => props.theme.typography.size.small};
+		font-weight: ${(props) => props.theme.typography.weight.bold};
+		color: ${(props) => props.status === 'success' ? props.theme.colors.font.primary : props.theme.colors.notification.warning} !important;
+	}
+`;
+
+export const Form = styled.form``;

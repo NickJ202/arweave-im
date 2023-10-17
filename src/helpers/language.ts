@@ -1,6 +1,6 @@
 export const language = {
 	appName: `Ping`,
-	appDescription: `Ping is a decentralized messaging application built on top of Arweave.`,
+	appDescription: `Ping is a decentralized messaging application built on top of <a href="https://arweave.org" target="_blank">Arweave</a>`,
 	close: `Close`,
 	connect: `Connect`,
 	connectorNotFound: `Connector Not Found`,
@@ -15,7 +15,7 @@ export const language = {
 	sending: `Sending`,
 	sendMessage: `Send Message`,
 	groupSelect: `Select your group`,
-	noGroups: `No Groups`,
+	noGroupsFound: `You are not a part of any groups yet ! You can create a new group or join an existing group below.`,
 	createGroup: `Create a new group`,
 	title: `Title`,
 	submit: `Submit`,
@@ -59,5 +59,11 @@ export const language = {
 	handleItalic: `Italic (Ctrl / Cmd + I)`,
 	handleUnderline: `Underline (Ctrl / Cmd + U)`,
 	handleCode: `Code (Ctrl / Cmd + C)`,
-	messageSent: `Message Sent`
+	messageSent: `Message Sent`,
+	joinGroup: `Join a group`,
+	setPrivateGroup: `Make this group Private. Private groups are only accessible via invite from other group members.`,
+	groupJoined: `Successfully joined group`,
+	groupJoinRestricted: `Private groups can only be joined via invite`,
+	groupJoinExisting: `You are already a member of this group`,
+	enterValidAddress: `Please enter a valid address`,
 };

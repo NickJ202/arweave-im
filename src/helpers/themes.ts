@@ -85,6 +85,15 @@ export const defaultTheme: DefaultTheme = {
 				},
 			},
 		},
+		checkbox: {
+			active: {
+				background: DEFAULT.accent3,
+			},
+			background: DEFAULT.neutral1,
+			hover: DEFAULT.neutral3,
+			border: DEFAULT.neutral6,
+			disabled: DEFAULT.neutral5,
+		},
 		container: {
 			primary: {
 				background: DEFAULT.neutral1,

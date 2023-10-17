@@ -22,8 +22,6 @@ import { IProps } from './types';
 
 const MAX_EDITOR_LENGTH = 2500;
 
-// TODO: invalid warning on max limit reached
-// TODO: throw error footer notification on bad request
 export default function MessageCreate(props: IProps) {
 	const theme = useTheme();
 	const { queueFooterNotification } = useFooterNotification();

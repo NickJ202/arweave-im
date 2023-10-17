@@ -3,7 +3,7 @@ export const ASSET_CONTRACT = {
 };
 
 export const GROUP_CONTRACT = {
-	src: 'vNgiC1ihaqTJ76Zvo1s7igbp2MhoOVbI2vKsM8s2FDM',
+	src: 'pIgLouud9Lwykr11apVURXYgR2ynYSwUZUV_cZpS23U',
 };
 
 export const PAGINATOR = 100;
@@ -62,7 +62,7 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.20',
+			'0.1': 'Msg-Group-Version-v0.21',
 		},
 		profileVersions: {
 			'0.2': 'Account-0.2',

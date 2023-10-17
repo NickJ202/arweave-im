@@ -9,6 +9,7 @@ const arClient: ArweaveClientType = {
 	options: {
 		allowBigInt: true,
 		internalWrites: true,
+		ignoreExceptions: false,
 		remoteStateSyncEnabled: true,
 		remoteStateSyncSource: null,
 		unsafeClient: 'skip',
@@ -31,7 +32,8 @@ const arClient: ArweaveClientType = {
 			.connect(args.wallet)
 			.setEvaluationOptions(this.options)
 			.writeInteraction(args.input);
-		return res;
+		console.log(res)
+		return res
 	},
 
 	read: async function (id: string) {

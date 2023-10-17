@@ -2,17 +2,23 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
+import parse from 'html-react-parser';
+import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
-import { getTagValue, getTxEndpoint, GQLNodeResponseType, STORAGE, TAGS } from 'lib';
+import { getTagValue, getTxEndpoint, GQLNodeResponseType, MemberType, STORAGE, TAGS } from 'lib';
 
 import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
+import { Modal } from 'components/molecules/Modal';
 import { GroupCreate } from 'components/organisms/GroupCreate';
 import { ASSETS } from 'helpers/config';
 import { language } from 'helpers/language';
-import { formatAddress } from 'helpers/utils';
+import { ResponseType, WalletEnum } from 'helpers/types';
+import { checkAddress, formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
 import * as groupActions from 'store/group/actions';
+import * as notificationActions from 'store/notifications/actions';
 
 import * as S from './styles';
 
@@ -25,9 +31,25 @@ export default function Landing() {
 
 	const [groups, setGroups] = React.useState<GQLNodeResponseType[] | null>(null);
 	const [handleUpdate, setHandleUpdate] = React.useState<boolean>(false);
+	const [showJoinGroup, setShowJoinGroup] = React.useState<boolean>(false);
+
+	const [loading, setLoading] = React.useState<boolean>(false);
+	const [submitResponse, setSubmitResponse] = React.useState<ResponseType | null>(null);
+
+	const [groupId, setGroupId] = React.useState<string>('');
+
+	const [showWallet, setShowWallet] = React.useState<boolean>(false);
+	const [label, setLabel] = React.useState<string | null>(null);
+
+	React.useEffect(() => {
+		setTimeout(() => {
+			setShowWallet(true);
+		}, 200);
+	}, [arProvider.walletAddress]);
 
 	React.useEffect(() => {
 		dispatch(groupActions.setGroup(null));
+		dispatch(notificationActions.clearNotifications(null));
 	}, []);
 
 	React.useEffect(() => {
@@ -41,11 +63,37 @@ export default function Landing() {
 		})();
 	}, [arProvider.walletAddress, cliProvider.lib, handleUpdate]);
 
+	React.useEffect(() => {
+		if (!showWallet) {
+			setLabel(`${language.fetching}...`);
+		} else {
+			if (arProvider.walletAddress) {
+				if (arProvider.arProfile && arProvider.arProfile.handle) {
+					setLabel(arProvider.arProfile.handle);
+				} else {
+					setLabel(formatAddress(arProvider.walletAddress, false));
+				}
+			} else {
+				setLabel(language.connect);
+			}
+		}
+	}, [showWallet, arProvider.walletAddress, arProvider.arProfile]);
+
+	function getSubmitDisabled() {
+		return !groupId || !checkAddress(groupId);
+	}
+
+	function getInvalidField() {
+		if (!groupId) return { status: false, message: null };
+		if (!checkAddress(groupId)) return { status: true, message: language.enterValidAddress };
+		return { status: false, message: null };
+	}
+
 	function getGroups() {
 		if (arProvider.walletAddress) {
 			if (groups === null) return <span>{`${language.loading}...`}</span>;
 			if (groups.length <= 0) {
-				return <span>{language.noGroups}</span>;
+				return <span>{language.noGroupsFound}</span>;
 			} else {
 				return (
 					<>
@@ -78,31 +126,162 @@ export default function Landing() {
 		}
 	}
 
+	function getWalletInformation() {
+		return arProvider.walletAddress ? (
+			<>
+				<span>{label}</span>
+			</>
+		) : null;
+	}
+
+	async function handleSubmit(e: any) {
+		e.preventDefault();
+		if (arProvider.walletAddress && cliProvider.lib) {
+			setLoading(true);
+			try {
+				if (arProvider.wallet && window.arweaveWallet) {
+					const signer = new InjectedArweaveSigner(arProvider.wallet);
+					signer.getAddress = window.arweaveWallet.getActiveAddress;
+					await signer.setPublicKey();
+
+					const groupState = await cliProvider.lib.api.arClient.read(groupId);
+
+					if (groupState && groupState.privateGroup) {
+						setSubmitResponse({
+							status: false,
+							message: `${language.groupJoinRestricted}`,
+						});
+					} 
+					else if (groupState && groupState.members.find((member: MemberType) => member.address === arProvider.walletAddress)) {
+						setSubmitResponse({
+							status: true,
+							message: `${language.groupJoinExisting}`,
+						});
+					}
+					else {
+						const member = {
+							groupId: groupId,
+							groupTitle: '',
+							walletAddress: arProvider.walletAddress,
+							wallet: signer,
+						};
+
+						await cliProvider.lib.api.joinGroup(member);
+						setSubmitResponse({
+							status: true,
+							message: `${language.groupJoined}!`,
+						});
+					}
+				} else {
+					let message = '';
+					if (arProvider.walletType === WalletEnum.arweaveApp && !arProvider.wallet['_address']) {
+						message = language.arweaveAppConnectionError;
+					} else {
+						message = language.errorOccurred;
+					}
+					setLoading(false);
+
+					setSubmitResponse({
+						status: false,
+						message: message,
+					});
+				}
+			} catch (e: any) {
+				console.error(e);
+				let message = '';
+				if (e.message) {
+					message = e.message;
+				} else if (arProvider.walletType === WalletEnum.arweaveApp && !arProvider.wallet['_address']) {
+					message = language.arweaveAppConnectionError;
+				} else {
+					message = language.errorOccurred;
+				}
+				setLoading(false);
+				setSubmitResponse({
+					status: false,
+					message: message,
+				});
+			}
+			setLoading(false);
+		}
+	}
+
 	return (
-		<S.Wrapper>
-			<S.IWrapper>
-				<ReactSVG src={ASSETS.logo} />
-			</S.IWrapper>
-			<S.AWrapper>
-				<S.AHeader>
-					<h1>{`${language.welcomeTo} ${language.appName}`}</h1>
-					<span>{language.appDescription}</span>
-				</S.AHeader>
-				<S.GWrapper className={'border-wrapper-primary'}>{getGroups()}</S.GWrapper>
-				<S.GCWrapper>
-					{arProvider.wallet ? (
-						<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />
-					) : (
-						<Button
-							type={'primary'}
-							label={language.connect.toUpperCase()}
-							handlePress={() => arProvider.setWalletModalVisible(true)}
-							height={47.5}
-							width={275}
+		<>
+			<S.Wrapper>
+				<S.IWrapper>
+					<ReactSVG src={ASSETS.logo} />
+				</S.IWrapper>
+				<S.AWrapper>
+					<S.AHeader>
+						<h1>{`${language.welcomeTo} ${language.appName}`}</h1>
+						<span>{parse(language.appDescription)}</span>
+					</S.AHeader>
+					<S.WWrapper>{getWalletInformation()}</S.WWrapper>
+					<S.GWrapper className={'border-wrapper-primary'}>{getGroups()}</S.GWrapper>
+					<S.GCWrapper>
+						{arProvider.wallet ? (
+							<>
+								<GroupCreate setHandleUpdate={() => setHandleUpdate(!handleUpdate)} />
+								<Button
+									type={'alt1'}
+									label={language.joinGroup.toUpperCase()}
+									handlePress={() => setShowJoinGroup(true)}
+									height={47.5}
+									width={275}
+								/>
+							</>
+						) : (
+							<Button
+								type={'primary'}
+								label={language.connect.toUpperCase()}
+								handlePress={() => arProvider.setWalletModalVisible(true)}
+								height={47.5}
+								width={275}
+							/>
+						)}
+					</S.GCWrapper>
+					<S.GCWrapper>
+						{arProvider.walletAddress && (
+							<Button type={'alt2'} label={language.disconnect} handlePress={() => arProvider.handleDisconnect()} />
+						)}
+					</S.GCWrapper>
+				</S.AWrapper>
+			</S.Wrapper>
+			{showJoinGroup && (
+				<Modal
+					header={language.joinGroup}
+					handleClose={() => {
+						if (submitResponse) setHandleUpdate(!handleUpdate);
+						setShowJoinGroup(false);
+					}}
+				>
+					<S.Form>
+						<FormField
+							label={language.groupId}
+							value={groupId}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGroupId(e.target.value)}
+							disabled={loading}
+							invalid={getInvalidField()}
+							autoFocus
 						/>
-					)}
-				</S.GCWrapper>
-			</S.AWrapper>
-		</S.Wrapper>
+						<S.SWrapper>
+							<S.RWrapper status={submitResponse && submitResponse.status ? 'success' : 'failure'}>
+								{submitResponse && <span>{submitResponse.message}</span>}
+							</S.RWrapper>
+							<Button
+								type={'alt1'}
+								label={language.submit}
+								handlePress={async (e) => await handleSubmit(e)}
+								loading={loading}
+								disabled={getSubmitDisabled() || loading || submitResponse !== null}
+								noMinWidth
+								formSubmit
+							/>
+						</S.SWrapper>
+					</S.Form>
+				</Modal>
+			)}
+		</>
 	);
 }
