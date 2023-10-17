@@ -59,7 +59,7 @@ export type AssetArgsClientType = AssetArgsType & {
 
 export type AssetArgsFetchType = AssetArgsType & {
 	getStamps: boolean;
-}
+};
 
 export type AssetCreateArgsType = {
 	content: any;

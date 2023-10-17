@@ -129,6 +129,9 @@ export const Channel = styled.div<{ active: boolean }>`
 	button {
 		height: 100%;
 		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 		text-align: left;
 		border: 1px solid ${(props) => (props.active ? props.theme.colors.button.primary.active.border : 'transparent')};
 		border-radius: ${STYLING.dimensions.borderRadius};
@@ -151,6 +154,22 @@ export const Channel = styled.div<{ active: boolean }>`
 				color: ${(props) => props.theme.colors.button.primary.color};
 			}
 		}
+	}
+`;
+
+export const NotificationObject = styled.div`
+	height: 17.5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	padding: 0 12.5px;
+	background: ${(props) => props.theme.colors.notification.neutral};
+	span {
+		font-size: ${(props) => props.theme.typography.size.xxxSmall} !important;
+		font-weight: ${(props) => props.theme.typography.weight.xBold} !important;
+		color: ${(props) => props.theme.colors.font.alt3} !important;
+		margin: 0 !important;
 	}
 `;
 

@@ -17,6 +17,7 @@ import * as groupActions from 'store/group/actions';
 import * as S from './styles';
 import { IProps } from './types';
 
+// TODO: notification
 export default function GroupAction(props: IProps) {
 	const dispatch = useDispatch();
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);

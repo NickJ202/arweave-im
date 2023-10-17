@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AssetType, ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
 
@@ -9,11 +9,14 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
 import { useFooterNotification } from 'providers/FooterNotificationProvider';
 import { RootState } from 'store';
+import * as notificationsActions from 'store/notifications/actions';
 
 import { GroupChannelDetail } from './GroupChannelDetail';
 import { GroupChannelHeader } from './GroupChannelHeader';
 
 export default function GroupChannel() {
+	const dispatch = useDispatch();
+
 	const { queueFooterNotification } = useFooterNotification();
 	const arProvider = useArweaveProvider();
 	const cliProvider = useClientProvider();
@@ -44,6 +47,7 @@ export default function GroupChannel() {
 		}
 	}
 
+	// TODO: dont refetch messages on group action (member / channel add)
 	// Initial message fetch
 	React.useEffect(() => {
 		(async function () {
@@ -62,7 +66,7 @@ export default function GroupChannel() {
 			}
 			setLoading(false);
 		})();
-	}, [arProvider.walletAddress, cliProvider.lib, groupReducer.activeChannelId]);
+	}, [arProvider.walletAddress, cliProvider.lib, groupReducer]);
 
 	React.useEffect(() => {
 		(async function () {
@@ -107,7 +111,12 @@ export default function GroupChannel() {
 						nextCursor: updatedResponse.nextCursor,
 						previousCursor: null,
 					});
-					setScrollToRecent(!scrollToRecent);
+					dispatch(
+						notificationsActions.setNotifications([
+							{ channelId: groupReducer.activeChannelId, count: updatedMessages.length },
+						])
+					);
+					handleScrollToRecent();
 				}
 			}
 		}
@@ -122,7 +131,7 @@ export default function GroupChannel() {
 		setScrollToRecent(false);
 	}
 
-	// Fetch new message
+	// Fetch self posted message
 	async function handleUpdate(contractId: string) {
 		if (cliProvider.lib && contractId) {
 			const asset = await cliProvider.lib.api.getAssetById({

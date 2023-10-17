@@ -22,15 +22,15 @@ const DEFAULT = {
 	accent2: '#3EA384',
 	accent3: '#3F7CEA',
 	accent4: '#3D6AB8',
-	accent5: '#D73D5B',
+	accent5: '#DF4657',
 	overlay1: '#F2F2F2C4',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
 	semiTransparent2: 'rgba(0, 0, 0, 0.275)',
-	negative: '#E83151',
+	negative: '#DF4657',
 	negativeShadow: '#EF6C82',
-	positive: '#06BA63',
-	neutral: '#FFC43D',
+	positive: '#4EBC9B',
+	neutral: '#BCCDDC',
 };
 
 export const defaultTheme: DefaultTheme = {
@@ -156,7 +156,7 @@ export const defaultTheme: DefaultTheme = {
 		notification: {
 			success: DEFAULT.positive,
 			warning: DEFAULT.negative,
-			neutral: DEFAULT.neutral,
+			neutral: DEFAULT.accent5,
 		},
 		overlay: {
 			primary: DEFAULT.overlay1,

@@ -34,19 +34,19 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			useBundlrGateway: true,
 			useArweaveNet: false,
 		});
-		
+
 		let stampCounts: any = {};
 		let stampChecks: any = {};
 		if (args.getStamps) {
 			const dataIds = gqlData.data.map((element: GQLNodeResponseType) => element.node.id);
-	
+
 			const stamps = Stamps.init({
 				warp: args.arClient.warp,
 				arweave: args.arClient.arweave,
 				wallet: args.walletAddress ? new InjectedArweaveSigner(args.walletAddress) : 'use_wallet',
 				graphql: `${API_CONFIG.protocol}://${API_CONFIG.arweave}/graphql`,
 			});
-	
+
 			try {
 				stampCounts = await stamps.counts(dataIds);
 				stampChecks = await stamps.hasStamped(dataIds);

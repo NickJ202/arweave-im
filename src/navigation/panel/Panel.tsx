@@ -9,6 +9,7 @@ import { IconButton } from 'components/atoms/IconButton';
 import { Loader } from 'components/atoms/Loader';
 import { GroupDropdown } from 'components/organisms/GroupDropdown';
 import { ASSETS } from 'helpers/config';
+import { NotificationReduxType } from 'helpers/types';
 import * as urls from 'helpers/urls';
 import { formatChannelName } from 'helpers/utils';
 import { RootState } from 'store';
@@ -22,6 +23,7 @@ export default function Panel(props: IProps) {
 	const dispatch = useDispatch();
 
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
+	const notificationsReducer = useSelector((state: RootState) => state.notificationsReducer);
 
 	const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
 	const [dropdownDisabled, setDropdownDisabled] = React.useState<boolean>(false);
@@ -35,10 +37,21 @@ export default function Panel(props: IProps) {
 		return groupReducer ? (
 			<>
 				{groupReducer.data.channels.map((channel: ChannelType, index: number) => {
+					const notificationObject =
+						notificationsReducer &&
+						notificationsReducer.find(
+							(notificationObject: NotificationReduxType) => channel.id === notificationObject.channelId
+						);
+
 					return (
 						<S.Channel key={index} active={channel.id === groupReducer.activeChannelId}>
 							<button onClick={() => handleChannelChange(channel.id)}>
 								<span>{formatChannelName(channel.title)}</span>
+								{notificationObject && notificationObject.count > 0 && (
+									<S.NotificationObject>
+										<span>{notificationObject.count}</span>
+									</S.NotificationObject>
+								)}
 							</button>
 						</S.Channel>
 					);

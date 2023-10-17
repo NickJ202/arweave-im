@@ -37,6 +37,11 @@ export type GroupReduxType = {
 	activeChannelId: string;
 };
 
+export type NotificationReduxType = {
+	channelId: string;
+	count: number;
+};
+
 export type FormFieldType = 'number' | 'password';
 
 export type GroupActionType = 'addMember' | 'addChannel';

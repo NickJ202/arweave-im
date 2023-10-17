@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
 import { groupReducer } from './group/reducers';
+import { notificationsReducer } from './notifications/reducers';
 
 declare const window: any;
 
@@ -15,6 +16,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
 	groupReducer,
+	notificationsReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

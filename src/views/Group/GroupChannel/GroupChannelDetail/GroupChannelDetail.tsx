@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AssetType, CURSORS } from 'lib';
 
@@ -8,37 +8,32 @@ import { Message } from 'components/organisms/Message';
 import { MessageCreate } from 'components/organisms/MessageCreate';
 import { Profile } from 'components/organisms/Profile';
 import { language } from 'helpers/language';
+import { NotificationReduxType } from 'helpers/types';
 import { formatAddress, formatDate, getOwner } from 'helpers/utils';
 import { RootState } from 'store';
+import * as notificationActions from 'store/notifications/actions';
 
 import * as S from './styles';
 import { IProps } from './types';
 
-// TODO: check updateData after new message fetch
 export default function GroupChannelDetail(props: IProps) {
+	const dispatch = useDispatch();
+
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
+	const notificationsReducer = useSelector((state: RootState) => state.notificationsReducer);
 
 	const mWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
 	const [handleScrollUpdate, setHandleScrollUpdate] = React.useState<boolean>(false);
 	const [showHeaderProfile, setShowHeaderProfile] = React.useState<boolean>(false);
 
-	// const [lastMaxScrollHeight, setLastMaxScrollHeight] = React.useState<number>(0);
-
 	React.useEffect(() => {
 		if (mWrapperRef.current && props.scrollToRecent && props.channelData) {
 			mWrapperRef.current.scrollTop = mWrapperRef.current.scrollHeight - mWrapperRef.current.clientHeight;
-			// setLastMaxScrollHeight(mWrapperRef.current.scrollHeight);
 		}
 	}, [handleScrollUpdate, props.scrollToRecent, props.channelData]);
 
-	// React.useEffect(() => {
-	// 	if (mWrapperRef.current && !props.scrollToRecent) {
-	// 		mWrapperRef.current.scrollTop = lastMaxScrollHeight;
-	// 	}
-	// }, [props.channelData]);
-
-	const handleScroll = () => {
+	function handleScroll() {
 		if (
 			mWrapperRef.current &&
 			mWrapperRef.current.scrollHeight / mWrapperRef.current.scrollTop > 5 &&
@@ -48,7 +43,17 @@ export default function GroupChannelDetail(props: IProps) {
 				props.setUpdateData();
 			}
 		}
-	};
+	}
+
+	function handleNotificationsClear() {
+		if (
+			notificationsReducer.find(
+				(notificationObject: NotificationReduxType) => notificationObject.channelId === groupReducer.activeChannelId
+			)
+		) {
+			dispatch(notificationActions.clearNotifications(groupReducer.activeChannelId));
+		}
+	}
 
 	function getHeader() {
 		if (props.channelHeaderData && groupReducer) {
@@ -120,7 +125,7 @@ export default function GroupChannelDetail(props: IProps) {
 
 	return (
 		<>
-			<S.Wrapper>
+			<S.Wrapper onClick={handleNotificationsClear}>
 				<S.MWrapper className={'scroll-wrapper'} ref={mWrapperRef} onScroll={handleScroll}>
 					<S.MHWrapper>{getHeader()}</S.MHWrapper>
 					{getChannelData()}
