@@ -11,7 +11,7 @@ declare const window: any;
 const persistConfig = {
 	key: 'root',
 	storage,
-	blacklist: [],
+	blacklist: ['notificationsReducer'],
 };
 
 const rootReducer = combineReducers({

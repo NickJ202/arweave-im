@@ -1,7 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AssetType, ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
+import {
+	AssetType,
+	ChannelHeaderResponseType,
+	ChannelResponseType,
+	ChannelType,
+	CURSORS
+} from 'lib';
 
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
@@ -47,7 +53,7 @@ export default function GroupChannel() {
 		}
 	}
 
-	// TODO: dont refetch messages on group action (member / channel add)
+	// TODO: don't refetch messages on group action (member / channel add)
 	// Initial message fetch
 	React.useEffect(() => {
 		(async function () {
@@ -105,7 +111,9 @@ export default function GroupChannel() {
 			if (updatedResponse && updatedResponse.nextCursor) {
 				const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
 				if (updatedMessages.length) {
-					const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
+					const updatedMessages: AssetType[] = getUniqueMessages(channelData.data, updatedResponse.data).map(
+						(message: AssetType) => ({ ...message, isRecent: true })
+					);
 					setChannelData({
 						data: [...channelData.data, ...updatedMessages],
 						nextCursor: updatedResponse.nextCursor,
@@ -121,7 +129,7 @@ export default function GroupChannel() {
 			}
 		}
 
-		const intervalId = setInterval(pollData, 3000);
+		const intervalId = setInterval(pollData, 2000);
 		return () => clearInterval(intervalId);
 	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
 

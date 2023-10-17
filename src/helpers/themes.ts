@@ -24,6 +24,7 @@ const DEFAULT = {
 	accent4: '#3D6AB8',
 	accent5: '#DF4657',
 	overlay1: '#F2F2F2C4',
+	overlay2: '#FFF60042',
 	transparent: 'rgba(255, 255, 255, 0)',
 	semiTransparent1: 'rgba(255, 255, 255, 0.5)',
 	semiTransparent2: 'rgba(0, 0, 0, 0.275)',
@@ -141,6 +142,11 @@ export const defaultTheme: DefaultTheme = {
 		},
 		loader: {
 			primary: DEFAULT.neutralA2,
+		},
+		message: {
+			recent: {
+				background: DEFAULT.overlay2
+			}
 		},
 		navigation: {
 			header: {
