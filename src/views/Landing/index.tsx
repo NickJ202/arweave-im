@@ -152,14 +152,15 @@ export default function Landing() {
 							status: false,
 							message: `${language.groupJoinRestricted}`,
 						});
-					} 
-					else if (groupState && groupState.members.find((member: MemberType) => member.address === arProvider.walletAddress)) {
+					} else if (
+						groupState &&
+						groupState.members.find((member: MemberType) => member.address === arProvider.walletAddress)
+					) {
 						setSubmitResponse({
 							status: true,
 							message: `${language.groupJoinExisting}`,
 						});
-					}
-					else {
+					} else {
 						const member = {
 							groupId: groupId,
 							groupTitle: '',
@@ -229,7 +230,7 @@ export default function Landing() {
 										hexCode={hexCodes[hexIndex]}
 									/>
 								</S.IAWrapper>
-							)
+							);
 						})}
 					</S.IGraphic>
 				</S.IWrapper>

@@ -201,7 +201,10 @@ export const RWrapper = styled.div<{ status: 'success' | 'failure' }>`
 	span {
 		font-size: ${(props) => props.theme.typography.size.small};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
-		color: ${(props) => props.status === 'success' ? props.theme.colors.font.primary : props.theme.colors.notification.warning} !important;
+		color: ${(props) =>
+			props.status === 'success'
+				? props.theme.colors.font.primary
+				: props.theme.colors.notification.warning} !important;
 	}
 `;
 

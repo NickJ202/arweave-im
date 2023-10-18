@@ -253,7 +253,7 @@ export async function joinGroup(args: {
 				},
 				options: { strict: true },
 			});
-	
+
 			const txId = await createTransaction({
 				arClient: args.arClient,
 				tags: createGroupMemberTags({
@@ -264,10 +264,9 @@ export async function joinGroup(args: {
 				content: TAGS.keys.groupMember,
 				contentType: CONTENT_TYPES.textPlain,
 			});
-	
+
 			return txId;
-		}
-		catch (e: any) {
+		} catch (e: any) {
 			console.log(e);
 		}
 	} catch (e: any) {

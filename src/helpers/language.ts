@@ -62,7 +62,7 @@ export const language = {
 	messageSent: `Message Sent`,
 	joinGroup: `Join a group`,
 	setPrivateGroup: `Make this group Private. Private groups are only accessible via invite from other group members.`,
-	groupJoined: `Group Joined!`,
+	groupJoined: `Group Joined`,
 	groupJoinRestricted: `Private groups can only be joined via invite`,
 	groupJoinExisting: `You are already a member of this group`,
 	enterValidAddress: `Please enter a valid address`,

@@ -154,8 +154,8 @@ export const defaultTheme: DefaultTheme = {
 		},
 		message: {
 			recent: {
-				background: DEFAULT.overlay2
-			}
+				background: DEFAULT.overlay2,
+			},
 		},
 		navigation: {
 			header: {
