@@ -5,8 +5,9 @@ import { ReactSVG } from 'react-svg';
 import parse from 'html-react-parser';
 import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
-import { getTagValue, getTxEndpoint, GQLNodeResponseType, MemberType, STORAGE, TAGS } from 'lib';
+import { getTagValue, getTxEndpoint, GQLNodeResponseType, MemberType, PROFILE_HEX_CODES, STORAGE, TAGS } from 'lib';
 
+import { Avatar } from 'components/atoms/Avatar';
 import { Button } from 'components/atoms/Button';
 import { FormField } from 'components/atoms/FormField';
 import { Modal } from 'components/molecules/Modal';
@@ -210,7 +211,27 @@ export default function Landing() {
 		<>
 			<S.Wrapper>
 				<S.IWrapper>
-					<ReactSVG src={ASSETS.logo} />
+					<S.ILogo>
+						<ReactSVG src={ASSETS.logo} />
+					</S.ILogo>
+					<S.IGraphic>
+						{Object.keys(PROFILE_HEX_CODES).map((index: string) => {
+							const hexCodes = Object.values(PROFILE_HEX_CODES);
+							const hexIndex = Math.floor(Math.random() * hexCodes.length);
+
+							return (
+								<S.IAWrapper key={index}>
+									<Avatar
+										key={index}
+										owner={STORAGE.none}
+										dimensions={{ wrapper: 32.5, icon: 22.5 }}
+										callback={null}
+										hexCode={hexCodes[hexIndex]}
+									/>
+								</S.IAWrapper>
+							)
+						})}
+					</S.IGraphic>
 				</S.IWrapper>
 				<S.AWrapper>
 					<S.AHeader>

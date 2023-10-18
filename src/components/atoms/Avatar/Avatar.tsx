@@ -24,6 +24,7 @@ export default function Avatar(props: IProps) {
 			if (member) return member.profileHexCode;
 			return null;
 		}
+		if (props.hexCode) return props.hexCode;
 	}
 
 	function getAvatar() {

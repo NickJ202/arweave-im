@@ -244,7 +244,7 @@ export async function joinGroup(args: {
 		const hexIndex = Math.floor(Math.random() * hexCodes.length);
 
 		try {
-			const r = await args.arClient.writeContract({
+			await args.arClient.writeContract({
 				contract: args.groupId,
 				wallet: args.wallet,
 				input: {
@@ -253,8 +253,6 @@ export async function joinGroup(args: {
 				},
 				options: { strict: true },
 			});
-
-			console.log(r)
 	
 			const txId = await createTransaction({
 				arClient: args.arClient,

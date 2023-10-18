@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 	max-width: ${STYLING.cutoffs.max};
 	display: flex;
 	justify-content: space-between;
-	padding: 100px 20px 0 20px;
+	padding: 50px 20px 0 20px;
 	margin: 0 auto;
 	@media (max-width: ${STYLING.cutoffs.initial}) {
 		flex-direction: column;
@@ -22,8 +22,12 @@ export const Wrapper = styled.div`
 export const IWrapper = styled.div`
 	height: fit-content;
 	width: 47.5%;
-	display: flex;
-	justify-content: center;
+	@media (max-width: ${STYLING.cutoffs.initial}) {
+		width: 100%;
+	}
+`;
+
+export const ILogo = styled.div`
 	svg {
 		height: 300px;
 		max-height: 47.5vh;
@@ -32,19 +36,36 @@ export const IWrapper = styled.div`
 		animation: ${open} ${fadeIn2};
 	}
 	@media (max-width: ${STYLING.cutoffs.initial}) {
-		width: 100%;
-		justify-content: flex-start;
 		svg {
 			max-height: 55.5vh;
 			max-width: 100%;
+			margin: 0 0 40px 0;
 		}
 	}
 `;
+
+export const IGraphic = styled.div`
+	width: 100%;
+	max-width: 250px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	margin: 60px 0 0 0;
+	animation: ${open} ${fadeIn2};
+	@media (max-width: ${STYLING.cutoffs.initial}) {
+		margin: 0;
+	}
+`;
+
+export const IAWrapper = styled.div``;
 
 export const AWrapper = styled.div`
 	height: fit-content;
 	width: 47.5%;
 	margin: 0 auto;
+	h1 {
+		line-height: 1.5;
+	}
 	@media (max-width: ${STYLING.cutoffs.initial}) {
 		width: 100%;
 		margin: 40px 0 0 0;
@@ -173,6 +194,10 @@ export const SWrapper = styled.div`
 `;
 
 export const RWrapper = styled.div<{ status: 'success' | 'failure' }>`
+	max-width: 75%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	span {
 		font-size: ${(props) => props.theme.typography.size.small};
 		font-weight: ${(props) => props.theme.typography.weight.bold};

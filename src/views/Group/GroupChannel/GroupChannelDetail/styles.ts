@@ -36,7 +36,7 @@ export const MHHeader = styled.div`
 export const MHData = styled.div`
 	display: flex;
 	align-items: center;
-	padding: 0 0 13.5px 0;
+	padding: 0 0 12.5px 0;
 	p,
 	span,
 	button {

@@ -28,7 +28,7 @@ export const LWrapper = styled.div`
 		transition: all 100ms;
 		&:hover {
 			cursor: pointer;
-			opacity: 0.5;
+			opacity: 0.75;
 		}
 	}
 `;

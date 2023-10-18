@@ -47,7 +47,7 @@ export default function GroupChannelDetail(props: IProps) {
 
 	function handleNotificationsClear() {
 		if (
-			notificationsReducer.find(
+			notificationsReducer && notificationsReducer.find(
 				(notificationObject: NotificationReduxType) => notificationObject.channelId === groupReducer.activeChannelId
 			)
 		) {

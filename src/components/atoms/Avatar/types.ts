@@ -5,4 +5,5 @@ export interface IProps {
 		icon: number;
 	};
 	callback: () => void | null;
+	hexCode?: string;
 }

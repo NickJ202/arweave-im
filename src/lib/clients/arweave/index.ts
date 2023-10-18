@@ -27,13 +27,12 @@ const arClient: ArweaveClientType = {
 	},
 
 	writeContract: async function (args: WriteContractArgs) {
-		let res = await this.warp
+		const result = await this.warp
 			.contract(args.contract)
 			.connect(args.wallet)
 			.setEvaluationOptions(this.options)
 			.writeInteraction(args.input);
-		console.log(res)
-		return res
+		return result;
 	},
 
 	read: async function (id: string) {
