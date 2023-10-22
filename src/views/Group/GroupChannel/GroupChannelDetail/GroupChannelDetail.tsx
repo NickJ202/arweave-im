@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AssetType, CURSORS } from 'lib';
+import { CURSORS, MessageType } from 'lib';
 
 import { Button } from 'components/atoms/Button';
 import { Message } from 'components/organisms/Message';
@@ -87,7 +87,7 @@ export default function GroupChannelDetail(props: IProps) {
 						})}
 
 					{props.channelData.data.length > 0 ? (
-						props.channelData.data.map((asset: AssetType, index: number) => {
+						props.channelData.data.map((asset: MessageType, index: number) => {
 							let useSameOwner: boolean = false;
 							const timeIntervalThreshold = 3600000;
 							if (index > 0) {

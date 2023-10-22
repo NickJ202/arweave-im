@@ -4,6 +4,7 @@ import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 import { Button } from 'components/atoms/Button';
 import { Checkbox } from 'components/atoms/Checkbox';
 import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 import { Modal } from 'components/molecules/Modal';
 import { language } from 'helpers/language';
 import { ResponseType, WalletEnum } from 'helpers/types';
@@ -113,6 +114,7 @@ export default function GroupCreate(props: IProps) {
 				});
 			}
 			setLoading(false);
+			setShowModal(false);
 		}
 	}
 
@@ -191,6 +193,13 @@ export default function GroupCreate(props: IProps) {
 						</S.SWrapper>
 					</S.Form>
 				</Modal>
+			)}
+			{submitResponse && (
+				<Notification
+					message={submitResponse.message}
+					type={submitResponse.status ? 'success' : 'warning'}
+					callback={() => setSubmitResponse(null)}
+				/>
 			)}
 		</>
 	);

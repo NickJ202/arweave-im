@@ -15,11 +15,11 @@ import {
 	ApiClientType,
 	AssetArgsFetchType,
 	AssetCreateArgsType,
-	AssetType,
 	ChannelHeaderResponseType,
 	ChannelResponseType,
 	CreateGroupArgs,
 	GQLResponseType,
+	MessageType,
 	ProfileType,
 } from '../../helpers';
 
@@ -39,7 +39,7 @@ const apiClient: ApiClientType = {
 		return await getAssetsByChannel({ ...args, arClient: this.arClient });
 	},
 
-	getAssetById: async function (args: { assetId: string }): Promise<AssetType | null> {
+	getAssetById: async function (args: { assetId: string }): Promise<MessageType | null> {
 		return await getAssetById({
 			assetId: args.assetId,
 			arClient: this.arClient,

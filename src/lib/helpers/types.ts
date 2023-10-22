@@ -1,9 +1,10 @@
-export type AssetType = {
+export type MessageType = {
 	id: string;
 	dateCreated: number;
 	message: string;
 	owner: string;
 	stamps: StampType;
+	isRecent?: boolean;
 };
 
 export type ChannelHeaderResponseType = {
@@ -16,7 +17,7 @@ export type ChannelHeaderResponseType = {
 };
 
 export type ChannelResponseType = {
-	data: AssetType[] | null;
+	data: MessageType[] | null;
 	nextCursor: string | null;
 	previousCursor: string | null;
 };
@@ -86,7 +87,7 @@ export type ApiClientType = {
 	init: (args: ApiClientInitArgs) => ApiClientType;
 	createAsset: (args: AssetCreateArgsType) => Promise<string>;
 	getAssetsByChannel: (args: AssetArgsFetchType) => Promise<ChannelResponseType>;
-	getAssetById: (args: { assetId: string }) => Promise<AssetType | null>;
+	getAssetById: (args: { assetId: string }) => Promise<MessageType | null>;
 	getChannelById: (args: { channelId: string }) => Promise<ChannelHeaderResponseType | null>;
 	getGroupsByUser: (args: { walletAddress: string }) => Promise<GQLResponseType>;
 	createGroup: (args: CreateGroupArgs) => Promise<string>;

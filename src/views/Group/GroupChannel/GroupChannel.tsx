@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AssetType, ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS } from 'lib';
+import { ChannelHeaderResponseType, ChannelResponseType, ChannelType, CURSORS, MessageType } from 'lib';
 
 import { language } from 'helpers/language';
 import { formatChannelName } from 'helpers/utils';
@@ -28,6 +28,7 @@ export default function GroupChannel() {
 	const [channelHeaderData, setChannelHeaderData] = React.useState<ChannelHeaderResponseType | null>(null);
 	const [channelData, setChannelData] = React.useState<ChannelResponseType | null>(null);
 
+	const [pollActive, setPollActive] = React.useState<boolean>(true);
 	const [scrollToRecent, setScrollToRecent] = React.useState<boolean>(false);
 	const [updateData, setUpdateData] = React.useState<boolean>(false);
 
@@ -104,8 +105,8 @@ export default function GroupChannel() {
 			if (channelData && channelData.data && updatedResponse && updatedResponse.nextCursor) {
 				const updatedMessages = getUniqueMessages(channelData.data, updatedResponse.data);
 				if (updatedMessages.length) {
-					const updatedMessages: AssetType[] = getUniqueMessages(channelData.data, updatedResponse.data).map(
-						(message: AssetType) => ({ ...message })
+					const updatedMessages: MessageType[] = getUniqueMessages(channelData.data, updatedResponse.data).map(
+						(message: MessageType) => ({ ...message, isRecent: true })
 					);
 					setChannelData({
 						data: [...channelData.data, ...updatedMessages],
@@ -122,9 +123,11 @@ export default function GroupChannel() {
 			}
 		}
 
-		const intervalId = setInterval(pollData, 2000);
-		return () => clearInterval(intervalId);
-	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData]);
+		if (pollActive) {
+			const intervalId = setInterval(pollData, 2000);
+			return () => clearInterval(intervalId);
+		}
+	}, [arProvider.walletAddress, cliProvider.lib, groupReducer, channelData, pollActive]);
 
 	async function handleScrollToRecent() {
 		await new Promise((resolve) => setTimeout(resolve, 250));
@@ -136,6 +139,7 @@ export default function GroupChannel() {
 	// Fetch self posted message
 	async function handleUpdate(contractId: string) {
 		if (cliProvider.lib && contractId) {
+			setPollActive(false);
 			const asset = await cliProvider.lib.api.getAssetById({
 				assetId: contractId,
 			});
@@ -146,6 +150,7 @@ export default function GroupChannel() {
 					previousCursor: channelData.previousCursor,
 				});
 			await handleScrollToRecent();
+			setPollActive(true);
 		}
 	}
 
@@ -183,8 +188,8 @@ export default function GroupChannel() {
 	return getData();
 }
 
-function getUniqueMessages(existingAssets: AssetType[], updatedAssets: AssetType[]) {
-	function existsInList(obj: AssetType, list: AssetType[]) {
+function getUniqueMessages(existingAssets: MessageType[], updatedAssets: MessageType[]) {
+	function existsInList(obj: MessageType, list: MessageType[]) {
 		return list.some((item) => item.id === obj.id);
 	}
 

@@ -24,13 +24,19 @@ export const AWrapper = styled.div`
 	display: none;
 `;
 
-export const Wrapper = styled.div<{ textOnly: boolean; disabled: boolean }>`
+export const Wrapper = styled.div<{ textOnly: boolean; disabled: boolean; isRecent: boolean }>`
 	width: 100%;
 	display: flex;
 	position: relative;
 	padding: ${(props) => (props.textOnly ? '7.5px 0' : '12.5px 15px 7.5px 15px')};
+	background: ${(props) => (props.isRecent ? props.theme.colors.message.recent.background : 'transparent')};
 	&:hover {
-		background: ${(props) => (props.disabled ? 'transparent' : props.theme.colors.container.alt2.background)};
+		background: ${(props) =>
+			props.isRecent
+				? props.theme.colors.message.recent.background
+				: props.disabled
+				? 'transparent'
+				: props.theme.colors.container.alt2.background};
 		${TWrapper} {
 			display: block;
 		}

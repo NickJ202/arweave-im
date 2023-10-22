@@ -66,4 +66,5 @@ export const language = {
 	groupJoinRestricted: `Private groups can only be joined via invite`,
 	groupJoinExisting: `You are already a member of this group`,
 	enterValidAddress: `Please enter a valid address`,
+	invalidGroupId: `Invalid Group ID`
 };

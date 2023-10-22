@@ -1,4 +1,4 @@
-import { CONTENT_TYPES, getTagValue, GROUP_CONTRACT, logValue, PROFILE_HEX_CODES, TAGS } from 'lib/helpers';
+import { CONTENT_TYPES, getRandomHex, getTagValue, GROUP_CONTRACT, logValue, TAGS } from 'lib/helpers';
 
 import { DEFAULT_LOGO } from 'helpers/config';
 
@@ -201,15 +201,12 @@ export async function addGroupMember(args: {
 	wallet: any;
 }): Promise<string | null> {
 	try {
-		const hexCodes = Object.values(PROFILE_HEX_CODES);
-		const hexIndex = Math.floor(Math.random() * hexCodes.length);
-
 		await args.arClient.writeContract({
 			contract: args.groupId,
 			wallet: args.wallet,
 			input: {
 				function: 'addMembers',
-				members: [{ address: args.walletAddress, profileHexCode: hexCodes[hexIndex] }],
+				members: [{ address: args.walletAddress, profileHexCode: getRandomHex() }],
 			},
 			options: { strict: true },
 		});
@@ -240,16 +237,13 @@ export async function joinGroup(args: {
 	wallet: any;
 }): Promise<string | null> {
 	try {
-		const hexCodes = Object.values(PROFILE_HEX_CODES);
-		const hexIndex = Math.floor(Math.random() * hexCodes.length);
-
 		try {
 			await args.arClient.writeContract({
 				contract: args.groupId,
 				wallet: args.wallet,
 				input: {
 					function: 'joinGroup',
-					member: { address: args.walletAddress, profileHexCode: hexCodes[hexIndex] },
+					member: { address: args.walletAddress, profileHexCode: getRandomHex() },
 				},
 				options: { strict: true },
 			});

@@ -9,12 +9,12 @@ import {
 	ASSET_CONTRACT,
 	AssetArgsClientType,
 	AssetCreateArgsClientType,
-	AssetType,
 	ChannelResponseType,
 	CursorEnum,
 	getTagValue,
 	GQLNodeResponseType,
 	logValue,
+	MessageType,
 	StampType,
 	TAGS,
 	TagType,
@@ -55,7 +55,7 @@ export async function getAssetsByChannel(args: AssetArgsClientType): Promise<Cha
 			}
 		}
 
-		const responseData: AssetType[] = gqlData.data.map((element: GQLNodeResponseType) => {
+		const responseData: MessageType[] = gqlData.data.map((element: GQLNodeResponseType) => {
 			return {
 				id: element.node.id,
 				dateCreated: Number(getTagValue(element.node.tags, TAGS.keys.dateCreated)),
@@ -93,7 +93,7 @@ function getStamps(assetId: string, stampCounts: any, stampChecks: any) {
 	return stamps;
 }
 
-export async function getAssetById(args: { assetId: string; arClient: any }): Promise<AssetType | null> {
+export async function getAssetById(args: { assetId: string; arClient: any }): Promise<MessageType | null> {
 	const gqlData: AGQLResponseType = await getGQLData({
 		ids: [args.assetId],
 		tagFilters: null,

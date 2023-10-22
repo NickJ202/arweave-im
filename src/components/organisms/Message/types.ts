@@ -1,7 +1,7 @@
-import { AssetType } from 'lib';
+import { MessageType } from 'lib';
 
 export interface IProps {
-	data: AssetType | null;
+	data: MessageType | null;
 	useSameOwner: boolean;
 	setHandleScrollUpdate: () => void;
 }

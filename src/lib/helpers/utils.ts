@@ -1,4 +1,4 @@
-import { STORAGE } from './config';
+import { PROFILE_HEX_CODES, STORAGE } from './config';
 
 export function pairExists(pair: string[], orderBookState: any) {
 	for (let i = 0; i < orderBookState.pairs.length; i++) {
@@ -57,4 +57,10 @@ export function getObjectSizeInKb(obj: any) {
 	const bytes = new TextEncoder().encode(jsonString).length;
 	const kilobytes = bytes / 1024;
 	return kilobytes;
+}
+
+export function getRandomHex() {
+	const hexCodes = Object.values(PROFILE_HEX_CODES);
+	const hexIndex = Math.floor(Math.random() * hexCodes.length);
+	return hexCodes[hexIndex];
 }

@@ -5,11 +5,21 @@ import { ReactSVG } from 'react-svg';
 import parse from 'html-react-parser';
 import { InjectedArweaveSigner } from 'warp-contracts-plugin-signature';
 
-import { getTagValue, getTxEndpoint, GQLNodeResponseType, MemberType, PROFILE_HEX_CODES, STORAGE, TAGS } from 'lib';
+import {
+	getRandomHex,
+	getTagValue,
+	getTxEndpoint,
+	GQLNodeResponseType,
+	MemberType,
+	PROFILE_HEX_CODES,
+	STORAGE,
+	TAGS,
+} from 'lib';
 
 import { Avatar } from 'components/atoms/Avatar';
 import { Button } from 'components/atoms/Button';
 import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 import { Modal } from 'components/molecules/Modal';
 import { GroupCreate } from 'components/organisms/GroupCreate';
 import { ASSETS } from 'helpers/config';
@@ -157,7 +167,7 @@ export default function Landing() {
 						groupState.members.find((member: MemberType) => member.address === arProvider.walletAddress)
 					) {
 						setSubmitResponse({
-							status: true,
+							status: false,
 							message: `${language.groupJoinExisting}`,
 						});
 					} else {
@@ -173,6 +183,8 @@ export default function Landing() {
 							status: true,
 							message: `${language.groupJoined}!`,
 						});
+						await new Promise((r) => setTimeout(r, 1000));
+						setHandleUpdate(!handleUpdate);
 					}
 				} else {
 					let message = '';
@@ -192,7 +204,7 @@ export default function Landing() {
 				console.error(e);
 				let message = '';
 				if (e.message) {
-					message = e.message;
+					message = language.invalidGroupId;
 				} else if (arProvider.walletType === WalletEnum.arweaveApp && !arProvider.wallet['_address']) {
 					message = language.arweaveAppConnectionError;
 				} else {
@@ -205,6 +217,8 @@ export default function Landing() {
 				});
 			}
 			setLoading(false);
+			setShowJoinGroup(false);
+
 		}
 	}
 
@@ -217,9 +231,6 @@ export default function Landing() {
 					</S.ILogo>
 					<S.IGraphic>
 						{Object.keys(PROFILE_HEX_CODES).map((index: string) => {
-							const hexCodes = Object.values(PROFILE_HEX_CODES);
-							const hexIndex = Math.floor(Math.random() * hexCodes.length);
-
 							return (
 								<S.IAWrapper key={index}>
 									<Avatar
@@ -227,7 +238,7 @@ export default function Landing() {
 										owner={STORAGE.none}
 										dimensions={{ wrapper: 32.5, icon: 22.5 }}
 										callback={null}
-										hexCode={hexCodes[hexIndex]}
+										hexCode={getRandomHex()}
 									/>
 								</S.IAWrapper>
 							);
@@ -288,9 +299,9 @@ export default function Landing() {
 							autoFocus
 						/>
 						<S.SWrapper>
-							<S.RWrapper status={submitResponse && submitResponse.status ? 'success' : 'failure'}>
+							{/* <S.RWrapper status={submitResponse && submitResponse.status ? 'success' : 'failure'}>
 								{submitResponse && <span>{submitResponse.message}</span>}
-							</S.RWrapper>
+							</S.RWrapper> */}
 							<Button
 								type={'alt1'}
 								label={language.submit}
@@ -303,6 +314,13 @@ export default function Landing() {
 						</S.SWrapper>
 					</S.Form>
 				</Modal>
+			)}
+			{submitResponse && (
+				<Notification
+					message={submitResponse.message}
+					type={submitResponse.status ? 'success' : 'warning'}
+					callback={() => setSubmitResponse(null)}
+				/>
 			)}
 		</>
 	);

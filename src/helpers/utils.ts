@@ -58,6 +58,17 @@ export function formatChannelName(channelName: string) {
 
 export function getOwner(groupReducer: GroupReduxType, owner: string | null) {
 	if (groupReducer && owner) {
-		return groupReducer.data.profiles.find((profile: ProfileType) => profile.walletAddress === owner);
+		const profile = groupReducer.data.profiles.find((profile: ProfileType) => profile.walletAddress === owner);
+		if (profile) {
+			return profile;
+		} else {
+			return {
+				handle: null,
+				avatar: null,
+				twitter: null,
+				discord: null,
+				walletAddress: owner,
+			};
+		}
 	} else return null;
 }

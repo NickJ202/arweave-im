@@ -10,6 +10,7 @@ import { Loader } from 'components/atoms/Loader';
 import { MessageActions } from 'components/molecules/MessageActions';
 import { MessageStamps } from 'components/molecules/MessageStamps';
 import { EDITOR_STYLE_MAP } from 'helpers/config';
+// import { NotificationReduxType } from 'helpers/types';
 import { formatAddress, formatDate, getOwner } from 'helpers/utils';
 import { RootState } from 'store';
 
@@ -45,6 +46,7 @@ export default function Message(props: IProps) {
 	const theme = useTheme();
 
 	const groupReducer = useSelector((state: RootState) => state.groupReducer);
+	// const notificationsReducer = useSelector((state: RootState) => state.notificationsReducer);
 
 	const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 	const [showProfile, setShowProfile] = React.useState<boolean>(false);
@@ -133,9 +135,20 @@ export default function Message(props: IProps) {
 		}
 	}
 
+	// const notificationObject =
+	// 	notificationsReducer &&
+	// 	notificationsReducer.find(
+	// 		(notificationObject: NotificationReduxType) => groupReducer.activeChannelId === notificationObject.channelId
+	// 	);
+
 	return (
 		<>
-			<S.Wrapper textOnly={props.useSameOwner} disabled={!props.data}>
+			<S.Wrapper
+				textOnly={props.useSameOwner}
+				disabled={!props.data}
+				// isRecent={props.data && props.data.isRecent ? (props.data.isRecent && notificationObject) : false}
+				isRecent={false}
+			>
 				<S.AWrapper>
 					{props.data && stamps && (
 						<MessageActions

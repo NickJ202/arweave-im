@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
-import { MemberType } from 'lib';
+import { getRandomHex, MemberType } from 'lib';
 
 import { Loader } from 'components/atoms/Loader';
 import { AR_PROFILE, ASSETS } from 'helpers/config';
@@ -22,7 +22,7 @@ export default function Avatar(props: IProps) {
 		if (groupReducer && props.owner) {
 			const member = groupReducer.data.members.find((member: MemberType) => member.address === props.owner);
 			if (member) return member.profileHexCode;
-			return null;
+			return getRandomHex();
 		}
 		if (props.hexCode) return props.hexCode;
 	}
