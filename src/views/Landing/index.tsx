@@ -299,9 +299,6 @@ export default function Landing() {
 							autoFocus
 						/>
 						<S.SWrapper>
-							{/* <S.RWrapper status={submitResponse && submitResponse.status ? 'success' : 'failure'}>
-								{submitResponse && <span>{submitResponse.message}</span>}
-							</S.RWrapper> */}
 							<Button
 								type={'alt1'}
 								label={language.submit}

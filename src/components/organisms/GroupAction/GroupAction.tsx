@@ -9,6 +9,7 @@ import { FormField } from 'components/atoms/FormField';
 import { Modal } from 'components/molecules/Modal';
 import { language } from 'helpers/language';
 import { ResponseType, WalletEnum } from 'helpers/types';
+import { checkAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
 import { RootState } from 'store';
@@ -33,10 +34,16 @@ export default function GroupAction(props: IProps) {
 	function getSubmitDisabled() {
 		switch (props.type) {
 			case 'addMember':
-				return !walletAddress;
+				return !walletAddress || !checkAddress(walletAddress);
 			case 'addChannel':
 				return !channelTitle;
 		}
+	}
+
+	function getInvalidAddress() {
+		if (!walletAddress) return { status: false, message: null };
+		if (!checkAddress(walletAddress)) return { status: true, message: language.enterValidAddress };
+		return { status: false, message: null };
 	}
 
 	async function handleSubmit(e: any) {
@@ -159,7 +166,7 @@ export default function GroupAction(props: IProps) {
 						value={walletAddress}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWalletAddress(e.target.value)}
 						disabled={loading}
-						invalid={{ status: false, message: null }}
+						invalid={getInvalidAddress()}
 						autoFocus
 					/>
 				);

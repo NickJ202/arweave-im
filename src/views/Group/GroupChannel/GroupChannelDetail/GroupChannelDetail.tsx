@@ -73,7 +73,7 @@ export default function GroupChannelDetail(props: IProps) {
 					</p>
 				</S.MHData>
 			);
-		} else return <p>{`${language.fetching}...`}</p>;
+		} else return <p>{`-`}</p>;
 	}
 
 	function getChannelData() {

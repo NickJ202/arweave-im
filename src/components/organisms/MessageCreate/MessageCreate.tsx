@@ -147,7 +147,6 @@ export default function MessageCreate(props: IProps) {
 			case 'code':
 				handleCode();
 				return;
-			// break;
 			default:
 				break;
 		}
