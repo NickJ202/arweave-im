@@ -62,7 +62,7 @@ export const TAGS = {
 			textPlain: 'text/plain',
 		},
 		messageGroupVersions: {
-			'0.1': 'Msg-Group-Version-v0.23',
+			'0.1': 'Msg-Group-Version-v1.0',
 		},
 		profileVersions: {
 			'0.2': 'Account-0.2',
