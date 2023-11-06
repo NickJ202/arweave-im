@@ -11,6 +11,7 @@ import { IconButton } from 'components/atoms/IconButton';
 import { MessageCreateLink } from 'components/atoms/MessageCreateLink';
 import { ASSETS, EDITOR_STYLE_MAP } from 'helpers/config';
 import { language } from 'helpers/language';
+import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { useClientProvider } from 'providers/ClientProvider';
 import { useFooterNotification } from 'providers/FooterNotificationProvider';
@@ -224,14 +225,17 @@ export default function MessageCreate(props: IProps) {
 					editorRef.current?.focus();
 				}, 100);
 
+				const plainText = editorState.getCurrentContent().getPlainText();
+				const author = arProvider.arProfile.handle ? arProvider.arProfile.handle : formatAddress(arProvider.walletAddress, false);
+
 				setLoading(true);
 				const contractId = await cliProvider.lib.api.createAsset({
 					content: serializedContent,
 					contentType: CONTENT_TYPES.textPlain,
-					title: language.message(props.channelId),
-					description: language.message(props.channelId),
-					type: language.message(props.channelId),
-					topics: [language.message(props.channelId)],
+					title: TAGS.values.messageTitle(author),
+					description: plainText.length > 280 ? `${plainText.substring(0, 280)}...` : plainText,
+					type: TAGS.values.message,
+					topics: [TAGS.values.message],
 					owner: arProvider.walletAddress,
 					ticker: TAGS.values.ticker,
 					dataProtocol: null,

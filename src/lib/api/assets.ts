@@ -169,6 +169,7 @@ function createAssetTags(args: AssetCreateArgsClientType): TagType[] {
 		{ name: TAGS.keys.messageChannelId, value: args.channelId },
 		{ name: TAGS.keys.messageGroupId, value: args.groupId },
 		{ name: TAGS.keys.messageData, value: args.content },
+		{ name: TAGS.keys.thumbnail, value: TAGS.values.messageThumbnail },
 	];
 
 	args.topics.forEach((topic: string) => tags.push({ name: TAGS.keys.topic(topic), value: topic }));

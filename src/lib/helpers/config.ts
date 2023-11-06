@@ -61,6 +61,9 @@ export const TAGS = {
 		contentTypes: {
 			textPlain: 'text/plain',
 		},
+		message: 'message',
+		messageTitle: (author: string) => `Ping Message by ${author}`,
+		messageThumbnail: 'gFMuy5aFRtTnbp6hCE7MHYKeofKSfcMUJnp7uko7Fkc',
 		messageGroupVersions: {
 			'0.1': 'Msg-Group-Version-v1.0',
 		},
@@ -68,7 +71,7 @@ export const TAGS = {
 			'0.2': 'Account-0.2',
 			'0.3': 'Account-0.3',
 		},
-		ticker: 'MSG',
+		ticker: 'PING-MSG',
 		smartweaveAppName: 'SmartWeaveContract',
 		smartweaveAppVersion: '0.3.0',
 	},
