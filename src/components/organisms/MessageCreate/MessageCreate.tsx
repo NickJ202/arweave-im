@@ -226,7 +226,9 @@ export default function MessageCreate(props: IProps) {
 				}, 100);
 
 				const plainText = editorState.getCurrentContent().getPlainText();
-				const author = arProvider.arProfile.handle ? arProvider.arProfile.handle : formatAddress(arProvider.walletAddress, false);
+				const author = arProvider.arProfile.handle
+					? arProvider.arProfile.handle
+					: formatAddress(arProvider.walletAddress, false);
 
 				setLoading(true);
 				const contractId = await cliProvider.lib.api.createAsset({

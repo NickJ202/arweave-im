@@ -218,7 +218,6 @@ export default function Landing() {
 			}
 			setLoading(false);
 			setShowJoinGroup(false);
-
 		}
 	}
 
